@@ -1,0 +1,55 @@
+---
+title: "Inference"
+description: "This guide will walk you through making your first API call toQ0's pre-deployed models. Before starting, ensure you have signed up for aQ0 account."
+---
+
+## Prerequisites
+
+*   A Q0 account
+*   Basic Python knowledge
+*   Python 3.8+ installed on your system
+
+## Step-by-Step Guide
+
+<Steps>
+  <Step title="Access the Playground">
+    1. Log in to your [Q0 account](https://ui-alpha.q0.dev)
+    2. From the left sidebar, click on **Playground**
+    3. In the model dropdown, select **Llamma 3-1-8b**. (For example purposes, Llamma 3-1-8b is considered here. Any other LLM can be used as well.)
+    4. You’ll see an interactive chat interface where you can test the model directly.
+
+    <Frame>
+      <img src="/images/inference.png" alt="Inference Chat Interface" />
+    </Frame>
+  </Step>
+</Steps>
+
+## Get API Details
+
+1. In the Playground, click on **View Code** in the right side
+2. You’ll be redirected to a page with ready-to-use code snippets
+3. Note that both Python (OpenAI client) and cURL examples are provided
+4. Copy the provided code snippet or use the one given below
+
+<Tip>
+  The API is compatible with any OpenAI-compliant client library, not just the official Python SDK.
+</Tip>
+
+### Example cURL Request
+
+```bash
+curl -X POST "https://adminapi-alpha.q0.new/inference/api/inference/api-key" \
+  -H "api-key:<Your API Key>" \
+  -H "<YOUR Model Id>=" \
+  -H "Content-Type:application/json" \
+  -d '{
+    "is_completion": false,
+    "output_tokens": 4096,
+    "temperature": 0.7,
+    "system_prompt": "Act as a helpful assistant to the user",
+    "top_p": 0.95,
+    "text_input": "Easy desk exercises during office hours",
+    "frequency_penalty": 0.5,
+    "presence_penalty": 0.5
+  }'
+```
