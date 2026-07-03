@@ -4,3 +4,25 @@ description: "Track the health and performance of your models."
 ---
 
 Real-time metrics and logs for your deployments.
+
+Once submitted, the deployment opens its detail page with a live status pipeline, configuration summary, and API documentation.
+
+<Frame>
+  ![Screenshot 2026 07 03 184714](/images/Screenshot-2026-07-03-184714.png)
+</Frame>
+
+### Deployment Status: 
+
+- **Deployment Accepted** - Q0 has received and validated the deployment configuration. Infrastructure provisioning begins.
+- **Connect to Cluster -** Q0 connects to the selected cluster (e.g., Yotta Cluster) and provisions the requested GPU nodes.  
+- **Model Deployment **- The selected model is loaded onto the provisioned GPUs and the inference endpoint goes live. 
+
+### Detail Page Tabs
+
+| **Tab ** | **Description ** |
+| :-- | :-- |
+| Details | Default view — shows deployment status, Deployment ID, API documentation, and the full configuration summary. |
+| Usage | Displays inference usage metrics over time (request counts, token usage, cost) for the active deployment. |
+| Logs | Shows real-time and historical inference logs for debugging and audit purposes. |
+
+### Deployed Model Sidebar
