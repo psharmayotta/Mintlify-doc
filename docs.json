@@ -71,6 +71,12 @@
               "api-reference/introduction",
               "api-reference/chunk-management"
             ]
+          },
+          {
+            "group": "Secret",
+            "pages": [
+              "Secret/Overview"
+            ]
           }
         ]
       }
