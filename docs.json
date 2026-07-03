@@ -25,6 +25,12 @@
             ]
           },
           {
+            "group": "Secret",
+            "pages": [
+              "Secret/Overview"
+            ]
+          },
+          {
             "group": "Get Started",
             "pages": [
               "getting-started/signup",
@@ -70,12 +76,6 @@
             "pages": [
               "api-reference/introduction",
               "api-reference/chunk-management"
-            ]
-          },
-          {
-            "group": "Secret",
-            "pages": [
-              "Secret/Overview"
             ]
           }
         ]
