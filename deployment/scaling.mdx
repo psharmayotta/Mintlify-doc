@@ -4,3 +4,31 @@ description: "Configure autoscaling for your deployments."
 ---
 
 Optimize your resource usage and handle traffic spikes.
+
+This is the most critical step for managing cost and availability in production. Q0 offers two scaling modes: 
+
+### **Enable Auto Scaling –** 
+
+When **Auto Scaling** is **ON**: Q0 automatically adjusts the number of active replicas based on real-time workload signals (CPU, GPU, RAM, latency, concurrency). The deployment scales up under load and scales down when idle, optimizing cost without manual intervention. 
+
+  
+
+When **Auto Scaling** is **OFF** (Desired Replicas mode), a fixed number of replicas runs at all times, regardless of load. This ensures consistent capacity and zero cold-start latency — but the fixed replicas are always billed, even when idle. Desired replicas must be at least `1` when Auto Scaling is disabled. 
+
+**Replica Configuration** 
+
+- **Min Replicas:** The minimum number of serving replicas to keep running at all times. Setting this to `0` allows the deployment to scale to zero when idle (no traffic), eliminating cost during inactivity — but introducing a cold-start delay on the next request. Setting to `1` or more guarantees always-on availability.  
+
+- **Max Replicas**:The maximum number of replicas the deployment is allowed to scale up to. Acts as a cost ceiling — Q0 will not provision more than this many replicas regardless of demand. Example: `2`. 
+
+**Scaling Windows** 
+
+Scaling windows control how Q0 reacts to changes in load — preventing over-eager scaling that reacts to short-lived traffic spikes or temporary drops. 
+
+**Auto Scaling Triggers** 
+
+When Auto Scaling is enabled, Q0 can scale based on one or more of the following metrics. These act as thresholds — when any configured metric exceeds its threshold, Q0 scales up; when all fall below, scale-down is eligible after the Scale Down Window elapses. 
+
+<Tip>
+  **Recommended Auto Scaling Strategy**: For most LLM deployments, **GPU Usage** and **Concurrency** are the most reliable scaling triggers. GPU Usage reflects model inference load directly; Concurrency prevents any single pod from being overwhelmed by simultaneous requests. Set **Min Replicas** to **1** (to avoid cold starts) and **Max Replicas** to **2–4** (to cap cost), and use Scale Down Window of 5–10 minutes to avoid premature scale-down during bursty traffic. 
+</Tip>

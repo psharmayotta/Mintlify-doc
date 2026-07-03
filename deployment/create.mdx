@@ -3,4 +3,77 @@ title: "Create Deployment"
 description: "Learn how to deploy your first model."
 ---
 
-Step-by-step guide to deploying a model to production.
+Before creating a deployment, Q0 shows an **Estimated Price Range** in the right panel based on the hardware options available: 
+
+<Frame>
+  ![Estimated Price](/EstimatedPrice.png)
+</Frame>
+
+This range reflects the cost of running the deployment on available GPU types (L40S at the lower end, H100 at the higher end). The actual per-hour cost is determined by the GPU type and GPU count selected
+
+## **Step 1 — Basic Details**
+
+Provide following information 
+
+- **Name:**  A unique display name to identify this deployment (e.g., `DeployTest`). Used in the Deployments list, breadcrumbs, and API references.  
+
+- **Description**: Optional free-text field (up to 500 characters) for notes or context about this deployment's purpose, the model it serves, or its intended audience. 
+
+<Frame>
+  ![Images](/images.png)
+</Frame>
+
+## **Step 2 — Model** 
+
+This step selects the model to be deployed. Q0 provides two tabs — **Model Library** and **Custom Model** — giving users the choice between pre-built Marketplace models and their own fine-tuned models. 
+
+The Model Library lists all models available from the Q0 Marketplace, organized by category. Users can search by name or scroll through the list. 
+
+<Frame>
+  ![Image](/images/image-3.png)
+</Frame>
+
+<Note>
+  **_Model Library_**_ vs. **Custom Model**: Use Model Library to deploy a pre-built, well-known foundation model directly. Use Custom Model to deploy a version you've fine-tuned on your own data — for example, a Llama model tuned on proprietary company documents or domain-specific datasets._
+</Note>
+
+## **Step 3 — Performance**
+
+Configure optimization and runtime settings to balance speed, accuracy, and cost. 
+
+<Frame>
+  ![Screenshot 2026 07 03 183153](/images/Screenshot-2026-07-03-183153.png)
+</Frame>
+
+This step defines the compute infrastructure the model will be deployed on 
+
+- **Cluster**: The compute cluster where the deployment will run. Currently available: **Yotta Cluster** — Q0's managed GPU infrastructure hosted on Yotta's cloud. 
+
+- **Node Group**: The GPU type within the selected cluster. Select one or more node groups:  
+
+H100— NVIDIA H100 (80GB HBM3), 8 CPUs per node. Highest performance; best for large models, low-latency requirements, or high-throughput workloads. ₹432/GPU/hr.  
+
+L40S — NVIDIA L40S (48GB GDDR6 ECC), 4 CPUs per node. Cost-efficient mid-range option; suitable for smaller models or moderate throughput needs. ₹190.80/GPU/hr. 
+
+- **GPU Count Per Pod:** Number of GPUs allocated per serving pod (selectable `1` to `8`). Increasing GPU count per pod improves generation speed, time-to-first-token, and maximum QPS — but scaling is sub-linear. The default is `1` for most models; larger models requiring tensor parallelism or model sharding may need `2` or more. 
+
+<Note>
+  **Scaling Options**: Increasing GPU count per pod improves generation speed and maximum QPS for a deployment, but the improvement is sub-linear — doubling GPUs does not double throughput. For very large models, more GPUs per pod are required for the model to fit in memory at all (sharding), rather than purely for speed. 
+</Note>
+
+## **Step 4 — Scaling** 
+
+Define how your deployment scales across replicas to handle workload demands.
+
+<Frame>
+  ![Screenshot 2026 07 03 183430](/images/Screenshot-2026-07-03-183430.png)
+</Frame>
+
+| **Metric ** | ** Unit ** | ** What It Measures ** |
+| :-- | :-- | :-- |
+| CPU Usage | % | <ul><li>The percentage of CPU capacity in use across active pods.</li></ul> <ul><li>High CPU usage typically indicates compute-bound inference workloads.</li></ul> |
+| GPU Usage | % | <ul><li>The percentage of GPU compute utilization across active pods.</li></ul> <ul><li>The most direct indicator of model inference load.</li></ul> |
+| GPU RAM | % | GPU memory utilization. When GPU RAM is near capacity, adding replicas prevents out-of-memory errors under concurrent requests. |
+| RAM | % | System (CPU) memory utilization across pods. |
+| Latency | Milliseconds | The observed inference latency per request. Scaling up when latency exceeds a threshold keeps response times within SLA targets for latency-sensitive applications. |
+| Concurrency | Active Requests Per Pod | The number of requests being processed simultaneously per pod. When concurrency exceeds the threshold, new replicas are added to distribute the load. |

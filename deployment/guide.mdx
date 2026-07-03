@@ -1,12 +1,22 @@
 ---
 title: "Deployment"
-description: "Deploy and serve AI models with enterprise-grade performance."
+description: "Deploy AI models to dedicated, production-ready GPU infrastructure on Q0 "
 ---
 
 The Deployment section covers everything from model optimization to serving at scale.
 
+The **Deployments** module lets users provision dedicated, production-grade serving infrastructure for any AI model available on Q0 — from the Marketplace catalogue or from custom fine-tuned models. A deployment gives the model a persistent, private inference endpoint that applications can call directly via API, with full control over the underlying GPU hardware, replica count, and auto-scaling behaviour.  
+
 ## Serving Features
 
-- **Inference Engine**: Our high-performance engine for low-latency serving.
-- **Scalability**: Deploy models that scale with your traffic.
-- **Monitoring**: Track performance and health of your deployed models.
+- **Serve Models in Production**: Give a model a dedicated, private API endpoint that external applications, internal tools, or downstream services can call directly at any time. 
+
+- **Choose Your Hardware**: Select the GPU type (H100, L40S) and GPU count per pod to match the model's memory and throughput requirements, and your performance and cost targets. 
+
+- **Deploy Any Model**: Choose from the full Q0 Model Library (Marketplace models like Llama3-1-8B, GPT-OSS-20B, DeepSeek-R1) or your own fine-tuned custom models. 
+
+- **Scale Automatically**: Configure auto-scaling rules — based on CPU, GPU, RAM, latency, or concurrency — so infrastructure expands under load and contracts when idle, keeping costs in check. 
+
+- **Maintain Consistent Availability**: Set minimum replicas to guarantee serving capacity even during traffic valleys, and maximum replicas to cap cost ceilings during spikes. 
+
+- **Monitor Health and Usage**: Track deployment status, health checks, and usage metrics in real time from the deployment detail page. 
