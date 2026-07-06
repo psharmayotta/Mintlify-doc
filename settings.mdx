@@ -1,0 +1,155 @@
+---
+title: "Settings"
+icon: "balance-scale-left"
+---
+
+Manage User Profile and Organization information within this section
+
+Access & manage all your preferences here like profile, organisation, team access, API keys, usage quotas, and GPU reservations
+
+<Frame>
+  ![Image](/images/image-7.png)
+</Frame>
+
+| **Tab** | **What it manages** |
+| :-- | :-- |
+| My Account | Personal profile, credentials, and account deletion |
+| Organisation | Manage Q0 organisations — create new or join existing |
+| Access Management | Invite team members and manage their roles |
+| API Keys | Generate and manage API keys for programmatic access |
+| Quota | View TPM and RPM limits per model/service |
+| Reservation | Reserve dedicated GPU capacity on Yotta Shakti Cloud |
+
+## **My Account** 
+
+**Update Profile**: Edit your personal information here 
+
+<Frame>
+  ![Image](/images/image-8.png)
+</Frame>
+
+<Frame>
+  ![Image](/images/image-9.png)
+</Frame>
+
+## **Create an organization** 
+
+- Click on the **Add Organization** button 
+
+- Provide a name for the new organization 
+
+- Click on the **Create button** to finish creating the organization
+
+<Frame>
+  ![Image](/images/image-10.png)
+</Frame>
+
+**For Existing Organization** 
+
+- Add Organization with Organization ID 
+
+<Frame>
+  ![Image](/images/image-12.png)
+</Frame>
+
+## **Access management**
+
+- Set up proper access to user based on the role using Access Management 
+
+- Add or Invite Member to your Project by using Add Members Email ID 
+
+- Set appropriate Role for User 
+
+<Frame>
+  ![Image](/images/image-13.png)
+</Frame>
+
+**Invite Member**
+
+<Frame>
+  ![Image](/images/image-14.png)
+</Frame>
+
+## **API Keys** 
+
+Generate and manage API keys for programmatic access to Q0 models and services
+
+<Frame>
+  ![Image](/images/image-15.png)
+</Frame>
+
+- Displayed at the top of the API Keys tab, the Current Playground Token is the active token used by the Q0 Playground. 
+
+- This token is auto-rotated by Q0 — you do not need to manage it manually.
+
+**Generate API Keys** 
+
+- Click on the Generate API Keys button 
+
+- Set Key Name 
+
+- Select Expiration from drop down, can be set to a week, Month, 3 Months and 6 Month 
+
+<Frame>
+  ![Image](/images/image-16.png)
+</Frame>
+
+## **Quota** 
+
+View your TPM (Tokens Per Minute) and RPM (Requests Per Minute) limits and current usage across all Q0 models and services
+
+| **Column** | **Description** |
+| :-- | :-- |
+| Resource/Service | The model or service name with its avatar icon and a short ID below it (copyable) |
+| TPM — Current Limit & Usage | Tokens Per Minute. Shows 'Spent N' (current usage) and 'Current Limit NK' (your allowance). Progress bar below. |
+| RPM — Current Limit & Usage | Requests Per Minute. Same layout as TPM — Spent and Current Limit with progress bar. |
+
+<Frame>
+  ![Image](/images/image-17.png)
+</Frame>
+
+For Individual Resource/Services, set **Increase TPM Limit** or **Increase RPM Limit** 
+
+<Frame>
+  ![Image](/images/image-18.png)
+</Frame>
+
+<Frame>
+  ![Image](/images/image-19.png)
+</Frame>
+
+Track all the Pending Request in Pending Requests Tab
+
+<Frame>
+  ![Image](/images/image-20.png)
+</Frame>
+
+## **Reservation** 
+
+Reserve dedicated GPU capacity on Yotta Shakti Cloud for your Q0 workloads — guaranteed compute, no queuing
+
+<Frame>
+  ![Image](/images/image-21.png)
+</Frame>
+
+<Frame>
+  ![Image](/images/image-22.png)
+</Frame>
+
+### **Create New Reservation**
+
+| **Field** | **Confirmed options / behaviour** | **Notes** |
+| :-- | :-- | :-- |
+| Accelerator Type | Dropdown — confirmed: H100 (NVIDIA) ₹432/GPU/Hr (8 GPU's, 1.40 GHz, 80.00GB HBM3) and L40S (NVIDIA) ₹190.79/GPU/Hr (4 GPU's, 1.90 GHz, 48.00GB GDDR6 ECC) | Select the GPU type to reserve |
+| Accelerator Count | Button group: Auto, 1, 4, 8, 16, 24, 32, Custom | Number of GPUs to reserve. Custom allows entering a specific count. |
+| Region | Dropdown — 'Select region' (options confirmed: NM1 / DL1 from other screens) | The Yotta Shakti Cloud region for the reservation |
+| Start Date | Date picker (calendar icon) | The date the reservation begins |
+| End Date | Date picker (calendar icon) | The date the reservation ends |
+| Total | Read-only field — shows '-- /week' until all fields are filled | Calculated weekly cost based on GPU type, count, and duration |
+
+**Pricing**
+
+| **GPU Type** | **Specs** | **Confirmed price** |
+| :-- | :-- | :-- |
+| H100 (NVIDIA) | 8 GPU's \| 1.40 GHz \| 80.00 GB HBM3 | ₹432 / GPU / Hr |
+| L40S (NVIDIA) | 4 GPU's \| 1.90 GHz \| 48.00 GB GDDR6 ECC | ₹190.79... / GPU / Hr |

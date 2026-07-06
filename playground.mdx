@@ -1,0 +1,222 @@
+---
+title: "Playground"
+icon: "play-pause"
+---
+
+Interactively test, prompt, and configure any model from the Marketplace before deploying or integrating it 
+
+<Frame>
+  ![Image](/images/image-7.png)
+</Frame>
+
+The Playground is Q0's interactive testing environment for models. It lets you select any model from the Marketplace, send it prompts, observe the response in real time, and fine-tune generation behaviour using a live configuration panel — all without writing a single line of code. Once you're happy with a configuration, you can grab the equivalent API request with one click and drop it straight into your application.   
+
+The Playground is the fastest way to answer questions like 
+
+_"How does this model respond to my use case?"_ or
+
+ _"What configuration gives me the most consistent output?"_ before committing to a deployment or fine-tuning job. 
+
+## **LLM for Text Generation** 
+
+A **Large Language Model (LLM)** is an AI model trained on vast amounts of text to understand and generate human-like language. Given a prompt — an instruction, question, or partial piece of text — the model predicts and generates a coherent continuation, one token at a time. Text generation LLMs power use cases like chat assistants, summarization, drafting, classification, structured data extraction, and code generation. Models in this category (e.g., `Llama3-1-8B`) differ in their size, training data, context window, and supported features, which directly affect their quality, speed, and cost for a given task. 
+
+The Q0 **Playground** offers a versatile space for text generation and conversational AI, letting users test any model from the Marketplace before deploying or integrating it.  
+
+**Users can: **
+
+> **Chat:** Engage in interactive, chat-style conversations with the selected model — typing prompts directly or starting from ready-made prompt cards (HR assistant, customer support, RFP drafting, strategy analysis) to simulate real-world use cases. 
+
+> **Configure Output:** Adjust generation settings such as Max Tokens, Temperature, Top-P, Frequency Penalty, and Presence Penalty, along with a System Prompt that defines the model's role and tone — customizing exactly how the model responds
+
+> **Experiment with Prompts:** Input different prompts, scenarios, and system instructions to observe how the model behaves under varying conditions, and switch between models’ mid-session to compare outputs for the same use case
+
+> **Evaluate Interactions:** Review generated responses for coherence, creativity, and relevance, while tracking live per-token pricing (input/output cost) to ensure results meet both quality and cost expectations
+
+> **Move to Integration:** Once satisfied with a prompt and configuration, use **View Code** to instantly retrieve the equivalent API request in Python, JavaScript, Java, Go, or Shell — bridging experimentation and production with a single click
+
+### **Configuration Setting Explained** 
+
+- **Max Tokens** - The maximum number of tokens the model is allowed to generate in its response. Higher values allow longer outputs but increase cost and latency; lower values truncate responses sooner. 
+
+- **Temperature**- Controls randomness/creativity of the output. Lower values (closer to 0) make responses more focused, deterministic, and repeatable; higher values (closer to 1–2) make responses more diverse and creative, at the risk of being less coherent.  
+
+- **System Prompt** - Act as a helpful assistant to the user. A standing instruction that defines the model's role, tone, and behavior for the entire conversation, separate from the user's individual prompts. 
+
+- **Top-P** - Limits the model to choosing from the smallest set of next-word candidates whose cumulative probability is ≥ Top-P. Lower values make output more focused (fewer word choices considered); higher values allow more variety. Typically tuned together with, or instead of, Temperature. 
+
+- **Frequency Penalty** - Reduces the likelihood of the model repeating the same tokens/phrases multiple times in a response. Higher values discourage repetition more strongly.  
+
+- **Presence Penalty** - Encourages the model to introduce new topics/tokens it hasn't used yet, rather than sticking closely to what's already been said. Higher values push the model toward more topic diversity.  
+
+## **Audio to Text Model** 
+
+Transcribe and process audio files into text using speech recognition models on Q0 
+
+<Frame>
+  ![Image](/images/image-8.png)
+</Frame>
+
+The **Audio To Text** Playground gives users a dedicated workspace to convert spoken audio into written text using speech recognition models such as **Whisper-Large-V3**. Instead of a chat-style text prompt, this workspace is built around uploading or recording audio, with a configuration panel tailored to transcription-specific parameters like decoding strategy, timestamps, and output format.  
+
+This is the go-to environment for testing how a model handles call recordings, voice notes, interviews, meeting audio, or any other spoken content — before wiring it into a production pipeline. 
+
+**What is Audio to Text Models?** 
+
+An **Audio-to-Text model** (also called a Speech-to-Text or ASR — Automatic Speech Recognition — model) is an AI model trained to listen to spoken audio and convert it into accurate written text. These models analyse acoustic patterns in an audio signal — phonemes, intonation, pauses — and map them to words and sentences, often while handling accents, background noise, multiple speakers, and varying audio quality. Models in this category (e.g., `Whisper-Large-V3`) are commonly used for transcription, subtitling, voice-driven assistants, call center analytics, and accessibility tools. 
+
+ **The Audio To Text allows users to:**
+
+> **Transcribe Audio**: Upload or record audio and convert spoken content into accurate, readable text
+
+> **Test Real Audio**: Use actual recordings (calls, meetings, voice notes) to evaluate how well the model handles real-world accents, noise, and speech patterns
+
+> **Tune Accuracy vs. Speed**: Adjust decoding parameters like Beam Size and Temperature to balance transcription accuracy against processing time and cost
+
+> **Generate Subtitle-Ready Output**: Enable timestamped or subtitle-formatted output (SRT/VTT) for use in video captioning and accessibility workflows
+
+> **Evaluate Output Quality**: Review the generated transcript for correctness, completeness, and formatting before integrating the model into an application via the API
+
+### **Configuration Explained** 
+
+- **Task**: Transcribe/Translate(English) - Defines what the model should do with the audio. `Transcribe` converts speech to text in the original spoken language; some models also support a `Translate` task to transcribe and translate the audio into another language (typically English) in a single step.  
+
+- **Word Timestamps**: When enabled, the model returns timestamp markers for individual words (not just full segments), useful for precise audio-text alignment, karaoke-style captions, or word-level search. 
+
+- **Beam Size:** Controls the breadth of the beam search decoding algorithm used to generate the transcript. A larger beam size explores more candidate transcriptions before settling on the most likely one, generally improving accuracy at the cost of slower processing; a smaller beam size is faster but may be less precise. 
+
+- **Temperature -** Controls the randomness of the model's predictions during decoding. Lower values produce more deterministic, literal transcriptions; higher values allow more variation, which can help the model recover from unclear or ambiguous audio but may introduce inconsistency. 
+
+- **Return SRT: ** When enabled, the output is formatted as an `.srt` subtitle file (SubRip format) with sequential, timestamped caption blocks — ready to drop into video editing or playback software. 
+
+- **Return VTT:** When enabled, the output is formatted as a `.vtt` file (WebVTT format), the web-standard subtitle format used for HTML5 video captioning. 
+
+- **Sample Rate**: The audio sample rate (in Hz) the model expects/processes the input at. `16000` Hz (16 kHz) is the standard rate for most speech recognition models, balancing audio fidelity with processing efficiency; this is typically handled automatically but can be adjusted for specific audio pipelines.
+
+## **Text to Image Model**
+
+Generate images from text prompts using diffusion models on Q0 
+
+<Frame>
+  ![Image](/images/image-9.png)
+</Frame>
+
+The **Text To Image** model gives users a dedicated workspace to generate visual content directly from written descriptions, using image generation models such as **Stable-diffusion-3.5**. Instead of returning text or audio, this workspace turns a natural-language prompt into one or more rendered images, with a configuration panel tailored to image generation parameters like resolution, inference steps, and guidance strength.  
+
+This is the go-to environment for testing how a model interprets creative briefs — from product mockups and marketing visuals to portraits and illustrations — before integrating image generation into a production workflow. 
+
+**What is a Text-to-Image (Diffusion) Model?** 
+
+A **Text-to-Image model** is an AI model trained to generate original images from a written text prompt. Most modern models in this category, including `Stable-diffusion-3.5`, are **diffusion models** — they start from random visual noise and progressively refine it, step by step, into a coherent image that matches the meaning, style, and detail described in the prompt. These models are commonly used for concept art, marketing and social creative, product visualization, rapid prototyping of visual ideas, and synthetic image generation where photography isn't practical or available. 
+
+** The Text To Image Playground allows users to: **
+
+> **Generate Images from Text**: Describe a scene, subject, or concept in plain language and have the model render it as an image
+
+> **Experiment with Prompts**: Test different prompt phrasing, styles, and levels of detail to see how they affect the generated visuals — from product photography to illustrative or photorealistic styles
+
+> **Control Image Quality and Style**: Adjust generation parameters such as Inference Steps and Guidance Scale to balance visual fidelity, prompt accuracy, and generation time
+
+> **Produce Multiple Variations**: Generate more than one image per prompt to compare options and pick the best result
+
+> **Customize Output Dimensions**: Set the exact height and width of the generated image to match the target use case (social post, banner, print, etc.)
+
+> **Evaluate Output Quality**: Review generated images for accuracy to the prompt, visual coherence, and realism before using them or integrating the model via the API
+
+### **Configuration Setup Explained** 
+
+- **Inference Steps -** The number of denoising steps the diffusion model takes to go from random noise to the final image. More steps generally produce sharper, more refined images but take longer to generate; fewer steps are faster but may result in less detailed or less accurate output.  
+
+- **T5** - Selects the text encoder configuration (e.g., whether/how a T5 text encoder is used to interpret the prompt) influencing how richly the model understands complex or descriptive prompts.  
+
+- **Guidance Scale:** Controls how strictly the model follows the text prompt versus how much creative freedom it takes. Higher values make the output adhere more closely to the prompt (at the risk of looking less natural); lower values allow more creative, loosely interpreted results.  
+
+- **No of Images:** The number of image variations to generate from a single prompt in one request, useful for comparing multiple outputs at once. 
+
+- **Height:** The height (in pixels) of the generated image. 
+
+- **Width:** The width (in pixels) of the generated image. 
+
+- **Negative Prompt**: Describes elements, objects, or styles the model should **avoid** including in the generated image (e.g., "blurry, watermark, extra fingers, low quality"). Leaving it as `NA` applies no exclusions; filling it in helps steer the model away from common artifacts or unwanted content. 
+
+- **Seed**: A fixed numeric value that initializes the random noise pattern the diffusion process starts from. Using the same seed with the same prompt and settings produces a reproducible image, which is useful for testing-controlled variations (e.g., changing only the prompt while keeping the seed fixed). Changing the seed produces a different result even with an identical prompt.  
+
+- **Max Sequence Length**: The maximum number of tokens the model's text encoder will process from the prompt. Longer, more detailed prompts require a higher Max Sequence Length to be fully understood; prompts exceeding this limit may be truncated, causing the model to ignore later parts of the description. 
+
+## **Image to Text Model**
+
+Generate descriptions, captions, and answers from images using vision-language models on Q0
+
+<Frame>
+  ![Image](/images/image-10.png)
+</Frame>
+
+The **Image To Text Model** gives users a dedicated workspace to extract written descriptions, captions, or answers from an image, using vision-language models such as **Gemma3\_4B**. Users upload an image and pair it with a text prompt instructing the model what to do with it — describe it, caption it, answer a question about it, or extract specific information from it — and the model returns a natural-language text response.  
+
+This is the go-to environment for testing how a model "sees" and reasons over visual content before integrating it into use cases like accessibility tools, content moderation, product cataloging, or visual Q&A. 
+
+**What is an Image-to-Text (Vision-Language) Model?**   
+
+An **Image-to-Text model** is a multimodal AI model trained to understand the contents of an image and express that understanding in natural language. These models, often called **vision-language models (VLMs)**, combine a vision encoder (which interprets pixels, objects, scenes, and text within an image) with a language model (which generates a coherent written response). Given an image and a prompt, the model can describe the scene, identify objects, read text within the image, answer questions about it, or summarize what's happening — making this category useful for image captioning, visual search, document/receipt understanding, accessibility (alt-text generation), and content analysis. 
+
+ **What You Can Do With This Model?**  
+
+The Image To Text Playground allows users to:
+
+> **Describe Images**: Upload any image and get a natural-language description of its contents
+
+> **Ask Questions About an Image**: Customize the prompt to ask specific questions (e.g., "What brand is this product?" or "How many people are in this photo?") instead of a generic description
+
+> **Generate Captions**: Produce ready-to-use captions or alt-text for accessibility, cataloguing, or social content
+
+> **Extract Information**: Use the model to read and summarize text or details visible within an image, such as signage, labels, or documents
+
+> **Control Response Behaviour**: Adjust output length and creativity using Max Token and Temperature settings to get concise, factual answers or more descriptive, varied ones
+
+> **Evaluate Output Quality**: Review the generated text for accuracy and relevance to the uploaded image before integrating the model into an application via the API
+
+### **Configuration Setting Explained**
+
+- **Prompt -** The instruction telling the model what to do with the uploaded image — for example, generate a general description, answer a specific question, extract text, or produce a caption in a particular style. This field is required and can be fully customized per request. 
+
+- **Max Token:** The maximum number of tokens the model is allowed to generate in its text response. Higher values allow longer more detailed descriptions or answers; lower values keep responses short and concise. 
+
+- **Temperature:** Controls the randomness/creativity of the generated text. Lower values produce more focused, literal, and consistent descriptions; higher values allow more varied and creative phrasing, which can be useful for captioning but may reduce factual precision.
+
+## **Text To Speech Model** 
+
+Convert written text into natural-sounding spoken audio using voice synthesis models on Q0
+
+<Frame>
+  ![Image](/images/image-11.png)
+</Frame>
+
+The **Text To Speech** Model gives users a dedicated workspace to convert written text into natural-sounding spoken audio, using voice synthesis models such as **hexgrad/Kokoro-82M**. Users type or speak a prompt, select a language and voice, and the model generates an audio rendering of that text — ready to preview, download, or integrate into an application.  
+
+This is the go-to environment for testing how a model sounds across different languages, voices, and speaking speeds before wiring text-to-speech into use cases like IVR systems, voiceovers, accessibility readers, or conversational agents. 
+
+**What is a Text-to-Speech (TTS) Model?**   
+
+A **Text-to-Speech model** is an AI model trained to convert written text into natural, human-like spoken audio. These models analyse the input text — including punctuation, sentence structure, and language-specific pronunciation rules — and synthesize a corresponding audio waveform, often supporting multiple languages and a choice of distinct voices. Models in this category (e.g., `hexgrad/Kokoro-82M`) are commonly used for voiceovers, IVR/call-center prompts, accessibility tools (screen readers), audiobook narration, and giving conversational AI agents a spoken voice.
+
+**What You Can Do With This Model?**
+
+The Text To Speech Playground allows users to:  
+
+> **Convert Text to Speech**: Type any text and generate a natural-sounding audio reading of it
+
+> **Choose Language and Voice**: Select from supported languages and corresponding voice options to match the target audience or use case
+
+> **Control Speaking Speed**: Adjust the playback speed of the generated audio to sound faster, slower, or natural-paced
+
+> **Experiment with Prompts**: Use example prompt cards (HR summaries, customer support drafts, RFP responses, strategy analysis) as starting text or write fully custom scripts
+
+> **Evaluate Output Quality**: Listen to the generated audio for naturalness, clarity, and pronunciation accuracy before integrating the model into an application via the API
+
+### **Configuration Setting Explained**
+
+- **Select Language**: The language the model should use to interpret and pronounce the input text. This determines pronunciation rules, accent, and the set of voices available in the next field. Required.  
+
+- **Select Voice For \[Language\]:** The specific synthetic voice used to generate the audio (e.g., a particular male/female voice within American English). Voice options update dynamically based on the selected language. Required. 
+
+- **Speed:** Controls the speaking rate of the generated audio. A value of `1` is normal/natural speed; values below `1` slow the speech down, while values above `1` speed it up — useful for matching video timing or accessibility preferences.  

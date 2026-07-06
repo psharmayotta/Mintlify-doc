@@ -21,6 +21,9 @@ When **Auto Scaling** is **OFF** (Desired Replicas mode), a fixed number of repl
 
 - **Max Replicas**:The maximum number of replicas the deployment is allowed to scale up to. Acts as a cost ceiling — Q0 will not provision more than this many replicas regardless of demand. Example: `2`. 
 
+- **Min Replicas:** The minimum number of serving replicas to keep running at all times. Setting this to `0` allows the deployment to scale to zero when idle (no traffic), eliminating cost during inactivity — but introducing a cold-start delay on the next request. Setting to `1` or more guarantees always-on availability.  
+- **Max Replicas**:The maximum number of replicas the deployment is allowed to scale up to. Acts as a cost ceiling — Q0 will not provision more than this many replicas regardless of demand. Example: `2`. 
+
 **Scaling Windows** 
 
 Scaling windows control how Q0 reacts to changes in load — preventing over-eager scaling that reacts to short-lived traffic spikes or temporary drops. 

@@ -1,0 +1,87 @@
+---
+title: "Batch Inference"
+icon: "books"
+---
+
+Run large-scale, asynchronous AI inference jobs across entire datasets on Q0
+
+**Batch Inference** is Q0's module for running AI model inference at scale — processing entire datasets through a model in a single, automated job, rather than one prompt at a time. Instead of sending individual requests interactively (as in the Playground), Batch Inference lets users queue an entire input dataset, run the model across every record asynchronously, and collect the full set of outputs when the job completes. 
+
+This is the right tool whenever the task involves processing a high volume of inputs where real-time, request-by-request interaction is neither necessary nor practical.
+
+Batch Inference is the process of running a model against a large collection of inputs — all at once, in a coordinated pipeline — rather than processing each input individually. The user configures the model, dataset, and generation settings once, submits the job, and Q0 handles provisioning, scaling, and execution automatically. Results are written back to the output destination as the job progresses.
+
+**What Users Gain from Batch Inference**
+
+> **Process Data at Scale**: Run inference across thousands or millions of records in a single job, without writing any custom orchestration code.
+
+> **Reduce Cost Per Inference**: Batch jobs are typically more cost-efficient per token than real-time inference, since Q0 can optimize provisioning and GPU utilization across the full dataset
+>
+> **Automate Recurring Pipelines**: With Auto Sync enabled on the input dataset, batch jobs can be scheduled to re-run automatically (e.g., every Monday at 03:00 AM), keeping outputs current as new data arrives
+
+> **Decouple Inference from Application Logic**: Applications don't need to wait for model responses in real time. The batch job runs asynchronously, and the application consumes the results when ready
+
+> **Consistent, Reproducible Outputs**: Every record in the dataset is processed with identical model and configuration settings, ensuring consistent output quality across the entire batch
+
+> **Save Results to Cloud**: Use Advanced Cloud Settings to automatically sync batch outputs to a cloud provider (e.g., GCP, AWS), making results immediately available for downstream pipelines or storage
+
+> **Monitor Progress in Real Time**: Track the job's progress through a live status pipeline — from dataset verification through model deployment, inference execution, and completion
+
+**Creating a Batch Inference Job: Step-by-Step Flow**
+
+## **Step 1 — Basic Information**
+
+Provide **Batch Name-** A unique, required name to identify this batch inference job and **Description -** Optional free-text field
+
+## **Step 2 — Model**
+
+This step selects and configures the model that will process the batch dataset. Fields are identical to those used in Benchmarking model configuration, providing a consistent experience across the platform.
+
+<Frame>
+  ![Image](/images/image-7.png)
+</Frame>
+
+- **Model Source**: The platform or service where the model is hosted (e.g., `GCP`, `Huggingface`). Determines the expected format of the Model Path and the authentication method required
+- **Model Path**: The path or URL pointing to the model's stored files (e.g., `gs://inferen...ma3.8/` for a GCP-hosted model). Q0 verifies this path automatically once credentials are provided
+- **Model Class**: The specific model class used to load and run the model at inference time (e.g., `LlamaForCausalLM`). Must match the model's actual implementation
+- **Secret** :Cloud credentials required to access the model source securely. Choose between: **Existing Secret** — select a previously saved credential (e.g., `GCPtest`) or **Create New Secret** — add new credentials if none exist yet
+- **Select Secret**: Dropdown to select the specific saved credential to use, scoped to the chosen Model Source
+
+## **Step 3 — Dataset**
+
+This step attaches and configures the input dataset that the model will process in batch.
+
+- Existing Dataset: Select a dataset already available in Q0 (previously uploaded or created). The Select An Existing Dataset dropdown lists all available datasets (e.g., `Lama`).
+- Create New Dataset: Upload a new dataset file specifically for this batch job. Supported formats: **CSV, JSON, and JSONL**, up to **50MB** per file.
+- Download Sample Dataset: Downloads a sample dataset file from Q0 to illustrate the expected format before creating a custom one. 
+
+**Auto Sync Settings**
+
+When the input dataset is expected to update regularly (e.g., a weekly data export), Auto Sync ensures the batch job automatically re-runs with the latest data
+
+## **Step 4 — Configuration**
+
+This step controls how the model generates output for every record in the batch dataset. Settings are applied consistently across all inputs to ensure uniform, reproducible results.
+
+- **Max Tokens**: Maximum number of tokens the model can generate per record in the batch. Directly affects output completeness and job cost
+- **Temperature**: Controls output randomness. Lower values produce more consistent, deterministic outputs across the dataset; higher values introduce variety. For bulk processing where consistency matters, keep this low
+- **System Prompt**: A standing instruction applied to every record in the batch, defining the model's role and behavior throughout the entire job
+- **Top K**: Limits the model to sampling from the top-K most probable next tokens at each generation step
+- **Score Threshold:** Minimum relevance or confidence score for an output to be included in results. Records whose outputs fall below this threshold may be excluded from the final output dataset
+
+**Advanced Settings** 
+
+- **Top-P**: Nucleus sampling — restricts token selection to candidates whose cumulative probability is ≥ Top-P. Works alongside Temperature to shape output diversity
+- **Frequency Penalty**: Penalizes tokens that appear frequently in the output, reducing repetition across long-form batch outputs
+- **Presence Penalty**: Encourages the model to introduce new topics or tokens, rather than repeating what's already appeared in the output
+
+**Advanced Cloud Settings**
+
+- **Save Autosync Results In Cloud:** When enabled, batch outputs are automatically written to a connected cloud storage bucket after each run — useful for downstream pipelines that consume the results from cloud storage
+- **Cloud Provider:** The cloud platform to save results to (e.g., GCP, AWS). Required when cloud auto-save is enabled
+
+Once submitted, the job opens its detail page showing the live pipeline status and full configuration summary.
+
+<Frame>
+  ![Image](/images/image-8.png)
+</Frame>

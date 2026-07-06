@@ -1,0 +1,116 @@
+---
+title: "Datasets"
+icon: "database"
+---
+
+Create, manage, and source datasets for training, evaluation, and inference on Q0 
+
+The **Datasets** module is Q0's central repository for managing the data that powers every AI workflow on the platform. Whether you're fine-tuning a model, evaluating its performance, or running batch inference at scale, every workflow begins with a dataset. The Datasets module lets users create, import, organize, and reuse datasets — connecting data from cloud storage providers, model repositories, or direct file uploads — all without leaving the Q0 platform. 
+
+## **What Users Can Do in the Datasets Module** 
+
+> **Create and name datasets** with descriptive metadata so teammates can find and reuse them quickly
+
+> **Import data from multiple sources** — AWS S3, GCP Cloud Storage, Huggingface, Azure Blob Storage, or direct file uploads — without writing ingestion code
+
+> **Classify datasets by purpose and model category** so downstream modules (Training, Benchmarking, Batch Inferencing) can automatically surface the right datasets in context
+
+> **Monitor dataset status** — track whether a dataset is processing, ready, or has failed, directly from the dashboard
+
+> **Search and manage existing datasets** — find any dataset by name, view its source, size, and creation details, and reuse it across multiple workflows
+
+> **Download sample dataset formats** to understand the expected schema before uploading custom data
+
+## **Creating a Datasets**
+
+### **Step 1 — Basic Details** 
+
+Collect basic dataset information 
+
+- **Dataset Name:** A descriptive, unique name so teammates can find this dataset quickly Shown in dataset lists across Training, Benchmarking, and Batch Inference modules.  
+
+- **Description:** Captures what the dataset contains, its source, or how it will be used (up to 500 characters). Helps teammates understand the dataset's purpose at a glance. 
+
+- **Usage Purpose:** Selects the downstream module where this dataset will be used, so it is correctly classified and surfaced in the right contexts. 
+
+- **AI Model Category:** Associates the dataset with the model category it is designed to support, ensuring compatibility with the correct model types and evaluation task 
+
+<Frame>
+  ![Image](/images/image-7.png)
+</Frame>
+
+**Usage Purpose Options**   
+
+Usage Purpose field tells Q0 which workflow this dataset is intended for. This determines where the dataset appears in module-specific dataset selectors: 
+
+| **Usage Purpose ** | ** Description ** |
+| :-- | :-- |
+| Training | Dataset is used to fine-tune or train an AI model. Selected datasets feed into the My Trainings workflow. |
+| Benchmarking & Evaluation | Dataset is used to evaluate model performance against standardized tasks. Selected datasets appear in the Benchmarking module's dataset selector. |
+| Batch Inferencing | Dataset is used as the input batch for large-scale asynchronous inference jobs. Selected datasets appear in the Batch Inference module's dataset selector. |
+
+**AI Model Category Options**
+
+**AI Model Category** field associates the dataset with the type of model it is designed to support. This determines which model types the dataset can be paired with across training, benchmarking, and inference workflows:
+
+| **AI Model Category ** | ** Description ** |
+| :-- | :-- |
+| Large Language Model | Text datasets for LLMs — instruction-response pairs, Q&A, summarization corpora, chat transcripts, or raw text for language model training and evaluation. |
+| Diffusion Model | Image-text paired datasets for text-to-image or image editing models — prompt-image pairs, image collections with captions, or editing task datasets. |
+| Vision-Language Model | Multimodal datasets combining images and text — visual Q&A datasets, image captioning datasets, document image datasets, or OCR corpora. |
+| Automatic Speech Recognition | Audio datasets for speech-to-text models — audio recordings paired with transcripts, evaluated using Word Error Rate (WER). |
+| Text-to-Speech | Text corpora with corresponding audio recordings for training or evaluating voice synthesis models. |
+
+### **Step 2 — Source** 
+
+Import your dataset from preferred sources and define its details for processing
+
+| **Source ** | ** Description ** |
+| :-- | :-- |
+| AWS | Import from an Amazon S3 bucket. Provide the dataset path (S3 URI) and authenticate with an AWS secret. |
+| GCP | Import from a Google Cloud Storage bucket. Provide the dataset path (GCS URI, e.g., `gs://q0-test/batch-infer/llama3_text_format_1000.json`) and authenticate with a GCP secret. |
+| Huggingface | Import a dataset directly from the Huggingface Hub by providing the dataset repository ID and authentication token. |
+| Azure | Import from an Azure Blob Storage container. Provide the dataset path and authenticate with an Azure secret. |
+| File Upload | Upload a file directly from your device. No cloud credentials required. |
+
+This step defines where the dataset data lives and how Q0 should access it. Five source types are available: 
+
+ 
+
+When AWS, GCP, or Azure is selected, the following connection fields appear: 
+
+- **Dataset Path:** The exact bucket path, registry ID, or storage URI where the dataset file is located 
+
+- **Secret:** Cloud access credentials to authenticate Q0 with the storage provider. Two options:  
+
+- **Existing Secret** — select a previously saved credential from the dropdown  
+
+- **Create New Secret** — add new credentials if none exist yet. 
+
+- **Select Secret:** Dropdown to pick the specific saved secret scoped to the chosen cloud provider  
+
+When **File Upload** is selected, User can a drag-and-drop or upload the path/secret. Supported file format are `JSON`, `JSONL`, `ZIP`, `CSV`, `TSV`, `TXT`, \`XML and file sixe of 500MB/Upload 
+
+<img
+  src="/images/image-8.png"
+  alt="Image"
+  title="Image"
+  className="mr-auto"
+/>
+
+Click **Create Dataset** to submit and begin processing the dataset, User can view/delete and review Dataset details 
+
+<Frame>
+  ![Image](/images/image-9.png)
+</Frame>
+
+Each row in the dataset list represents one dataset and displays the following fields:
+
+| **Column ** | ** Description ** |
+| :-- | :-- |
+| Dataset Name | Display name of the dataset, alongside the dataset's unique system ID (truncated, with a copy icon). |
+| Model Source | The cloud provider or source the dataset was ingested from, shown as an icon and label (e.g., GCP logo for datasets imported from Google Cloud Storage). |
+| Size | The size of the ingested dataset file (e.g., `0.13 MB`, `0.0 MB`). |
+| Creation Details | Who created the dataset and on what date/time |
+| Completed | Timestamp of when the dataset processing/ingestion completed |
+| Status | Current state of the dataset, shown as a colored badge:  <br />• Ready (green) — dataset has been successfully ingested and is available for use in Training, Benchmarking, and Batch Inference workflows.  <br />• `Failed` (red/orange) — ingestion encountered an error; the dataset is not usable until the issue is resolved. <br />• `Processing` — dataset is currently being ingested (visible during active processing). |

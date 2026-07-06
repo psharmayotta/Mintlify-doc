@@ -1,0 +1,125 @@
+---
+title: "Knowledge Base"
+icon: "book-open-lines"
+---
+
+Build, manage, and query AI-powered document retrieval pipelines (RAG) on Q0
+
+The **Knowledge Base** module lets users build and manage Retrieval-Augmented Generation (RAG) pipelines on Q0. A Knowledge Base connects to one or more data sources, ingests and chunks documents, generates vector embeddings, and stores them in a vector store — so that any LLM deployed on Q0 can retrieve relevant, contextual information at inference time instead of relying solely on its training data. 
+
+This module is the foundation for use cases like enterprise search, document Q&A, policy assistants, support chatbots, and any application where the model needs to answer questions grounded in your organization's specific data — rather than general world knowledge.
+
+**What Knowledge Base Helps Users Do**
+
+> **Ground LLM Responses in Your Data**: Connect models to proprietary documents, databases, or data streams so responses are accurate, current, and specific to your organization
+
+> **Build Production-Ready RAG Pipelines**: Configure the full pipeline — data source, chunking strategy, embedding model, and vector store — from a single guided interface
+
+> **Connect Multiple Source Types**: Ingest data from cloud storage, databases (PostgreSQL, MySQL, MongoDB), REST APIs, or direct file uploads, with auto-sync to keep the Knowledge Base current
+
+> **Control Chunking and Embedding**: Choose how documents are split and which embedding model converts them to vectors, directly affecting retrieval quality and relevance
+>
+> **Monitor Ingestion Status**: Track the full pipeline from data preparation through to embedding creation in real time
+
+> **Integrate with Applications**: Use the Integration tab to connect the Knowledge Base to deployed models or external applications via API
+
+**Creating a Knowledge Base:  Step-by-Step Flow**
+
+Clicking **Create Knowledge Base** opens a 5-step guided wizard. Contextual help text on the right panel explains each field as you go.
+
+## **Step 1 — Basic Details**
+
+Add **Knowledge Base Name-**  A unique, required name to identify this Knowledge Base (e.g., `RAG_Test`). Used as the display name across the platform and in API references.
+
+**Description:** Optional free-text field (up to 500 characters) to add context about the Knowledge Base's purpose or contents
+
+## **Step 2 — Source Configuration**
+
+This step defines **where the data for the Knowledge Base will come from**. Q0 supports four source types, each suited to different data architectures:
+
+| **Source Type** | ** Description** |
+| :-- | :-- |
+| Cloud Storage | Connect a cloud storage bucket (e.g., S3, GCS) to ingest documents directly at scale. Best for large volumes of unstructured files (PDFs, text, CSVs) already stored in the cloud. |
+| API | Fetch and sync data in real time from external systems using REST APIs. Best for live or frequently updated data that lives in third-party platforms or internal services. |
+| Database | Connect structured data from a relational or NoSQL database for intelligent querying and retrieval. Best when the source of truth is a database and documents or records need to be retrieved with SQL or query logic. |
+| File Upload | Upload documents directly from your device to build the Knowledge Base instantly. Best for small-to-medium collections, quick prototyping, or one-time ingestion of local files. |
+
+When **Database** is selected as the source, Q0 prompts for the database connection details. Three database types are supported:
+
+| **Database Type** | ** Description** |
+| :-- | :-- |
+| PostgreSQL | An open-source relational database. Connect via host, port, credentials, and optional SSL. Supports custom SQL queries to select specific records for ingestion. |
+| MySQL | A widely used open-source relational database. Same connection parameters as PostgreSQL — host, port, username, password, database name, and optional custom query. |
+| MongoDB | A document-oriented NoSQL database. Connect via host and credentials to ingest collections of JSON-like documents directly into the Knowledge Base. |
+
+<Frame>
+  ![Image](/images/image-7.png)
+</Frame>
+
+Add below details –
+
+·       Database Type
+
+·       Database Name
+
+·       Host
+
+·       Port
+
+·       Username
+
+·       Password
+
+·       Custom Query
+
+·       SSL Mode
+
+Use **Auto Sync t**oggle to enable automatic re-ingestion of the database source on a set schedule. When enabled, Q0 will re-run the ingestion pipeline (pulling new or updated records) at the configured frequency
+
+## **Step 3 — Embedded AI Model**
+
+This step selects the embedding model that converts document text into numerical vectors for storage and retrieval. The choice of embedding model directly affects retrieval quality, language support, and vector store size.
+
+**Embedded AI Model** - The model used to generate vector embeddings from document chunks. Searchable dropdown listing all available embedding models.
+
+**Vector Dimensions** - Auto-populated read-only field showing the output vector size for the selected model (e.g., `768` for BGE-Base). Larger dimensions generally capture more semantic nuance but require more storage
+
+| **Model** | ** Provider** | ** Notes** |
+| :-- | :-- | :-- |
+| BGE-Base | BAAI | General-purpose embedding, 768 dimensions. Good balance of speed and quality. |
+| BGE-Large | BAAI | Larger variant of BGE with higher accuracy at the cost of compute. |
+| BGE-M3 | BAAI | Multilingual and multi-granularity model; supports dense, sparse, and multi-vector retrieval. |
+| E5-Large | Microsoft | High-quality English embedding model; strong on asymmetric retrieval tasks. |
+| GTE-Large | Alibaba | General Text Embeddings model; strong cross-domain retrieval performance. |
+| MiniLM | Microsoft | Lightweight, fast embedding model; suited for high-throughput, latency-sensitive pipelines. |
+| Multilingual-E5-Large | Microsoft | Multilingual variant of E5-Large; ideal for multilingual corpora or non-English data. |
+| Nomic-Embed | Nomic AI | Long-context embedding model optimized for document-level retrieval. |
+| Nomic-v1.5 | Nomic AI | Updated Nomic model with improved performance and instruction-tuned variants. |
+| Qwen3-3B | Alibaba | 3B-parameter embedding model from the Qwen3 family; strong multilingual support. |
+| Qwen3-8B-Embedding | Alibaba | Larger Qwen3 embedding model offering higher quality at greater compute cost. |
+| UAE-Large | WhereIsAI | Universal Adaptive Embedding model; strong on zero-shot retrieval tasks. |
+
+## **Step 4 — Chunk Settings**
+
+This step defines how documents are split into chunks before embedding. Chunking strategy has a significant impact on retrieval quality — too-large chunks dilute relevance, while too-small chunks lose context
+
+| **Chunking Type** | **Description** | **Best For** |
+| :-- | :-- | :-- |
+| Default Chunking | Automatically splits text into chunks of approximately 300 tokens. If a document is 300 tokens or fewer, it is not split further. | General-purpose documents where a sensible default is sufficient. |
+| Fixed-Size Chunking | Splits text into chunks of a user-defined approximate token size. | Structured documents with consistent section lengths or when predictable chunk sizes are needed. |
+| Semantic Chunking | Groups sentences by semantic similarity rather than by a fixed token count. | Documents where topics shift organically, such as research papers or transcripts. |
+| No Chunking | Treats each document as a single chunk with no splitting applied. | Short documents or cases where document-level retrieval is preferred. |
+
+## **Step 5 — Vector Store**
+
+The vector database infrastructure to use for storing and querying embeddings. The cloud region where the vector store is deployed.
+
+<Frame>
+  ![Image](/images/image-8.png)
+</Frame>
+
+Once created, the Knowledge Base opens its detail page showing the ingestion pipeline status, source list, and configuration summary.
+
+<Frame>
+  ![Image](/images/image-9.png)
+</Frame>

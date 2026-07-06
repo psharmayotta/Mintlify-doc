@@ -16,7 +16,7 @@
     "tabs": [
       {
         "tab": "Documentation",
-        "groups": [
+        "pages": [
           {
             "group": "Overview",
             "pages": [
@@ -77,8 +77,25 @@
               "api-reference/introduction",
               "api-reference/chunk-management"
             ]
-          }
+          },
+          {
+            "group": "Model Operations",
+            "pages": [
+              "benchmarking",
+              "knowledge",
+              "batch-inference"
+            ]
+          },
+          "dataset",
+          "dashboard",
+          "marketplace",
+          "playground",
+          "settings",
+          "billing"
         ]
+      },
+      {
+        "tab": "Untitled Tab"
       }
     ]
   },
