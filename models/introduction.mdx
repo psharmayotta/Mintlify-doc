@@ -1,12 +1,22 @@
 ---
 title: "Models"
-description: "Manage and explore your AI models in the Q0 Inferencing Platform."
+description: "Register, configure, and manage your own AI models on Q0 infrastructure"
 ---
 
 Welcome to the Models section. Here you can track, version, and manage all your AI models.
 
+**My Models** is Q0's model registry — a dedicated space where users can register, configure, and manage their own AI models, separate from the pre-built models available in the Marketplace. Whether the model lives on Huggingface, a cloud storage bucket, a private Docker container registry, or Azure Blob Storage, My Models gives users a consistent workflow to connect the model to Q0's infrastructure, optimize it for performance, and prepare it for deployment, fine-tuning, or benchmarking.
+
 ## Key Features
 
-- **Model Inventory**: A central place for all your models.
-- **Versioning**: Track changes and iterate on model performance.
-- **Metadata Management**: store and retrieve model properties easily.
+> **Bring Your Own Model**: Register any model — fine-tuned checkpoints, proprietary models, or open-source models hosted on external platforms — and run it on Q0's GPU infrastructure without rebuilding your data pipeline
+
+> **Centralized Model Registry**: All user-registered models are tracked in one place with their source, model class, quantization configuration, infrastructure details, and current status
+
+> **Optimize Before Deploying**: Apply quantization schemes (F16, BITSANDBYTES etc.) to reduce model memory footprint and improve inference speed before the model is deployed to production
+
+> **Connect Across Workflows**: Once registered, a My Models model becomes available as a **Custom Model** option inside Deployments, Benchmarking, and Batch Inference — just like Marketplace models, but using your own weights
+
+> **Monitor Processing Status**: Track the model registration pipeline from acceptance through optimization to readiness in real time, with a detailed Logs tab for debugging
+
+> **Deploy Directly**: From the model's detail page, navigate directly to Deployments to serve the model on a live inference endpoint

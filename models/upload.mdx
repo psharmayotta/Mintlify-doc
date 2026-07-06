@@ -3,4 +3,155 @@ title: "Upload Custom Model"
 description: "Learn how to bring your own models to Q0."
 ---
 
-Upload your weights and configuration to get started with custom models.
+Upload your weights and configuration to get started with custom models
+
+## **Step 1 — Basic Details**
+
+Provide a display name and description to identify your model deployment
+
+·       **Display Name** : A unique, recognizable name to identify this model across Q0 (e.g., `whisper-large-v3-custom`). This name appears in the My Models list and in the Custom Model selector within Deployments and Benchmarking.
+
+·       **Description**: Optional context about the model — its purpose, fine-tuning details, or intended use case (up to 500 characters).
+
+ 
+
+## **Step 2 — Model Source Details**
+
+Defines where the model is hosted and how Q0 should access it. Five source types are supported:
+
+<Frame>
+  ![Image](/images/image-23.png)
+</Frame>
+
+| **Source** | ** Description** |
+| :-- | :-- |
+| Huggingface | Import a model directly from the Huggingface Hub using the model repository ID and an access token. Best for open-source foundation models and fine-tuned variants hosted on Huggingface. |
+| AWS | Connect a model stored in an Amazon S3 bucket using a Model Path (S3 URI) and AWS credentials secret. |
+| GCP | Connect a model stored in a Google Cloud Storage bucket using a Model Path (GCS URI) and GCP credentials secret. |
+| Docker | Pull a model packaged as a Docker container image from a public or private container registry. Best for containerized model servers or custom inference environments. |
+| Azure | Connect a model stored in Azure Blob Storage using a Model Path and Azure credentials secret. |
+
+When **Huggingface**, **AWS**, **GCP**, or **Azure** is selected, the following fields appears
+
+| **Field** | ** Description** |
+| :-- | :-- |
+| Secret | Authentication credentials to access the model source. Two options: <br />• **Existing Secret** — select a previously saved credential from the Secrets module <br />• **Create New Secret** — add new credentials if none exist yet. |
+| Select Secret | Dropdown to select the specific saved secret scoped to the chosen provider. |
+| Model Path | The repository path or storage URI where the model files are located. |
+| Select Folder | For cloud sources (AWS, GCP, Azure), allows the user to browse and select a specific folder within the bucket path. |
+| Model Class | The specific model architecture class used to load and run the model (e.g., `WhisperForConditionalGeneration`, `LlamaForCausalLM`, `StableDiffusion3Pipeline`). Must match the model's actual implementation in the source library (Huggingface Transformers, Diffusers, etc.). |
+
+<Tip>
+  **How to fill in Model Path and Model Class**?
+
+  The **Model Path** tells Q0 where to find the model weights. The **Model Class** tells Q0 how to load them. For Huggingface models, the Model Path is the repo ID (e.g., `openai/whisper-large-v3`) and the Model Class matches the class name shown in the model card's `config.json` under `"architectures"`. Q0 verifies the path and pre-fills the Model Configuration JSON in Step 4 based on this information
+</Tip>
+
+**When Source is Docker**
+
+When **Docker** is selected, the fields change to reflect container registry configuration. 
+
+Docker supports two registry types: **Public** and **Private**
+
+<Frame>
+  ![Image](/images/image-24.png)
+</Frame>
+
+**For Public-**
+
+**Docker Image URL**: The full image reference in the container registry. Format: `registry/org/image:tag` (e.g., `nginx:latest`, `registry.io/org/image:tag`).
+
+** For Private-**
+
+- **Host Provider:** The cloud or registry platform hosting the private container image (e.g., GCP Artifact Registry, AWS ECR, Azure Container Registry, Docker Hub private).
+- **Docker Image URL:** The full image reference including the private registry hostname, organization, image name, and tag (e.g., `registry.io/org/image:tag`).
+
+<Frame>
+  ![Image](/images/image-25.png)
+</Frame>
+
+<Frame>
+  ![Image](/images/image-26.png)
+</Frame>
+
+## **Step 3 — Infrastructure**
+
+Tailor your infrastructure setup to achieve the best performance for your workload
+
+This step selects the compute infrastructure Q0 will use to run model optimization and serve the registered model
+
+| **Field** | ** Description** |
+| :-- | :-- |
+| Cloud Account | The compute account under which infrastructure is provisioned. Currently available: **Yotta Infrastructure Account** — Q0's managed GPU cloud. |
+| Region | The geographic region where the infrastructure is deployed. Selectable from a searchable dropdown: <br />• **NM1**— India · Navi Mumbai<br />• **DL1** — India · Delhi <br />Choose the region closest to your users or downstream systems to minimize inference latency. |
+| GPU Type | The GPU hardware to run the model on: <br />• **H100** — 8 CPUs, 80.00GB RAM, ₹432.00/GPU/hr. Best for large models, maximum throughput, or low-latency production workloads. <br />• **L40S** — 4 CPUs, 48.00GB RAM, ₹190.80/GPU/hr. Cost-efficient option for smaller models or moderate workloads. |
+| GPU Per Container | The number of GPUs allocated per container instance (selectable `1` to `8` for H100, `1` to `4` for L40S). Larger models requiring tensor parallelism or that exceed single-GPU memory limits need more GPUs per container. |
+
+<Frame>
+  ![Image](/images/image-27.png)
+</Frame>
+
+<Tip>
+  **Choosing GPU Per Container**
+
+  Start with `1` GPU for most models up to ~7B parameters. For models in the 13B–70B range, `24` GPUs are typically required to fit the model in memory. For very large models (\>70B), `48` GPUs with sharding may be needed. Selecting more GPUs than the model requires wastes cost without performance benefit.
+</Tip>
+
+## **Step 4 — Configuration**
+
+Define quantization, optimization, and runtime settings to tailor your deployment. Controls how the model is optimized for inference and how it is loaded at runtime
+
+<Frame>
+  ![Image](/images/image-28.png)
+</Frame>
+
+**Quantization** 
+
+Quantization reduces a model's memory footprint and increases inference speed by representing weights in lower numerical precision, at a small trade-off in output quality. Q0 supports six quantization schemes — each suited to different model types, hardware constraints, and accuracy requirements:
+
+| **Quantisation Scheme** | ** Full Name** | ** Description** | ** Best For** |
+| :-- | :-- | :-- | :-- |
+| F16 | Float16 (Half Precision) | Represents model weights in 16-bit floating point — half the size of standard 32-bit (FP32) with minimal quality loss. The most widely used scheme for GPU inference; broadly supported across all model architectures. | General-purpose production inference; the default starting point for most deployments. Balances memory efficiency and accuracy with near-zero quality degradation. |
+| BITSANDBYTES | BitsAndBytes 4-bit / 8-bit | Aggressive 4-bit or 8-bit quantization using the BitsAndBytes library. Enables loading very large models on fewer GPUs by drastically reducing memory usage, at the cost of slightly more quality degradation than F16. Supports NF4 (NormalFloat4) for 4-bit and INT8 for 8-bit. | Running large models (13B–70B\+) on constrained GPU memory; cost-sensitive deployments where a small quality trade-off is acceptable. |
+| AWQ | Activation-Aware Weight Quantization | A 4-bit weight-only quantization method that identifies and protects the most important weights (those activated most frequently) before quantizing the rest. This selective approach preserves accuracy far better than naive 4-bit quantization, making AWQ one of the most accurate 4-bit schemes available. | Production deployments requiring the best accuracy-to-compression ratio at 4-bit; LLMs where output quality is critical but GPU memory is limited. |
+| GPTQ | Generative Pre-trained Transformer Quantization | A post-training quantization method that compresses weights to 2, 3, 4, or 8 bits by minimizing the quantization error layer by layer using a small calibration dataset. GPTQ achieves very high compression ratios while maintaining strong accuracy, and is one of the most mature and widely-used quantization approaches for transformer LLMs. | Deployment of very large LLMs (30B–175B\+) at 4-bit or lower precision; scenarios requiring maximum compression with a good calibration dataset available. |
+| MXFP4 | Microscaling Float4 | A next-generation 4-bit floating point format based on the OCP MX (Microscaling) standard. Unlike INT4 or NF4, MXFP4 uses a shared microscale factor across small groups of elements, preserving dynamic range and numerical stability better than conventional 4-bit integer formats. Particularly effective on modern hardware that supports the MX format natively. | High-performance inference on hardware with native MX format support; achieving 4-bit efficiency with floating-point precision characteristics rather than integer approximation. |
+| FP8 | Float8 | 8-bit floating point quantization, offering a middle ground between FP16 (full half-precision) and aggressive 4-bit methods. Newer GPUs (e.g., H100) support FP8 natively, enabling inference that is both faster and more memory-efficient than FP16 with minimal quality loss — close to FP16 in accuracy but with up to 2× the throughput. | High-throughput production inference on H100 GPUs; workloads where FP16 throughput isn't sufficient but 4-bit accuracy loss is unacceptable. |
+
+<Frame>
+  ![Image](/images/image-29.png)
+</Frame>
+
+Once submitted, the model opens its detail page with a live processing status, configuration summary, and tabs for Deployments and Logs.
+
+<Frame>
+  ![Image](/images/image-30.png)
+</Frame>
+
+#### 
+
+| **Stage** | ** Description** |
+| :-- | :-- |
+| Accepted | Q0 has received the model registration request and validated the basic configuration. |
+| Launched Optimisation Cluster | Q0 provisions the selected GPU infrastructure to run the optimization pipeline. |
+| Optimisation Complete | Quantization and optimization settings have been applied to the model weights. |
+| Cleaned Up | Temporary optimization resources are de-provisioned; the model artifact is finalized. |
+| Model Ready | The model is fully registered, optimized, and available for use in Deployments, Benchmarking, and Batch Inference. |
+
+When all five stages show **Complete** and the sidebar status shows **Success**, the model is fully ready. At this point a **Deploy** button appears in the top-right corner of the detail page, providing a direct shortcut to create a new deployment from this model without navigating away.
+
+**Deployments Tab**
+
+Once the model reaches **Success** status, the Deployments tab becomes the control centre for all serving instances created from this model. Each row represents one deployment and shows:
+
+<Frame>
+  ![Image](/images/image-31.png)
+</Frame>
+
+**Logs Tab**
+
+The Logs tab provides access to the model registration and optimization logs — useful for debugging failed registrations or understanding the optimization process.
+
+<Frame>
+  ![Image](/images/image-32.png)
+</Frame>
