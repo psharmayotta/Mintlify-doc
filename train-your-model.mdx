@@ -1,3 +1,110 @@
 ---
 title: "Diffusion Model"
 ---
+
+Diffusion model training on Q0 lets you take a pretrained text-to-image model — like Stable Diffusion 3.5 — and fine-tune it on your own images and prompts, so it learns a specific style, subject, or visual domain. Instead of hand-tuning denoising and sampling scripts yourself, the same 7-step wizard used across Q0 handles data, compute, evaluation, and deployment prep. This page walks through every step for the **Diffusion Model** category, using a `Stable-diffusion-3.5` Text-to-Image run as the reference example.
+
+## Step 1 — Basic Info
+
+<Frame>
+  ![Image](/images/image-42.png)
+</Frame>
+
+Provide basic info in **Display Name** and **Description** for the Model to be trained
+
+## Step 2 — Model
+
+<Frame>
+  ![Image](/images/image-43.png)
+</Frame>
+
+## Step 3 — Train Configuration
+
+<Frame>
+  ![Image](/images/image-44.png)
+</Frame>
+
+**SFT (Supervised Fine-Tuning)** -Trains the model directly on your image (and image-caption) pairs so it learns to reproduce that visual style, subject, or composition. This is the default choice for teaching the model a new look or concept.
+
+**RLHF (Reinforcement Learning from Human Feedback** - Runs on top of an already fine-tuned checkpoint, using preference data (which of two generated images is better) to steer outputs toward what's actually preferred — e.g. better aesthetics or prompt adherence — rather than teaching a new subject from scratch. On Q0 this is implemented via **DPO (Direct Preference Optimization)**, which adds a small set of DPO-specific fields (see below).
+
+**Core Training Parameters**
+
+| Field | Description |
+| --- | --- |
+| Batch Size | Number of training samples processed per device in a single forward/backward pass before an optimizer step (subject to Gradient Accum). |
+| Epochs | Number of full passes over the training dataset. |
+| Max Train Steps | Hard cap on total optimizer steps. Training stops once this is reached, even if Epochs hasn't completed. |
+| Gradient Accum | Number of forward/backward passes to accumulate gradients over before running an optimizer step. Effectively multiplies the real batch size without increasing per-step memory. |
+| Deterministic | When \`True\`, forces deterministic CUDA/cuDNN operations for reproducible runs, at the cost of some training speed. |
+| LR | Base learning rate used by the optimizer. |
+| Weight Decay | L2 regularization coefficient applied to model weights during optimization. |
+| Clip Grad Norm | Maximum allowed gradient norm. Gradients are rescaled if this threshold is exceeded, preventing exploding gradients. |
+| LR Scheduler | Shape of the learning rate schedule over training (e.g. \`cosine\`). |
+| Warmup Ratio | Fraction of total training steps used to linearly warm the learning rate up to its base value before the scheduler takes over. |
+
+**LoRA Parameters**
+
+| Field | Description |
+| --- | --- |
+| Lora Rank | Rank (\`r\`) of the low-rank adaptation matrices. Higher rank increases trainable capacity and memory/compute cost. |
+| Lora Alpha | LoRA scaling factor. Determines how strongly the LoRA update is applied relative to the frozen base weights. |
+
+**Checkpointing & Evaluation Cadence**
+
+| Field | Description |
+| --- | --- |
+| Save every steps | Number of training steps between checkpoint saves. |
+| Save Limit | Maximum number of checkpoints retained on disk. Older checkpoints are pruned once this limit is exceeded. |
+| Valuate Every steps | Number of training steps between evaluation runs. |
+| Valuate Steps | Number of denoising/inference steps used when generating sample images during evaluation. |
+| Valuate Guidance | Classifier-free guidance scale applied when sampling evaluation images. |
+| Valuate Prompts | Prompt(s) used to generate sample images at each evaluation checkpoint, e.g. \`A cinematic portrait of a macro flower photo\`. |
+
+**Performance & Logging**
+
+| Field | Description |
+| --- | --- |
+| Gradient Checkpointing | Trades compute for memory by recomputing intermediate activations during the backward pass instead of storing them. |
+| Use X formners (Xformers) | Enables memory-efficient attention via the xFormers library. |
+| Allow\_TF32 | Allows TensorFloat-32 precision for matrix multiplications on supported (Ampere\+) GPUs for faster training. |
+| Verbose Logs | Enables detailed, verbose training logs. |
+| Log GPU Memory | Logs GPU memory usage at each logging interval. |
+| Log Throughput | Logs training throughput (e.g. samples/sec or steps/sec) at each logging interval. |
+| Log Grad Norm | Logs the gradient norm at each logging interval. |
+| Log Every | Number of steps between log emissions. |
+
+**Evaluation Metrics**
+
+| Field | Description |
+| --- | --- |
+| Metrics value loss | Enables computation of validation loss during evaluation. |
+| Metrics Value loss max samples | Maximum number of samples used to compute validation loss. |
+| Metrics Clip | Enables CLIP score computation (text-image alignment) during evaluation. |
+| Metrics Clip model | Hugging Face model ID of the CLIP model used to compute CLIP scores, e.g. \`openai/clip-vit-base-patch32\`. |
+| Metrics Fid | Enables FID (Fréchet Inception Distance) computation to measure generated-image quality/diversity against reference images. |
+| Metrics kid | Enables KID (Kernel Inception Distance) computation, an alternative to FID that's more reliable on small sample sizes. |
+| Metrics Fid Kid Samples | Number of samples used to compute FID/KID scores. |
+
+**Data & Precision**
+
+| Field | Description |
+| --- | --- |
+| Image Size | Resolution (in pixels) that training and evaluation images are resized to. |
+| Split Seed | Random seed used when splitting the dataset, ensuring the train/validation split is reproducible. |
+| Mixed Precision | Numerical precision used during training: \`None\` (FP32), \`FP16 (Float16 Precision)\`, or \`BF16 (BFloat16 Precision)\`. |
+| Distribution Type | Distributed training strategy across GPUs/nodes: \`DDP (Distributed Data Parallel)\` — replicates the full model on each device — or \`DeepSpeed\` — shards optimizer state/gradients/parameters (ZeRO) across devices for larger models. |
+
+**Additional Field:** Value Split (RLHF only) 
+
+Fraction of the dataset held out for validation during RLHF training (e.g. `0.1` = 10%). Not present in SFT.
+
+**DPO Parameters (RLHF only)**
+
+| Field | Description |
+| --- | --- |
+| DPO Learning rate | Learning rate used specifically for the DPO training stage, distinct from the main LR field. |
+| DPO Num Epochs | Number of epochs run during the DPO training stage. |
+| DPO Batch Size | Batch size used during the DPO training stage. |
+
+## Step 4 — Dataset Details
