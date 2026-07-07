@@ -95,7 +95,15 @@
         ]
       },
       {
-        "tab": "Untitled Tab"
+        "tab": "Trainings",
+        "icon": "briefcase",
+        "pages": [
+          "introduction",
+          "train-your-model",
+          "large-language-model",
+          "vision-language-model",
+          "untitled-page"
+        ]
       }
     ]
   },

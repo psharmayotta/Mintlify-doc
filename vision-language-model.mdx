@@ -1,0 +1,90 @@
+---
+title: "Vision Language Model"
+---
+
+This page walks through the **Create Training** wizard for the **VLM (Vision-Language Model)** category, using a `Gemma3_4B` Image-to-Text SFT run as the reference example
+
+## Step 1 — Basic Info
+
+Add **Display Name** (required) and **Description** (optional, 500 char limit) to identify the fine-tuning job.
+
+## Step 2 — Model
+
+Select a base model and enable advanced features for fine-tuning.
+
+The pretrained VLM to fine-tune. Options observed for `Image-to-Text` include:
+
+- Gemma3\_4B
+
+- PaddleOCR-VL
+
+- Surya OCR
+
+- Chandra OCR
+
+- Kimi-VL-A3B-Thinking-2506
+
+<Frame>
+  ![Image](/images/image-33.png)
+</Frame>
+
+## Step 3 — Train Configuration
+
+There are few field which behave the same way for VLM and other models -
+
+<Frame>
+  ![Image](/images/image-36.png)
+</Frame>
+
+Following are the fields which are specific VLM model -
+
+<ParamField path="optim" type="enum" required>
+  The optimizer algorithm used to update model weights, e.g. `adamw_torch_fused` — a fused implementation of AdamW that runs faster on GPU by combining multiple update steps into a single kernel call.
+</ParamField>
+
+<ParamField path="save_strategy" type="enum" required>
+  Determines what triggers a checkpoint save.
+
+  - `Steps` — save every N steps, per the **Save Steps** value.
+  - (Other options such as `Epoch` may also be available, saving once per completed epoch instead.)
+</ParamField>
+
+<Frame>
+  ![Image](/images/image-37.png)
+</Frame>
+
+## Step 4 — Dataset Details
+
+<Frame>
+  ![Image](/images/image-33.png)
+</Frame>
+
+## Step 5 — Evaluation
+
+Define evaluation settings to measure performance and validate your fine-tuned model.
+
+<Frame>
+  ![Image](/images/image-34.png)
+</Frame>
+
+**Skip validation dataset** — No portion of data is held back for evaluation; the model trains on 100% of the available data with no in-training validation metrics computed. Use this when you're confident in your hyperparameters and want to maximize the data used for training (e.g. a small dataset where every example matters), or for quick smoke-test runs where evaluation isn't needed.
+
+**Auto-split training data** — Automatically holds out a portion of the training dataset (not used for weight updates) to compute validation loss/metrics during training. This gives you an unbiased read on whether the model is generalizing or overfitting, without requiring you to prepare a separate file. Recommended for most runs since it needs no extra setup.
+
+**Use custom dataset** — Lets you point to a separate, purpose-built validation dataset instead of splitting the training set. Useful when you want evaluation on a curated, held-out benchmark that's distinct from (and not diluted by) your training distribution — e.g. testing OCR accuracy on a specific document type the training set doesn't fully represent.
+
+## Step 6 — Infrastructure Configuration
+
+<Frame>
+  ![Image](/images/image-35.png)
+</Frame>
+
+## Step 7 — Optional Settings
+
+Modify extra settings to tailor the model's training and output to your needs.
+
+The quantization scheme applied to the model for deployment
+
+<Frame>
+  ![Image](/images/image-36.png)
+</Frame>

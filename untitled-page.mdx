@@ -1,0 +1,128 @@
+---
+title: "Automatic Speech Recognition"
+---
+
+This page walks through the **Create Training** wizard for the **ASR (Automatic Speech Recognition)** category, using a `Whisper-Large-V3` audio-to-text run as the reference example.
+
+## Step 1 — Basic Info
+
+Provide **Display Name** and **Description**
+
+## Step 2 — Model
+
+<Frame>
+  ![Image](/images/image-33.png)
+</Frame>
+
+Select **Model Category**, **Model Task**, **Base Model** and **Source Type**
+
+**Available Base Model are** `Whisper-Large-V3` ,  `Kimi 7B Audio Instruct`
+
+## Step 3 — Train Configuration
+
+**Audio & Task Configuration**
+
+| **Field** | ** Description** |
+| :-- | :-- |
+| Language | Target spoken language for transcription, e.g. `English`. |
+| Task | The Whisper task mode — e.g. `Transcribe` (output text in the source language) vs. a translate mode (output English regardless of source language). |
+| Min Audio Length | Minimum clip duration (seconds) for a sample to be included in training; shorter clips are filtered out. |
+| Max Audio Length | Maximum clip duration (seconds) accepted for training; longer clips are truncated or filtered out. |
+| Sample Rate | Audio sample rate (Hz) all clips are resampled to before training, e.g. `16000`. |
+| Model Size | The specific size/checkpoint variant of the base model being fine-tuned, e.g. `Large v3`. |
+| Audio Normalization | Whether to normalize audio amplitude/loudness across samples before training. |
+| Noise Reduction | Whether to apply noise-reduction preprocessing to input audio before training. |
+
+**Data Augmentation**
+
+| **Field** | ** Description** |
+| :-- | :-- |
+| Enable Augmentation | Master toggle for audio data augmentation (speed perturbation, noise injection) during training. |
+| Speed Perturbation Probability | Probability that a given training sample has its speed randomly perturbed. |
+| Speed Perturbation Min | Lower bound of the random speed-change factor applied when speed perturbation triggers (e.g. `0.9` = 10% slower). |
+| Speed Perturbation Max | Upper bound of the random speed-change factor applied when speed perturbation triggers (e.g. `1.1` = 10% faster). |
+| Noise Injection Probability | Probability that background noise is injected into a given training sample. |
+| Noise SNR Min (dB) | Lower bound of the signal-to-noise ratio used when injecting background noise (noisier). |
+| Noise SNR Max (dB) | Upper bound of the signal-to-noise ratio used when injecting background noise (cleaner). |
+
+**Core Training Parameters**
+
+| **Field** | ** Description** |
+| :-- | :-- |
+| Batch Size | Number of training samples processed per device in a single training step. |
+| Gradient Accumulation Steps | Number of steps to accumulate gradients over before an optimizer update, effectively increasing batch size. |
+| Learning Rate | Base learning rate used by the optimizer. |
+| Weight Decay | L2 regularization coefficient applied to model weights. |
+| Number of Epochs | Number of full passes over the training dataset. |
+| Max Steps | Hard cap on total optimizer steps `-1` = no cap, run for the full number of epochs instead). |
+| Max Gradient Norm | Maximum allowed gradient norm; gradients are clipped if this threshold is exceeded. |
+| LR Scheduler | Shape of the learning rate schedule over training, e.g. `Cosine`. |
+| Warmup Ratio | Fraction of total training steps used to linearly warm the learning rate up to its base value. |
+
+**Optimizer Parameters**
+
+| **Field** | ** Description** |
+| :-- | :-- |
+| Optimizer | The optimizer algorithm used to update weights, e.g. `AdamW (Torch)`. |
+| Adam Beta 1 | Exponential decay rate for the Adam optimizer's first moment (mean of gradients) estimate. |
+| Adam Beta 2 | Exponential decay rate for the Adam optimizer's second moment (variance of gradients) estimate. |
+| Adam Epsilon | Small constant added to the Adam optimizer's denominator for numerical stability. |
+| Warmup Steps | Absolute number of steps for LR warmup, used alongside or instead of Warmup Ratio. |
+| Optimizer Arguments | Additional keyword arguments passed directly to the optimizer constructor, as raw JSON (default `{}`). |
+
+**Generation Settings**
+
+| **Field** | ** Description** |
+| :-- | :-- |
+| Generation Max Length | Maximum output sequence length allowed when generating transcriptions during evaluation/inference. |
+| Num Beams | Number of beams used in beam search decoding during generation. |
+| Length Pentalty | Exponential penalty applied to sequence length during beam search; `>1` favors longer output, `<1` favors shorter. |
+| Length Column Name | Name of the dataset column containing each sample's audio length, used for length-based batching. |
+
+## Step 4 — Dataset Details
+
+<Frame>
+  ![Image](/images/image-36.png)
+</Frame>
+
+Attach and configure the dataset that will be used for training your model.
+
+## Step 5 — Evaluation
+
+Define evaluation settings to measure performance and validate your fine-tuned model.
+
+<Frame>
+  ![Image](/images/image-37.png)
+</Frame>
+
+## Step 6 — Infrastructure Configuration
+
+Configure the compute resources and environment used for training your model.
+
+<Frame>
+  ![Image](/images/image-38.png)
+</Frame>
+
+## Step 7 — Optional Settings
+
+Modify extra settings to tailor the model's training and output to your needs.
+
+<Frame>
+  ![Image](/images/image-40.png)
+</Frame>
+
+**Dataloader & Data Validation**
+
+| **Field** | ** Description** |
+| :-- | :-- |
+| Dataloader Workers | Number of subprocesses used to load audio data in parallel. |
+| Pin Memory | Whether to pin dataloader memory in page-locked RAM, speeding up host-to-GPU data transfer. |
+| Validate Audio Files | Whether to validate that each audio file in the dataset is readable and well-formed before training starts. |
+| Skip Invalid Samples | Whether to skip (rather than fail the entire job on) samples that fail audio validation. |
+| Max Invalid Samples | Maximum number of invalid samples tolerated before the training job aborts. Only relevant when Skip Invalid Samples is enabled. |
+
+**After Submission — Training Status**
+
+<Frame>
+  ![Image](/images/image-41.png)
+</Frame>

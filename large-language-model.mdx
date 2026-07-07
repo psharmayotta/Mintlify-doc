@@ -1,0 +1,105 @@
+---
+title: "Large Language Model"
+---
+
+LLM training on Q0 lets you take a pretrained text-generation model — like Llama 3.1 — and adapt it to your own instructions, tone, or domain-specific knowledge. Whether you're teaching a model your product's support playbook or aligning its responses to specific preferences, the same 7-step wizard handles data, compute, and evaluation for you. This page walks through every step for the **LLM** category, using a `Llama3-1-8B` SFT/RLHF run as the reference example.
+
+## Step 1 — Basic Info
+
+Provide a unique name, type, and description to identify your fine-tuning job.
+
+<Frame>
+  ![Image](/images/image-33.png)
+</Frame>
+
+## Step 2 — Model
+
+<Frame>
+  ![Image](/images/image-34.png)
+</Frame>
+
+## Step 3 — Train Configuration
+
+Adjust advanced options to control how your model learns, optimizes, and performs. Fields here differ based on **Training Type**.
+
+- The fine-tuning strategy for the LLM. Switching between `SFT` and `RLHF` changes which fields appear further down
+
+**SFT (Supervised Fine-Tuning)** — Trains the model on labeled instruction/response pairs so it learns to reproduce that style and content directly. This is the default starting point for teaching a model new knowledge, formats, or behaviors. 
+
+**RLHF (Reinforcement Learning from Human Feedback)** — preference-based tuning on top of a fine-tuned checkpoint; adds a **DPO** parameter group.
+
+<Frame>
+  ![Image](/images/image-34.png)
+</Frame>
+
+**Core Training Parameters**
+
+| **Field** | ** Description** |
+| :-- | :-- |
+| Training Type | The fine-tuning strategy — `SFT` or `RLHF` (see above). Switching this changes which fields appear further down. |
+| Torch Type | The floating-point precision used to load and train the model, e.g. `bfloat16`. |
+| Adapter Type | The parameter-efficient fine-tuning adapter used, e.g. `LoRA`. |
+| Tuner Backend | The library that implements the adapter under the hood, e.g. `PEFT`. |
+| Num Epochs | Number of full passes over the training dataset. |
+| Train Batch Size | Number of training samples processed per device in a single training step. |
+| Eval Batch Size | Number of samples processed per device during each evaluation pass. |
+| Save Steps | Number of training steps between checkpoint saves. |
+| Save total limit | Maximum number of checkpoints retained on disk. Older checkpoints are pruned once this limit is exceeded. |
+| Eval Steps | Number of training steps between evaluation runs. |
+| Learning rate | Base learning rate used by the optimizer. |
+| Dataloader Num Workers | Number of subprocesses used to load training data in parallel. |
+| Logging steps | Number of steps between log emissions. |
+
+**LoRA Parameters**
+
+| **Field** | ** Description** |
+| :-- | :-- |
+| Lora Rank | Rank `r`) of the LoRA low-rank adaptation matrices. Higher rank increases trainable capacity and memory/compute cost. |
+| Lora Alpha | LoRA scaling factor, determining how strongly the adapter update is applied relative to the frozen base weights. |
+| Lora Dropout | Dropout probability applied within the LoRA layers, used to reduce overfitting. |
+| Lora Target Modules | Which model layers the LoRA adapters are applied to, e.g. `all-linear` to target all linear layers. |
+| Prompt max length | Maximum token length for input prompts. Longer prompts are truncated to this limit. |
+
+**Distribution Type**
+
+| **Field** | ** Description** |
+| :-- | :-- |
+| Distribution Type | The distributed training strategy used across GPUs/nodes: `DDP` (Distributed Data Parallel — replicates the full model on each device; simplest, best when the model fits on a single device) or `DeepSpeed` (shards optimizer state/gradients/parameters across devices via ZeRO; use for larger models or memory-constrained setups). |
+| World Size | Total number of processes (typically = total GPUs across all nodes) participating in the job. Appears only when Distribution Type is `DDP`. |
+| Strategy | The DeepSpeed ZeRO optimization stage/config used to shard model, gradient, and optimizer state. Appears only when Distribution Type is `DeepSpeed`. |
+
+**DPO Parameters (RLHF only)**
+
+These appear in addition to all fields above when **Training Type** is set to `RLHF`. They configure the DPO stage specifically, separate from the core Learning Rate/Batch Size/Epochs fields.
+
+## Step 4 — Dataset Details
+
+<Frame>
+  ![Image](/images/image-35.png)
+</Frame>
+
+## Step 5 — Evaluation
+
+Define evaluation settings to measure performance and validate your fine-tuned model.
+
+**Skip validation dataset** — No portion of data is held back for evaluation; the model trains on 100% of the available data with no in-training validation metrics computed. Use this when you're confident in your hyperparameters and want to maximize the data used for training (e.g. a small dataset where every example matters), or for quick smoke-test runs where evaluation isn't needed.
+
+**Auto-split training data** — Automatically holds out a portion of the training dataset (not used for weight updates) to compute validation loss/metrics during training. This gives you an unbiased read on whether the model is generalizing or overfitting, without requiring you to prepare a separate file. Recommended for most runs since it needs no extra setup.
+
+**Use custom dataset** — Lets you point to a separate, purpose-built validation dataset instead of splitting the training set. Useful when you want evaluation on a curated, held-out benchmark that's distinct from (and not diluted by) your training distribution — e.g. testing OCR accuracy on a specific document type the training set doesn't fully represent.
+
+## Step 6 — Infrastructure Configuration
+
+<Frame>
+  ![Image](/images/image-35.png)
+</Frame>
+
+## Step 7 — Optional Settings
+
+Modify extra settings to tailor the model's training and output to your needs.
+
+The quantization scheme applied to the model for deployment
+
+<Frame>
+  ![Image](/images/image-36.png)
+</Frame>

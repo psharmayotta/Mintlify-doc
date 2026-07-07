@@ -1,7 +1,8 @@
 ---
-title: "Training"
-description: "Fine-tune and train models with Q0's high-performance infrastructure."
+title: "Introduction"
 ---
+
+Fine-tune and train models with Q0's high-performance infrastructure.
 
 Training Module is Q0's built-in fine-tuning workbench. It lets you take a pretrained base model and adapt it to your own data and use case, entirely through a guided 7-step wizard — no separate training infrastructure or scripts to manage.
 
@@ -24,3 +25,26 @@ The Training section provides tools and resources to help you build better model
 > **Prepare the model for production** — optional quantization (AWQ, F16, etc.) at the end of training tailors the output checkpoint for efficient deployment
 
 > **Track every run in one place** — the My Training dashboard lists every job with its status, dataset, and base model, and each job's detail page shows live training progress, logs, usage, and a one-click path to deployment once training completes
+
+**Training models**
+
+The Training Module wizard has 7 steps and for the selected Model and Training Configuration user can perform the trainings. We will cover each Model along with the Training config details for each of them in individual sections.
+
+**Basic 7 Steps followed are -**
+
+1. **Basic Details** - Provide a unique name, type, and description to identify your fine-tuning job
+2. **Model Selection** – Select based on Model Categories
+   1.  Diffusion Model
+   2. Large Language Model
+   3. Vision Language Model
+   4. Automatic Speech Recognition
+
+ 
+
+3.  **Training Configuration** -Fields differ based on the selected **Training Type**: **SFT** or **RLHF**
+
+ 4. **Dataset Details** – Attach and configure the dataset that will be used for training your model.
+
+5. **Evaluation** - Define evaluation settings to measure performance and validate your fine-tuned model.
+6. **Infrastructure Configuration** - Configure the compute resources and environment used for training your model
+7. **Optional Settings** - Modify extra settings to tailor the model's training and output to your needs
