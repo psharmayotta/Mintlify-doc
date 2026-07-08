@@ -25,12 +25,6 @@
             ]
           },
           {
-            "group": "Secret",
-            "pages": [
-              "Secret/Overview"
-            ]
-          },
-          {
             "group": "Get Started",
             "pages": [
               "getting-started/signup",
@@ -90,8 +84,16 @@
           "dashboard",
           "marketplace",
           "playground",
+          {
+            "group": "Integrations",
+            "icon": "integral",
+            "pages": [
+              "Secret/Overview"
+            ]
+          },
           "settings",
-          "billing"
+          "billing",
+          "dashboard-resources-writeup"
         ]
       },
       {

@@ -30,20 +30,12 @@ The main Benchmarking page lists every benchmarking run created by the user or t
 The main Benchmarking page lists every benchmarking run created by the user or team, along with its type, status, and key details.
 
 <Frame>
-  ![Image](/images/image-7.png)
+  ![Image](/images/image-45.png)
 </Frame>
 
 **Create Benchmarking** opens a guided, multi-step wizard. Each step is represented as a numbered, expandable card on the left, with contextual help text on the right explaining every field for that step.
 
 Following are the Benchmarking Type User can use -
-
-**Model Benchmarking**: Compares performance between two different AI models — using the same or different model sources — across selected metrics like accuracy, latency, and cost.
-
-**Hardware Benchmarking:** Compares inference performance of a model across different hardware configurations and GPU counts, helping identify the most efficient/cost-effective setup.
-
-**Model Evaluation**: Evaluates a single model on specific NLP tasks using standard benchmarks, without a second model for comparison.
-
-**Knowledge Base Pipeline:** Benchmarks the performance of a Retrieval-Augmented Generation (RAG) pipeline against a connected Knowledge Base.
 
 <Columns cols={2}>
   <Column>
@@ -84,7 +76,7 @@ Select “**Model Benchmarking”,** Compares performance between two different 
 **Model Category:** The type of model to benchmark, based on task or modality (e.g., `Diffusion Model` for text-to-image, or text/vision/audio models). This determines which model classes and configuration fields appear later.
 
 <Frame>
-  ![Image](/images/image-8.png)
+  ![Image](/images/image-46.png)
 </Frame>
 
 **Configuring Model 1 and Model 2**
@@ -94,6 +86,10 @@ Select “**Model Benchmarking”,** Compares performance between two different 
 ·       **Model Path:** The repository path or storage location where the model is located. For Huggingface, this is the repo path (e.g., `moonshotai/K****struct`); for cloud sources like GCP, it's typically a storage URI (e.g., `gs://inferen****truct/`). Q0 verifies the path automatically, shown with a green **Verified** badge once confirmed.
 
 ·       **Model Class**: The specific model architecture/pipeline class used to load and run the model (e.g., `StableDiffusion3Pipeline`). This must match the model's actual implementation for the benchmark to run correctly.
+
+<Frame>
+  ![Image](/images/image-47.png)
+</Frame>
 
 ·       **Secret**: Authentication credentials required to access the model source. Choose between: **Existing Secret** — select a previously saved credential from the dropdown (e.g., a saved Huggingface token or GCP service account). Create **New Secret** — add a new credential on the fly if one doesn't already exist.
 
@@ -111,13 +107,13 @@ Select “**Model Benchmarking”,** Compares performance between two different 
 
 This step selects or creates the data used to run and evaluate the benchmark**. **
 
-<Frame>
-  ![Image](/images/image-9.png)
-</Frame>
-
 ·       **Existing Dataset**: Use a dataset that's already available, either from Q0's central library or one your team has previously created/uploaded.
 
 ** **
+
+<Frame>
+  ![Image](/images/image-48.png)
+</Frame>
 
 Selecting this reveals a ‘**Select An Existing Dataset**’ dropdown with a search bar, split into two tabs: “**Dataset Library**” — globally available, pre-curated datasets managed in Q0's central library (CMS), e.g., `DrawBench`, \`COCO
 
@@ -131,13 +127,11 @@ Selecting this reveals a ‘**Select An Existing Dataset**’ dropdown with a se
 
 #### **Step 4 — Inferencing Settings**
 
+This step configures how each model generates output during the benchmark run. Metrics are automatically enabled based on the benchmarking goal, and settings are configured independently for **Model 1** and **Model 2 **
+
 <Frame>
-  ![Image](/images/image-10.png)
+  ![Image](/images/image-49.png)
 </Frame>
-
-This step configures how each model generates output during the benchmark run. Metrics are automatically enabled based on the benchmarking goal, and settings are configured independently for **Model 1** and **Model 2**
-
-** **
 
 ·       **No of Images**: (For image/diffusion models) The number of images each model should generate per dataset prompt during the benchmark, adjustable via slider or input (e.g., `3`, within a `1–4` range).
 
@@ -165,6 +159,10 @@ Choose the hardware or compute resources used to run the benchmark.
 
  
 
+<Frame>
+  ![Image](/images/image-50.png)
+</Frame>
+
 ·       **GPU Type**: Selects the GPU hardware to run the benchmark on. Each option shows its specs and hourly cost, e.g.: H100 — 8 CPUs, 80.00GB HBM3, ₹432.00/GPU/hr , L40S — 4 CPUs, 48.00GB GDDR6 ECC, ₹190.80/GPU/hr Higher-end GPUs (like H100) offer better performance at a higher cost.
 
 ·       **GPU Count Per Node**: The number of GPUs to allocate per node for the benchmark run (selectable from `1` to `8`), relevant for distributed inference and for ‘**Hardware Benchmarking**’ runs that specifically compare different GPU counts.
@@ -174,7 +172,7 @@ Choose the hardware or compute resources used to run the benchmark.
 Once we start creating the Benchmarking, Benchmarking Status start showing the
 
 <Frame>
-  ![Image](/images/image-11.png)
+  ![Image](/images/image-51.png)
 </Frame>
 
 Each run progresses through a fixed sequence of stages, shown as a horizontal progress tracker:
@@ -203,15 +201,25 @@ Same as Model Benchmarking. Provide a unique **Benchmarking Name** (e.g., `Bench
 
 Select ‘**Hardware Benchmarking**’ as the type. This reveals two independent hardware configuration blocks — **Hardware 1** and **Hardware 2** — to define the two setups being compared.
 
- Both blocks follow the same structure:
+<Frame>
+  ![Image](/images/image-52.png)
+</Frame>
 
- 
+ Both blocks follow the same structure: 
 
-·       **Hardware (GPU Type)**: Select the GPU model for this configuration. Options shown with specs and hourly cost: \<br/\>• **H100** — 8 CPUs, 80.00GB HBM3, ₹432.00/GPU/hr (high-end, highest throughput) \<br/\>• **L40S** — 4 CPUs, 48.00GB GDDR6 ECC, ₹190.80/GPU/hr (cost-efficient, mid-range)
+- **Hardware (GPU Type)**: Select the GPU model for this configuration. Options shown with specs and hourly cost: 
 
-·       **GPU Count Per Node**: Number of GPUs to allocate per node for this hardware setup. Selectable from `1` to `8` (Hardware 1) or `1` to `4` (Hardware 2). For example: Hardware 1 with H100 × 3 GPUs vs. Hardware 2 with L40S × 2 GPUs.
+       • **H100** — 8 CPUs, 80.00GB HBM3, (high-end, highest throughput)
 
-·       **Concurrent Users**: The number of simultaneous users/requests to simulate against each hardware setup during the benchmark. Tests how each configuration handles load. Available values: `1`, `5`, `10`, `15`, `20`. Multiple values can be selected to test each hardware setup across several load levels in a single run — for example, `1` tests single-user latency while `10` or `20` tests throughput under realistic concurrent load.
+       • **L40S** — 4 CPUs, 48.00GB GDDR6 ECC, (cost-efficient, mid-range)
+
+- **GPU Count Per Node**: Number of GPUs to allocate per node for this hardware setup. 
+
+For example: Hardware 1 with H100 × 3 GPUs vs. Hardware 2 with L40S × 2 GPUs.
+
+- **Concurrent Users**: The number of simultaneous users/requests to simulate against each hardware setup during the benchmark.
+
+ Tests how each configuration handles load. Available values: `1`, `5`, `10`, `15`, `20`. Multiple values can be selected to test each hardware setup across several load levels in a single run — for example, `1` tests single-user latency while `10` or `20` tests throughput under realistic concurrent load.
 
 <Card title="Concurrent Users" type="note">
   **Concurrent Users** is the key variable for Hardware Benchmarking. A setup that excels at low concurrency (1 user) may fall behind at higher load (10–20 users). Selecting multiple concurrency levels gives you a performance curve for each hardware configuration across the full range of expected traffic, not just a single data point.
@@ -221,11 +229,19 @@ Select ‘**Hardware Benchmarking**’ as the type. This reveals two independent
 
 Specify the single model that will be deployed on both hardware setups for comparison. The fields here are the same as in Model Benchmarking — Model Source, Model Path, Model Class, and Secret — but only one model is configured, since the variable being compared is the hardware, not the model. See \[Configuring Model 1 and Model 2\](#configuring-model-1-and-model-2) for field-level details.
 
+<Frame>
+  ![Image](/images/image-53.png)
+</Frame>
+
 #### **Step 4 — Dataset**
 
 Select the dataset the model will run against on both hardware configurations. The same dataset options are available as in Model Benchmarking. For LLM/text model hardware benchmarking, standard NLP benchmarks from the Dataset Library are commonly used:
 
  
+
+<Frame>
+  ![Image](/images/image-54.png)
+</Frame>
 
 **MMLU**: Massive Multitask Language Understanding — a broad academic benchmark spanning 57 subjects including math, science, law, and history.
 
@@ -238,6 +254,10 @@ Multiple datasets can be selected simultaneously (e.g., both `MMLU` and `HellaSw
 Defines how the selected model generates responses during the benchmark. Since hardware — not the model — is the variable being tested, these settings are configured once and applied identically on both hardware setups to ensure a fair comparison. The model being benchmarked is shown at the top of this step (e.g., `Llama3-1-8B`).
 
  
+
+<Frame>
+  ![Image](/images/image-55.png)
+</Frame>
 
  
 
@@ -265,6 +285,77 @@ Clicking **Show Advanced Options** reveals additional generation controls: 
 
 After Step 5, a full configuration summary is displayed covering all settings for both hardware configurations. Review it, then click **Create Benchmarking** to launch the run. The benchmark then progresses through the same status pipeline as all other benchmarking types.
 
+<Frame>
+  ![Image](/images/image-56.png)
+</Frame>
+
+#### Hardware Benchmarking Results
+
+Once a Hardware Benchmarking run reaches **Benchmark Completed**, Q0 generates a side-by-side comparison of the two hardware configurations across nine metric categories. Each table shows two columns — one per hardware setup — with color-coded indicators (🟢 green = better performer, 🔴 red = lower performer) making it immediately clear which hardware won on each metric.
+
+**How Results Are Labeled**
+
+| Column | Example | Description |
+| --- | --- | --- |
+| \*\*Hardware 1\*\* | \`H100-2x-Cluster\` | The first hardware configuration — GPU type and count (e.g., H100 × 2 GPUs). Marked with ⭐ if it is the better overall performer. |
+| \*\*Hardware 2\*\* | \`L40S-1x-Cluster\` | The second hardware configuration (e.g., L40S × 1 GPU). |
+
+<Info>
+  Green dots (🟢) indicate the better value for that metric; red dots (🔴) indicate the lower value. 
+</Info>
+
+**1. Request Summary**
+
+The Request Summary provides a high-level snapshot of how each hardware configuration handled the benchmark workload — confirming request volume, token counts, and overall success.
+
+| Metric | H100-2x-Cluster (Hardware 1) | L40S-1x-Cluster (Hardware 2) | Description |
+| --- | --- | --- | --- |
+| \*\*Avg Latency Ms\*\* | 🟢 131.84 ms | 🔴 353.08 ms | Average time per inference request across the full dataset. Lower is better. |
+| \*\*Total Requests\*\* | 120 | 120 | Total number of inference requests submitted to each hardware configuration. Should match across both setups for a fair comparison. |
+| \*\*Failed Requests\*\* | 0 | 0 | Number of requests that returned an error or did not complete. \`0\` on both indicates a clean, fully successful run. |
+| \*\*Total Input Tokens\*\* | 4,696 | 4,696 | Total tokens sent as input across all requests. Equal on both — confirms the same workload was applied to each hardware. |
+| \*\*Successful Requests\*\* | 120 | 120 | Number of requests that returned a valid response. \`120/120\` = 100% success on both. |
+| \*\*Total Output Tokens\*\* | 🟢 658 | 🔴 653 | Total tokens generated by the model across all responses. Minor variance between hardware setups can reflect subtle differences in how each processes and truncates output. |
+| \*\*Success Rate Percent\*\* | 100.00% | 100.00% | Percentage of total requests that completed successfully. |
+
+**2. Performance Metrics**
+
+Performance Metrics measure the raw speed and throughput of each hardware configuration under the benchmark workload — the core indicators for production serving SLAs.
+
+| Metric | H100-2x-Cluster (Hardware 1) | L40S-1x-Cluster (Hardware 2) | Description |
+| --- | --- | --- | --- |
+| \*\*TTFT Ms\*\* (Time to First Token) | 0.00 ms | 0.00 ms | Time elapsed from when a request is submitted to when the first output token is produced. Critical for streaming/real-time applications where perceived responsiveness matters. |
+| \*\*P95 Latency Ms\*\* | 🟢 182.45 ms | 🔴 468.99 ms | 95th percentile latency — 95% of all requests completed within this time. The key SLA metric for production deployments where tail latency must stay within acceptable bounds. |
+| \*\*Tokens Per Second\*\* | 🟢 63.14 | 🔴 35.57 | The rate at which the hardware generates output tokens across all concurrent requests. Higher is better — reflects raw generative throughput of each hardware setup. |
+| \*\*Peak Throughput RPS\*\* | 9 | 9 | The peak number of requests per second observed during the benchmark run. |
+| \*\*Requests Per Second\*\* | 🟢 11.52 | 🔴 6.54 | The average sustained throughput — how many inference requests each hardware completed per second across the full benchmark. Higher is better. |
+
+**3. Resource Metrics**
+
+Resource Metrics show how efficiently each hardware configuration utilized its available compute and memory during the benchmark — helping users understand utilization headroom and cost efficiency.
+
+| Metric | H100-2x-Cluster (Hardware 1) | L40S-1x-Cluster (Hardware 2) | Description |
+| --- | --- | --- | --- |
+| \*\*GPU Memory Used (GB)\*\* | 🟢 47.90 GB | 🔴 30.95 GB | Total GPU memory consumed by the model and its inference process. Higher memory usage on H100 reflects its larger memory capacity being actively used by the model. |
+| \*\*Memory Pressure Events\*\* | 0 | 0 | Number of times the system experienced GPU memory pressure (near-OOM conditions) during the benchmark. \`0\` on both indicates stable, unconstrained memory operation. |
+| \*\*CPU Utilization Percent\*\* | 🟢 4.71% | 🔴 4.32% | Percentage of available CPU capacity used during the benchmark. Low CPU utilization on both setups is expected — GPU inference is GPU-bound, not CPU-bound. |
+| \*\*GPU Utilization Percent\*\* | 🟢 0.32% | 🔴 0.52% | Percentage of GPU compute capacity actively in use during the benchmark. Low GPU utilization may indicate the workload was not large enough to fully saturate the GPU — or that the model is memory-bandwidth bound rather than compute-bound. |
+
+**4. Accuracy Results**
+
+Accuracy Results confirm that both hardware configurations produce identical model outputs — verifying that hardware differences do not affect model correctness.
+
+| Metric | H100-2x-Cluster (Hardware 1) | L40S-1x-Cluster (Hardware 2) | Description |
+| --- | --- | --- | --- |
+| \*\*Total Correct\*\* | 48 | 48 | Number of evaluation questions answered correctly by the model on each hardware. Equal values confirm hardware-independent model accuracy. |
+| \*\*Datasets Tested\*\* | mmlu | mmlu | The evaluation dataset used for accuracy scoring. |
+| \*\*Total Questions\*\* | 120 | 120 | Total questions in the evaluation dataset submitted to each hardware. |
+| \*\*Overall Accuracy Percent\*\* | 40.00% | 40.00% | The model's overall accuracy score across all questions on each hardware. Equal values confirm the model produces the same quality outputs regardless of which hardware it runs on. |
+
+<Note>
+  **Accuracy Results** are expected to be identical across hardware configurations in a Hardware Benchmarking run, since the same model runs on both setups. Differences here would indicate a numerical precision issue introduced by the hardware or driver configuration.
+</Note>
+
 ## **Model Evaluation**
 
 **Model Evaluation** assesses a single model's capability on a specific task using standard, widely recognized benchmarks. Unlike Model Benchmarking (which compares two models against each other), Model Evaluation is about understanding _how well a single model performs in absolute terms_ — for example, how accurately it answers factual questions, how faithfully it transcribes speech, or how realistically it generates images. Results are scored against established metrics (accuracy, BLEU, WER, FID, etc.) so teams can verify that a model meets the bar required for their use case before deploying it.
@@ -283,10 +374,6 @@ After Step 5, a full configuration summary is displayed covering all settings fo
 
 ·       **Compare against industry benchmarks** by running the same evaluation tasks used in published research and leaderboards.
 
-<Frame>
-  ![Image](/images/image-12.png)
-</Frame>
-
 In the Model Evaluation, for Benchmarking Type- Model Evaluation following Evaluation task can be performed
 
 | **Model Category** | ** Evaluation Task** | ** What It Measures** |
@@ -304,5 +391,166 @@ In the Model Evaluation, for Benchmarking Type- Model Evaluation following Evalu
 | Automatic Speech Recognition | Speech Recognition | Transcription accuracy of spoken audio |
 | Automatic Speech Recognition | Transcription | Accuracy of full audio recording transcripts |
 | Text-to-Speech | TTS Quality | Naturalness, clarity, and intelligibility of synthesized speech |
+
+#### **Step 1 — Basic Details**
+
+<Frame>
+  ![Image](/images/image-57.png)
+</Frame>
+
+ Provide a unique **Benchmarking Name** (e.g., `Bench_Hardware`) and an optional **Description** (up to 500 characters), then click Continue.
+
+#### Step 2 — Benchmarking Type & Model Category
+
+Select **Model Evaluation** as the Benchmarking Type. 
+
+A **Model Category** dropdown then appears, defining the type of model being evaluated and determining which Evaluation Tasks become available in the next step.
+
+<Frame>
+  ![Image](/images/image-59.png)
+</Frame>
+
+**Available Model Categories:**
+
+| **Model Category** | **Description** |  |
+| --- | --- | --- |
+| Large Language Model | Text-based LLMs used for language understanding, generation, reasoning, and coding tasks. |  |
+| Diffusion Model | Image generation models that produce visuals from text prompts or by editing existing images. |  |
+| Vision-Language Model | Multimodal models that understand both images and text — used for captioning, visual Q&A, and document understanding. |  |
+| Automatic Speech Recognition | Models that transcribe or process spoken audio into written text. |  |
+| Text-to-Speech | Voice synthesis models that convert written text into natural-sounding audio output. |  |
+
+#### Step 3 — Evaluation Task
+
+This is the step unique to Model Evaluation. After selecting a Model Category, the **Evaluation Task** step appears with a **Task** dropdown listing all tasks applicable to that category. Selecting a task tells Q0 what benchmark, metrics, and evaluation protocol to apply during the run.
+
+<Frame>
+  ![Image](/images/image-60.png)
+</Frame>
+
+| **Task** | **What It Evaluates** |
+| --- | --- |
+| Question Answering | Tests the model's ability to answer factual and contextual questions accurately. Measures how well the model retrieves and applies knowledge from its training data or a given context. |
+| Summarization | Evaluates how well the model condenses long text into concise, coherent summaries. Common metrics include ROUGE scores comparing the summary to a human-written reference. |
+| Reasoning | Measures logical and commonsense reasoning capabilities — how well the model can draw conclusions, follow multi-step logic, or complete analogies. |
+| Code Generation | Evaluates the model's ability to produce syntactically correct and functionally accurate code from a natural-language description of a programming task. |
+
+**Diffusion Model — Evaluation Tasks**
+
+| Task | What It Evaluates |
+| --- | --- |
+| Text to Image | Generates images from text prompts and evaluates them on quality and relevance — how accurately and realistically the model renders the described content. Common metrics include FID (Fréchet Inception Distance) and CLIP Score. |
+| Image Editing | Evaluates the model's ability to modify existing images based on text instructions — for example, changing an object's color, removing a background, or applying a style. Assessed on how precisely and naturally edits are applied. |
+
+**Vision-Language Model — Evaluation Tasks**
+
+| Task | What It Evaluates |
+| --- | --- |
+| Visual Question Answering | Tests the model's ability to answer questions about the content of an image — combining image understanding with language generation. Measured on answer accuracy. |
+| Image Captioning | Evaluates how well the model generates descriptive, natural-language captions for images. Assessed using metrics such as BLEU, CIDEr, and METEOR against reference captions. |
+| Document Understanding | Measures the model's ability to extract, interpret, and reason over content from document images (e.g., scanned forms, invoices, reports), where both visual layout and text content matter. |
+| \*\*OCR\*\* | Evaluates the model's accuracy in recognizing and extracting printed or handwritten text from images. Measured primarily by character-level and word-level accuracy. |
+
+**Automatic Speech Recognition — Evaluation Tasks**
+
+| Task | What It Evaluates |
+| --- | --- |
+| Speech Recognition | Evaluates how accurately the model transcribes spoken audio to text. The primary metric is \*\*Word Error Rate (WER)\*\* — the lower the WER, the more accurately the model matches the reference transcript. |
+| Transcription | Assesses the model's ability to convert full audio recordings into accurate, readable written transcripts, covering longer audio content such as meetings, interviews, or calls. |
+
+**Text-to-Speech — Evaluation Tasks**
+
+| Task | What It Evaluates |
+| --- | --- |
+| TTS Quality | Evaluates the naturalness, clarity, and intelligibility of synthesized speech output. Typically assessed using Mean Opinion Score (MOS) or automated metrics that approximate human perceptual quality. |
+
+#### Steps 4–6 (Dataset, Inferencing Settings, Hardware Configuration)
+
+- **Dataset (Step 4)**: Select from the Dataset Library (e.g., MMLU, HellaSwag for LLMs; DrawBench, COCO for diffusion/image models) or a Custom Dataset aligned to the chosen Evaluation Task.
+- **Inferencing Settings (Step 5)**: Configure generation parameters for the single model being evaluated — Max Tokens, Temperature, System Prompt, Top-P, Frequency/Presence Penalty, and other task-relevant settings. See \[Inferencing Settings (Hardware Benchmarking)\]
+- **Hardware Configuration (Step 6)**: Select GPU Type (H100 or L40S) and GPU Count Per Node to run the evaluation on. See \[Hardware Configuration (Model Benchmarking)\](#step-5--hardware-configuration) for full details.
+
+<Frame>
+  ![Image](/images/image-61.png)
+</Frame>
+
+Once the Benchmarking is completed and status is Success, following metrices are generated for Evaluation.
+
+<Frame>
+  ![Image](/images/image-62.png)
+</Frame>
+
+#### Metrices for Model Evaluation
+
+Result Navigation Tabs
+
+| Tab | Description |
+| --- | --- |
+| Overview | Aggregated results across all datasets and tasks used in the evaluation run. Provides a single summary view of the model's overall performance. |
+| \[Dataset Name\](e.g., MMLU) | Dataset-specific results showing metrics computed only against that dataset. For runs using multiple datasets, each dataset gets its own tab. |
+
+**1. Task Metrics**
+
+Task Metrics measure how accurately and correctly the model completed the evaluation task against the selected dataset. These are the primary quality indicators for the chosen Evaluation Task (e.g., Question Answering, Visual QA, Summarization).
+
+| Metric | Description | Ideal Value |
+| --- | --- | --- |
+| \*\*F1\*\* | The harmonic mean of Precision and Recall. Measures how well the model's answers overlap with the reference answers — balancing false positives (incorrect content generated) and false negatives (correct content missed). A score of \`1.0\` is perfect; \`0\` means no overlap. | Higher is better (max 1.0) |
+| \*\*AnIs\*\* | Average Normalized Inverse Score — a normalized measure of answer quality that accounts for variations in phrasing. Useful for tasks where partial credit should be given for near-correct answers. | Higher is better |
+| \*\*Accuracy\*\* | The percentage of evaluation samples for which the model's output exactly or substantially matches the correct answer. Computed as: \`Correct predictions / Total predictions\`. | Higher is better (max 1.0 / 100%) |
+| \*\*Exact Match\*\* | The strictest accuracy metric — the proportion of samples where the model's output is a character-for-character match with the reference answer, with no tolerance for minor phrasing differences. Used heavily in QA benchmarks like SQuAD and MMLU. | Higher is better (max 1.0) |
+| \*\*Choice Accuracy\*\* | For multiple-choice tasks (e.g., MMLU), the percentage of questions where the model selected the correct answer option (A, B, C, D). More lenient than Exact Match — scores the answer choice, not the full text. | Higher is better (max 1.0) |
+| \*\*Avg Latency Ms\*\* | The average time (in milliseconds) the model took to generate a response per sample across the entire evaluation dataset. Included in Task Metrics as a quick latency reference alongside quality scores. | Lower is better |
+
+**2. Performance Metrics**
+
+Performance Metrics measure the speed and throughput characteristics of the model under the evaluation workload — critical for understanding whether the model can meet latency SLAs in production.
+
+| Metric | Unit | Description | Ideal Value |
+| --- | --- | --- | --- |
+| Avg Latency Ms | ms | The mean inference latency across all evaluation samples — average time from request submission to response completion. | Lower is better |
+| Max Latency Ms | ms | The maximum observed latency across all samples — the worst-case response time seen during the evaluation run. | Lower is better |
+| Min Latency Ms | ms | The minimum observed latency — the fastest response time seen across all samples. | Lower is better |
+| P50 Latency Ms | ms | The 50th percentile (median) latency — half of all requests were completed faster than this value. A robust central-tendency measure less affected by extreme outliers than the mean. | Lower is better |
+| \*\*P95 Latency Ms\*\* | ms | The 95th percentile latency — 95% of requests completed within this time. A key SLA metric for real-world applications where tail latency matters. | Lower is better |
+| \*\*P99 Latency Ms\*\* | ms | The 99th percentile latency — 99% of requests completed within this time. Reflects worst-case performance for the vast majority of traffic; critical for latency-sensitive production workloads. | Lower is better |
+| \*\*Latency Std Dev Ms\*\* | ms | Standard deviation of latency across all samples — measures how consistent (or variable) the model's response times are. A high standard deviation indicates unpredictable latency spikes. | Lower is better |
+| \*\*Total Tokens Input\*\* | count | The total number of input tokens processed across all evaluation samples (e.g., \`1,200\`). Useful for cost estimation and understanding the total prompt volume the model handled. | Reference value |
+| \*\*Avg Tokens Per \[Request\]\*\* | count | The average number of input tokens per evaluation sample — reflects the typical prompt length for this dataset and task. | Reference value |
+| \*\*Total Tokens Generated\*\* | count | The total number of output tokens generated by the model across all samples (e.g., \`100\`). | Reference value |
+| \*\*Avg Input Length Tokens\*\* | count | Average number of tokens per input prompt across the dataset (e.g., \`12\`). Indicates how concise or detailed the evaluation prompts were. | Reference value |
+| \*\*Avg Output Length Tokens\*\* | count | Average number of tokens per model response across the dataset (e.g., \`1\`). For choice-based tasks like MMLU, this is typically very small (1–3 tokens). | Reference value |
+
+**3. Reliability Metrics**
+
+Reliability Metrics measure the stability and robustness of the model's responses across the full evaluation dataset — indicating how dependable the model is when handling a large volume of diverse inputs.
+
+| Metric | Unit | Description | Ideal Value |
+| --- | --- | --- | --- |
+| \*\*Error Rate\*\* | % | The percentage of evaluation samples for which the model returned an error — failed requests, timeouts, or malformed responses — rather than a valid output (e.g., \`100.00%\` means all requests failed; \`0%\` means none failed). | Lower is better (target: 0%) |
+| \*\*Timeout Rate\*\* | % | The percentage of requests that exceeded the configured response timeout threshold and were terminated before a response was produced. | Lower is better (target: 0%) |
+| \*\*Response Rate\*\* | % | The percentage of evaluation samples for which the model returned any response (successful or otherwise). Complement of Error Rate: \`Response Rate \+ Error Rate = 100%\` when no timeouts occur. | Higher is better (target: 100%) |
+| \*\*Total Samples\*\* | count | The total number of evaluation samples in the dataset that were submitted to the model (e.g., \`100\`). Confirms the full evaluation scope. | Reference value |
+| \*\*Successful Samples\*\* | count | The number of samples for which the model returned a valid, parseable response (e.g., \`0\` in a failed run). | Higher is better (target: Total Samples) |
+| \*\*Empty Response Rate\*\* | % | The percentage of requests for which the model returned an empty or null response — even when no error was technically raised (e.g., \`100.00%\` means all responses were empty). A high Empty Response Rate alongside a high Error Rate typically indicates an authentication, access, or model configuration issue. | Lower is better (target: 0%) |
+
+<Note>
+  **Interpreting Reliability Metrics**: An `Error Rate` of 100% combined with an `Empty Response Rate` of 100% and `Successful Samples` of 0 indicates that none of the model's requests completed successfully. This typically points to an infrastructure or authentication issue (e.g., restricted model access, invalid credentials, network failure) rather than a model quality issue. Check the benchmarking run's logs for specific error messages
+</Note>
+
+**4. Output Quality**
+
+Output Quality metrics evaluate characteristics of the model's generated text beyond simple accuracy — measuring safety, diversity, consistency, and language richness of the responses across the full dataset.
+
+| Metric | Unit | Description | Ideal Value |
+| --- | --- | --- | --- |
+| \*\*Toxicity Score\*\* | 0–1 | A measure of how much harmful, offensive, or inappropriate content appears in the model's outputs, scored by an automated toxicity classifier. A score of \`0\` means no toxic content was detected; \`1\` means all outputs were flagged as toxic. | Lower is better (target: 0) |
+| \*\*Repetition Score\*\* | 0–1 | Measures how often the model repeats the same phrases, sentences, or token sequences within or across its responses. High repetition indicates degenerate output patterns (e.g., the model getting "stuck" repeating content). | Lower is better (target: 0) |
+| \*\*Hallucination Rate\*\* | % | The estimated percentage of responses containing factually incorrect or fabricated information not grounded in the prompt or dataset context. Measured by automated fact-checking or consistency checking against the dataset's reference answers. | Lower is better (target: 0%) |
+| \*\*Std Dev Output Length\*\* | tokens | Standard deviation of output length in tokens across all responses — measures consistency of response length. A high value means the model produces wildly variable-length outputs; a low value means responses are consistently sized. | Lower is better for consistency |
+| \*\*Vocabulary Richness (TTR)\*\* | 0–1 | Type-Token Ratio — the ratio of unique tokens to total tokens across all generated responses. Higher TTR means the model uses a diverse, rich vocabulary; lower TTR indicates repetitive or formulaic language patterns. | Higher is better for creative/generative tasks; lower may be acceptable for structured QA |
+| \*\*Avg Output Length Tokens\*\* | tokens | Average number of tokens across all model responses (e.g., \`1\`). A very low average (1–2 tokens) is expected for multiple-choice tasks; higher values are expected for summarization, generation, or reasoning tasks. | Task-dependent |
+| \*\*Max Output Length Tokens | tokens | The longest response generated across all evaluation samples (e.g., \`1\`). Indicates the upper bound of model verbosity for this dataset and configuration. | Task-dependent |
+| Min Output Length Tokens | tokens | The shortest response generated across all evaluation samples (e.g., \`1\`). Along with Max and Avg, forms the complete output length distribution. | Task-dependent |
 
 ## Knowledge Base Benchmarking

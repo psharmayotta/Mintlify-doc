@@ -16,7 +16,6 @@ This range reflects the cost of running the deployment on available GPU types (L
 Provide following information 
 
 - **Name:**  A unique display name to identify this deployment (e.g., `DeployTest`). Used in the Deployments list, breadcrumbs, and API references.  
-
 - **Description**: Optional free-text field (up to 500 characters) for notes or context about this deployment's purpose, the model it serves, or its intended audience. 
 
 <Frame>
@@ -34,7 +33,7 @@ The Model Library lists all models available from the Q0 Marketplace, organized 
 </Frame>
 
 <Note>
-  **_Model Library_**_ vs. **Custom Model**: Use Model Library to deploy a pre-built, well-known foundation model directly. Use Custom Model to deploy a version you've fine-tuned on your own data — for example, a Llama model tuned on proprietary company documents or domain-specific datasets._
+  **_Model Library_**\_ vs. **Custom Model**: Use Model Library to deploy a pre-built, well-known foundation model directly. Use Custom Model to deploy a version you've fine-tuned on your own data — for example, a Llama model tuned on proprietary company documents or domain-specific datasets.\_
 </Note>
 
 ## **Step 3 — Performance**
@@ -48,7 +47,6 @@ Configure optimization and runtime settings to balance speed, accuracy, and cost
 This step defines the compute infrastructure the model will be deployed on 
 
 - **Cluster**: The compute cluster where the deployment will run. Currently available: **Yotta Cluster** — Q0's managed GPU infrastructure hosted on Yotta's cloud. 
-
 - **Node Group**: The GPU type within the selected cluster. Select one or more node groups:  
 
 H100— NVIDIA H100 (80GB HBM3), 8 CPUs per node. Highest performance; best for large models, low-latency requirements, or high-throughput workloads. ₹432/GPU/hr.  
@@ -69,7 +67,7 @@ Define how your deployment scales across replicas to handle workload demands.
   ![Screenshot 2026 07 03 183430](/images/Screenshot-2026-07-03-183430.png)
 </Frame>
 
-| **Metric ** | ** Unit ** | ** What It Measures ** |
+| Metric | Unit | What It Measures |
 | :-- | :-- | :-- |
 | CPU Usage | % | <ul><li>The percentage of CPU capacity in use across active pods.</li></ul> <ul><li>High CPU usage typically indicates compute-bound inference workloads.</li></ul> |
 | GPU Usage | % | <ul><li>The percentage of GPU compute utilization across active pods.</li></ul> <ul><li>The most direct indicator of model inference load.</li></ul> |

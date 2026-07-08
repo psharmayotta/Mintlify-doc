@@ -108,3 +108,31 @@ Fraction of the dataset held out for validation during RLHF training (e.g. `0.1`
 | DPO Batch Size | Batch size used during the DPO training stage. |
 
 ## Step 4 — Dataset Details
+
+<Frame>
+  ![Image](/images/image-45.png)
+</Frame>
+
+| Field | Description |
+| --- | --- |
+| Dataset | Toggle between \`Existing Dataset\` (reuse a previously uploaded dataset) and \`Create New Datasets\` (upload a new one). |
+| Select An Existing Dataset | The dataset to use for training, selected from your previously uploaded datasets. Required when Dataset is set to \`Existing Dataset\`. |
+| Download Sample Dataset | Downloads a correctly-formatted example file, useful when preparing your own image dataset for upload. |
+
+## Step 5 — Evaluation
+
+Define evaluation settings to measure performance and validate your fine-tuned model.
+
+| Field / Option | Description |
+| --- | --- |
+| Skip validation dataset | No data is held back for evaluation; the model trains on 100% of available data with no in-training validation metrics. Best for quick runs or very small image sets. |
+| Auto-split training data \*(Recommended)\* | Automatically holds out a portion of the training dataset to compute validation metrics (CLIP/FID/KID) during training, with no extra setup needed. Recommended for most runs. |
+| Use custom dataset | Uses a separate, dedicated dataset for validation instead of splitting the training set — useful for benchmarking against a curated, held-out image set. |
+
+## Step 6 — Infrastructure Configuration
+
+Configure the compute resources and environment used for training your model.
+
+## Step 7 — Optional Settings
+
+Modify extra settings to tailor the model's training and output to your needs.
