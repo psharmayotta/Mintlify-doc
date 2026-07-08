@@ -9,23 +9,6 @@ An "agent" on Q0 is a loop, not a model. The model — served by your **LLM Infe
 
 This guide walks through a **Deployment Ops Agent**: an assistant that can check the health of a Q0 deployment, pull recent benchmark numbers, and draft a status update for a stand-up — all through tool calls, with no fine-tuning required.
 
-<Frame>
-  ```mermaid
-  flowchart LR
-    U[User request] --> A[Agent loop]
-    A -->|1. reasons| L[Q0 LLM Inference Engine\nendpoint]
-    L -->|2. requests a tool| A
-    A -->|3. executes| T{Tool registry}
-    T --> D[get_deployment_status]
-    T --> B[get_benchmark_summary]
-    T --> S[draft_standup_note]
-    D --> A
-    B --> A
-    S --> A
-    A -->|4. final answer| U
-  ```
-</Frame>
-
 The model never touches your infrastructure directly — it only ever asks the agent loop to run a named function and hands back a plain-text result. That boundary is what makes tool calling safe to run against production endpoints.
 
 ## Prerequisites
