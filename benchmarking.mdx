@@ -356,6 +356,80 @@ Accuracy Results confirm that both hardware configurations produce identical mod
   **Accuracy Results** are expected to be identical across hardware configurations in a Hardware Benchmarking run, since the same model runs on both setups. Differences here would indicate a numerical precision issue introduced by the hardware or driver configuration.
 </Note>
 
+**5. Quality of Service**
+
+Quality of Service metrics measure how reliably each hardware configuration meets service-level expectations — translating raw latency and error data into business-relevant SLA indicators.
+
+| Metric | H100-2x-Cluster (Hardware 1) | L40S-1x-Cluster (Hardware 2) | Description |
+| --- | --- | --- | --- |
+| \*\*SLO Compliance Rate Percent\*\* | 95.00% | 95.00% | The percentage of requests that met the configured Service Level Objective (latency threshold). A value of 95% means 95 out of 100 requests completed within the defined SLO target. |
+| \*\*Error Budget Remaining Percent\*\* | 85.00% | 85.00% | The proportion of the allowable error budget that has not yet been consumed. Higher values mean more headroom before SLA breach thresholds are hit. |
+| \*\*Response Time Satisfaction Percent\*\* | 90.00% | 90.00% | The percentage of requests for which users would experience satisfactory response times, based on a predefined latency satisfaction threshold. |
+
+**6. Reliability Metrics**
+
+Reliability Metrics validate the stability and correctness of each hardware configuration across the full benchmark workload.
+
+| Metric | H100-2x-Cluster (Hardware 1) | L40S-1x-Cluster (Hardware 2) | Description |
+| --- | --- | --- | --- |
+| \*\*OOM Incidents\*\* | 0 | 0 | Number of Out-of-Memory (OOM) events during the benchmark. \`0\` on both confirms neither hardware ran out of GPU memory under the test workload. |
+| \*\*Error Rate Percent\*\* | 0.00% | 0.00% | Percentage of requests that returned an error. \`0.00%\` on both indicates a fully reliable run with no failures on either hardware. |
+| \*\*Success Rate Percent\*\* | 100.00% | 100.00% | Percentage of requests that completed successfully. \`100.00%\` on both confirms complete reliability across the benchmark. |
+
+**7. Scalability Metrics**
+
+Scalability Metrics reveal how each hardware configuration handles increasing load — showing capacity headroom, startup speed, and efficiency under horizontal scaling.
+
+| Metric | H100-2x-Cluster (Hardware 1) | L40S-1x-Cluster (Hardware 2) | Description |
+| --- | --- | --- | --- |
+| \*\*Scale Up Time Seconds\*\* | 0.00 s | 0.00 s | Time taken to bring a new replica online when scaling up. \`0.00 s\` indicates pre-warmed or near-instant scaling in the benchmark environment. |
+| \*\*Max Concurrent Requests\*\* | 30 | 30 | The maximum number of simultaneous inference requests each hardware configuration handled during the benchmark, as configured by the Concurrent Users setting. |
+| \*\*Pod Startup Time Seconds\*\* | 0.00 s | 0.00 s | Time for a new pod/container to start and become ready to serve requests after provisioning. |
+| \*\*Horizontal Scaling Efficiency Percent\*\* | 95.00% | 95.00% | The efficiency of adding additional replicas — how close to linear the throughput gain is when a new replica is added. \`95%\` indicates near-linear scaling efficiency on both setups. |
+
+**8. Infrastructure Health**
+
+Infrastructure Health metrics provide a view into the underlying system stability of each hardware configuration during the benchmark
+
+| Metric | H100-2x-Cluster (Hardware 1) | L40S-1x-Cluster (Hardware 2) | Description |
+| --- | --- | --- | --- |
+| \*\*GPU ECC Errors\*\* | 0 | 0 | Number of GPU Error Correcting Code (ECC) memory errors detected during the benchmark. ECC errors indicate hardware-level memory faults. \`0\` on both confirms clean, healthy GPU hardware. |
+| \*\*System Load Average\*\* | 🟢 11.04 | 🔴 12.63 | Average system load (CPU queue depth) across the benchmark duration. Lower indicates a less burdened system; H100's higher core count handles the same workload at lower relative load. |
+| \*\*Disk Space Available Percent\*\* | 75.00% | 75.00% | Percentage of total disk space remaining on each node. Confirms adequate storage headroom for model weights, caches, and temporary files during inference. |
+
+**9. Advanced Analytics**
+
+Advanced Analytics provide deeper operational insights into queuing behavior and cost efficiency of each hardware configuration.
+
+| Metric | H100-2x-Cluster (Hardware 1) | L40S-1x-Cluster (Hardware 2) | Description |
+| --- | --- | --- | --- |
+| \*\*Queue Wait Time Ms\*\* | 0.00 ms | 0.00 ms | Average time requests spent waiting in queue before inference began. \`0.00 ms\` indicates no queuing bottleneck — all requests were immediately processed. |
+| \*\*Cost Efficiency Score\*\* | 85 | 85 | A composite score (0–100) representing how efficiently each hardware configuration converts GPU cost into inference throughput and quality. Higher is better. Helps contextualize performance results against the ₹/GPU/hr cost of each setup. |
+
+**10. Kubernetes Metrics**
+
+Kubernetes Metrics confirm the health of the container orchestration layer running each hardware configuration — ensuring the infrastructure itself is performing optimally.
+
+| Metric | H100-2x-Cluster (Hardware 1) | L40S-1x-Cluster (Hardware 2) | Description |
+| --- | --- | --- | --- |
+| \*\*Pod Scheduling Success Rate Percent\*\* | 100.00% | 100.00% | The percentage of pod scheduling requests that were successfully placed on available nodes. \`100%\` on both confirms no scheduling failures or resource contention during the benchmark. |
+| \*\*Resource Request Utilization Percent\*\* | 85.00% | 85.00% | The percentage of requested CPU/memory/GPU resources that were actively utilized during the benchmark. \`85%\` indicates efficient resource allocation — close to fully using what was provisioned without waste. |
+
+**11. Concurrent User Breakdown**
+
+For benchmarks configured with multiple Concurrent User levels, results are also broken down per concurrency level — allowing users to see how each hardware configuration performs under light vs. heavy load independently.
+
+| Metric | H100-2x-Cluster (Hardware 1) | L40S-1x-Cluster (Hardware 2) | Description |
+| --- | --- | --- | --- |
+| \*\*Avg Latency Ms\*\* | 🟢 93.25 ms | 🔴 275.06 ms | Average inference latency at this specific concurrency level (e.g., 1 concurrent user). |
+| \*\*Correct Answers\*\* | 12 | 12 | Number of correct answers at this concurrency level. Equal values confirm hardware-independent accuracy. |
+| \*\*Total Questions\*\* | 30 | 30 | Questions evaluated at this concurrency level (a subset of the full dataset, proportioned across concurrent user levels). |
+| \*\*Accuracy Percent\*\* | 40.00% | 40.00% | Model accuracy at this specific concurrency level. |
+
+<Tip>
+  **How to read Hardware Benchmarking results**: Focus first on **Avg Latency Ms** and **Tokens Per Second** in Performance Metrics — these are the clearest indicators of which hardware is faster. Then check **Resource Metrics** to understand utilization efficiency, and **Cost Efficiency Score** in Advanced Analytics to contextualize performance against hourly GPU cost. If both configurations show identical Accuracy Results, the hardware choice is purely a performance and cost decision.
+</Tip>
+
 ## **Model Evaluation**
 
 **Model Evaluation** assesses a single model's capability on a specific task using standard, widely recognized benchmarks. Unlike Model Benchmarking (which compares two models against each other), Model Evaluation is about understanding _how well a single model performs in absolute terms_ — for example, how accurately it answers factual questions, how faithfully it transcribes speech, or how realistically it generates images. Results are scored against established metrics (accuracy, BLEU, WER, FID, etc.) so teams can verify that a model meets the bar required for their use case before deploying it.
