@@ -189,6 +189,86 @@ Each run progresses through a fixed sequence of stages, shown as a horizontal pr
 
 Each stage is marked ‘**In progress**’, ‘**Pending**’, or ‘**Completed**’ in real time, so users can track exactly where their run is in the pipeline without needing to refresh or guess.
 
+Once Benchmarking is completed and is in Success state then following Metrices are created-
+
+For **Model Benchmarking** runs on Diffusion Models (Text to Image), Q0 generates a side-by-side comparison of the two models across an **Overview** tab and one tab per dataset used — for example, **DrawBench** and **COCO**. Unlike the LLM-oriented Task Metrics described above, image generation comparisons surface image-specific Quality Metrics (FID, CLIP Score, Human Preference) alongside Performance and Reliability data.
+
+**How Results Are Labeled**
+
+| Column | Example | Description |
+| --- | --- | --- |
+| \*\*Model 1\*\* | \`Gpt-Oss-20b\` ⭐ | The first model in the comparison. Marked with a star (⭐) if it is the better overall performer across the run. |
+| \*\*Model 2\*\* | \`Stable-Diffusion-3.5-Large\` | The second model in the comparison. |
+
+**Result Navigation Tabs**
+
+| Tab | Description |
+| --- | --- |
+| \*\*Overview\*\* | Aggregated results across all datasets used in the run. In this example it mirrors the DrawBench Quality Metrics, since DrawBench is the primary quality-scoring dataset. |
+| \*\*DrawBench\*\* | Dataset-specific results from the DrawBench dataset — a prompt suite designed to stress-test text-to-image models across categories like color accuracy and object counting. |
+| \*\*COCO\*\* | Dataset-specific results from the COCO dataset — a general-purpose image benchmark used to score realism and semantic alignment via FID and CLIP Score. |
+
+**1. Quality Metrics — DrawBench**
+
+| Metric | Gpt-Oss-20b (Model 1) | Stable-Diffusion-3.5-Large (Model 2) | Description |
+| --- | --- | --- | --- |
+| \*\*Success Rate\*\* | • 50.00% | • 50.00% | Percentage of DrawBench prompts each model successfully generated an image for, without errors or timeouts. |
+| \*\*Overall Score\*\* | • 39.47 | • 39.47 | A composite quality score aggregating all DrawBench category scores into a single number for the model. |
+| \*\*Category Scores – Colors\*\* | • 78.95 | • 78.95 | How accurately the model rendered the specific colors requested in the prompt (e.g., "a red cube next to a blue sphere"). |
+| \*\*Category Scores – Counting\*\* | • 0 | • 0 | How accurately the model rendered the correct number of objects requested in the prompt (e.g., "three apples on a table"). |
+| \*\*Human Preference\*\* | • 50 | • 50 | A relative preference score based on (simulated or collected) human judgments comparing outputs from both models on the same prompts. |
+| \*\*Generation Quality\*\* | • estimated fair | • estimated fair | An overall qualitative rating of image generation quality, estimated from the combined DrawBench category scores. |
+
+<Note>
+  **DrawBench** includes additional prompt categories beyond Colors and Counting (e.g., Position, Text Rendering, Conflicting Prompts) in the full benchmark suite. Only categories with non-zero coverage for the current run are shown here — the specific categories displayed depend on which DrawBench prompt subsets were included in the dataset selection.
+</Note>
+
+**2. Quality Metrics — COCO**
+
+| Metric | Gpt-Oss-20b (Model 1) | Stable-Diffusion-3.5-Large (Model 2) | Description |
+| --- | --- | --- | --- |
+| \*\*FID\*\* (Fréchet Inception Distance) | • 100 | • 100 | Measures how close the distribution of generated images is to the distribution of real COCO images. Lower values normally indicate more realistic, higher-fidelity generations. |
+| \*\*CLIP Score\*\* | • 0 | • 0 | Measures how well each generated image semantically matches its text prompt, using CLIP embeddings to score image-text alignment. |
+| \*\*Success Rate\*\* | • 0.00% | • 0.00% | Percentage of COCO prompts each model successfully generated an image for. |
+| \*\*Inception Score\*\* | • 1 | • 1 | A measure of both the quality and diversity of generated images, based on how confidently and variably an Inception classifier labels them. |
+| \*\*Latency Ms – P95\*\* | • 0.00 ms | • 0.00 ms | 95th percentile generation latency for COCO prompts specifically. |
+| \*\*Latency Ms – P99\*\* | • 0.00 ms | • 0.00 ms | 99th percentile generation latency for COCO prompts specifically. |
+
+<Tip>
+  **Reading FID and CLIP Score together**:FID captures overall image realism/fidelity against real photos, while CLIP Score captures prompt faithfulness. A model can score well on one and poorly on the other — for example, generating photorealistic but semantically unrelated images. Always check both metrics together rather than optimizing for just one.
+</Tip>
+
+**3. Performance Metrics**
+
+| Metric | Gpt-Oss-20b (Model 1) | Stable-Diffusion-3.5-Large (Model 2) | Description |
+| --- | --- | --- | --- |
+| \*\*Latency Ms – P95\*\* | 🟢 14358.87 ms | 🔴 14403.86 ms | 95th percentile time to generate a single image, across all prompts in the run. Lower is better. |
+| \*\*Latency Ms – P99\*\* | 🟢 14375.83 ms | 🔴 14409.31 ms | 99th percentile image generation latency — reflects near-worst-case generation time. Lower is better. |
+| \*\*Latency Ms – Mean\*\* | 🟢 14185.76 ms | 🔴 14257.62 ms | Average time to generate a single image across all prompts. Lower is better. |
+| \*\*Latency Ms – Median\*\* | 🟢 14263.04 ms | 🔴 14286.44 ms | Median (P50) image generation latency — less sensitive to outliers than the mean. Lower is better. |
+| \*\*Throughput – Images Per Hour\*\* | 🟢 253.78 | 🔴 252.50 | The sustained number of images each model can generate per hour under the benchmark's hardware and concurrency settings. Higher is better. |
+| \*\*Throughput – Images Per Minute\*\* | 🟢 4.23 | 🔴 4.21 | The sustained number of images generated per minute. Higher is better. |
+| \*\*Throughput – Pixels Per Second\*\* | 🟢 73,918 | 🔴 73,545 | Total pixel volume generated per second — accounts for both generation speed and output resolution. Higher is better. |
+
+**4. Image Specs & Reliability**
+
+| Metric | Gpt-Oss-20b (Model 1) | Stable-Diffusion-3.5-Large (Model 2) | Description |
+| --- | --- | --- | --- |
+| \*\*Image Specs – Average Resolution\*\* | • 10,48,576 | • 10,48,576 | The average total pixel count (width × height) of images generated by each model (e.g., 1024×1024 = 10,48,576 pixels). Equal values confirm both models were configured to generate at the same output resolution. |
+| \*\*Image Specs – Total Pixels Generated\*\* | • 1,57,28,640 | • 1,57,28,640 | The cumulative pixel count across every image generated during the run, for each model. |
+| \*\*Reliability – Success Rate\*\* | • 50.00% | • 50.00% | Percentage of all generation requests (across both datasets) that completed successfully. |
+| \*\*Reliability – Total Samples\*\* | • 30 | • 30 | Total number of prompts submitted to each model across the full run. |
+| \*\*Reliability – Failed Samples\*\* | • 15 | • 15 | Number of prompts that failed to generate a valid image. |
+| \*\*Reliability – Successful Samples\*\* | • 15 | • 15 | Number of prompts that successfully generated a valid image. |
+| \*\*Total Time Minutes\*\* | 🟢 3.55 min | 🔴 3.56 min | Total wall-clock time taken to complete the full benchmark run, in minutes. Lower is better. |
+| \*\*Total Time Seconds\*\* | 🟢 212.79 s | 🔴 213.86 s | Total wall-clock time taken to complete the full benchmark run, in seconds. Lower is better. |
+
+<Note>
+  **Reading this example**:
+
+  With a 50% Reliability Success Rate and 15 of 30 samples failing, this run should be treated as a partial/test result rather than a production-quality comparison — the Quality Metrics (FID, CLIP Score, Overall Score) are only computed from the successful samples. Before trusting a model comparison for a production decision, confirm the Reliability Success Rate is close to 100% first; a low success rate can distort quality scores by silently excluding harder prompts that failed to generate.
+</Note>
+
 ## **Hardware to Hardware Benchmarking**
 
 **Hardware Benchmarking** compares how the same model performs across two different hardware setups — different GPU types or different GPU counts — under identical workloads. This is the right benchmarking type when the question is not _which model_ is better, but _which infrastructure_ is most performant or cost-efficient for a model you've already chosen.
@@ -628,3 +708,193 @@ Output Quality metrics evaluate characteristics of the model's generated text be
 | Min Output Length Tokens | tokens | The shortest response generated across all evaluation samples (e.g., \`1\`). Along with Max and Avg, forms the complete output length distribution. | Task-dependent |
 
 ## Knowledge Base Benchmarking
+
+**Knowledge Base Pipeline** benchmarking evaluates how well one or two models perform when paired with a connected Knowledge Base (RAG pipeline). Instead of testing a model's raw capability in isolation, this benchmarking type tests it in context — how effectively the model uses content retrieved from the Knowledge Base to produce accurate, grounded outputs — before that pipeline is relied on in production.
+
+**What Knowledge Base Pipeline Benchmarking Helps Users Do**
+
+- **Validate a RAG Pipeline End-to-End**: Test the full retrieval \+ generation flow against a real Knowledge Base, rather than evaluating the model or the retrieval step in isolation.
+- **Compare Models on the Same Knowledge Base**: Run two different models against the identical Knowledge Base and dataset to see which one produces better, more grounded responses.
+- **Catch Retrieval and Grounding Issues Early**: Surface problems like poor context retrieval or weak grounding before the pipeline is exposed to end users.
+- **Reuse an Existing Knowledge Base:** Point the benchmark directly at any Knowledge Base already created in Q0 (see \[Knowledge Base\](/knowledge-base) documentation), without needing to rebuild it for testing purposes
+
+#### Step 1 — Basic Details
+
+Provide a unique **Benchmarking Name** (e.g., `Bench_Hardware`) and an optional **Description** (up to 500 characters), then click Continue.
+
+<Frame>
+  ![Image](/images/image-63.png)
+</Frame>
+
+#### Step 2 — Benchmarking Type 
+
+<Frame>
+  ![Image](/images/image-64.png)
+</Frame>
+
+<Frame>
+  ![Image](/images/image-65.png)
+</Frame>
+
+**Configuring Model 1 (and Model 2)**
+
+| Field | Description |
+| --- | --- |
+| \*\*Model Source\*\*\* | Where the model comes from — e.g., \`Huggingface\` for Model 1, \`GCP\` for Model 2. Each model can be sourced independently. |
+| \*\*Model Path\*\*\* | The repo path (Huggingface) or storage URI (GCP/cloud) where the model is located. Verified automatically with a green \*\*Verified\*\* badge once confirmed. |
+| \*\*Model Class\*\*\* | The model architecture/pipeline class used to load the model (e.g., \`WhisperForConditionalGeneration\`). Must match the model's actual implementation. |
+| \*\*Secret\*\*\* | Authentication method — \*\*Existing Secret\*\* (select a previously saved credential, e.g., \`Hugg\`, \`GCPtest\`) or \*\*Create New Secret\*\*. |
+| \*\*Select Secret\*\*\* | The specific saved secret to use, scoped to the chosen Model Source. |
+
+<Note>
+  Configuring **Model 2** is optional for Knowledge Base Pipeline benchmarking. Configure only **Model 1** to evaluate a single model's performance against the Knowledge Base, or configure both to run a side-by-side comparison of two models against the same Knowledge Base and dataset — mirroring how \[Model Benchmarking\](#step-2--benchmarking-type) compares two models directly.
+</Note>
+
+#### Step 3 — Dataset
+
+Select the dataset of queries/prompts that will be sent through the Knowledge Base pipeline for both retrieval and generation.
+
+| Field | Description |
+| --- | --- |
+| \*\*Existing Dataset / Create New Dataset\*\* | Toggle between reusing a dataset already in Q0 (library or custom) or creating a new one specifically for this run. See \[Step 3 — Dataset\](#step-3--dataset) for full field details. |
+| \*\*Select An Existing Dataset\*\*\* | Dropdown to choose the dataset once \*\*Existing Dataset\*\* is selected. |
+| \*\*Add Another Dataset\*\* | Adds an additional dataset to the run, letting the Knowledge Base pipeline be evaluated against more than one dataset (e.g., different query sets or topics) in a single benchmarking run — each will appear as its own results tab once the run completes. |
+
+#### Step 4 — Inferencing Settings
+
+This step configures how each model generates its response after the Knowledge Base pipeline retrieves relevant context. Metrics are automatically enabled based on the benchmarking goal, and settings are configured independently for **Model 1** and **Model 2** (if configured).
+
+<Frame>
+  ![Image](/images/image-66.png)
+</Frame>
+
+<Note>
+  Fields in this step change based on the model selected in Step 2. The Inferencing Settings shown are not fixed — Q0 detects the model's category/class (LLM, Diffusion Model, Vision-Language Model, ASR, Text-to-Speech) and surfaces only the relevant generation controls for that model type. The table below shows both the fields common across model types and examples of category-specific fields
+</Note>
+
+#### Step 5 — Hardware Configuration
+
+<Frame>
+  ![Image](/images/image-67.png)
+</Frame>
+
+Click **Create Benchmarking** to launch the run.
+
+<Frame>
+  ![Image](/images/image-68.png)
+</Frame>
+
+Once submitted, a Knowledge Base Pipeline run progresses through the same \[Benchmarking Status Flow\](#benchmarking-status-flow) as every other benchmarking type — **Verifying Model → Model Deploy → Dataset Verify → Benchmarking → Benchmark Completed** — shown on its own detail page alongside Model 1 / Model 2 cards and run metadata.
+
+**Result Navigation Tabs**
+
+| Tab | Description |
+| --- | --- |
+| \*\*Overview\*\* | Aggregated results across all datasets used in the run. In this example it mirrors the single dataset tab, since only one dataset (\`QO Test1\`) was used. |
+| \*\*\[Dataset Name\]\*\* (e.g., QO Test1) | Dataset-specific results, showing metrics computed only against that dataset's queries run through the Knowledge Base pipeline. |
+
+**1. Quality Metrics**
+
+Quality Metrics measure how accurate, grounded, and relevant each model's generated answers were, both in absolute terms and relative to the context retrieved from the Knowledge Base.
+
+| Metric | Gpt-Oss-20b (Model 1) | Gpt-Oss-20b (Model 2) | Description |
+| --- | --- | --- | --- |
+| \*\*Bleu\*\* | • 0 | • 0 | Measures n-gram overlap between the model's generated answer and a reference answer. Commonly used for translation/generation quality; \`0\` here indicates no exact reference match on this dataset. |
+| \*\*Rouge 1\*\* | • 0 | • 0 | Unigram (single-word) overlap between generated and reference answers. |
+| \*\*Rouge 2\*\* | • 0 | • 0 | Bigram (two-word sequence) overlap between generated and reference answers — a stricter phrasing match than Rouge 1. |
+| \*\*Rouge L\*\* | • 0 | • 0 | Longest Common Subsequence overlap between generated and reference answers — captures sentence-level structural similarity. |
+| \*\*Token F1\*\* | • 0 | • 0 | The harmonic mean of token-level precision and recall between the generated answer and the reference answer. |
+| \*\*Exact Match\*\* | • 0 | • 0 | Whether the generated answer exactly matches the reference answer, character-for-character. |
+| \*\*Context Recall\*\* | • 0 | • 0 | The proportion of information in the reference answer that is actually present in the retrieved context — measures whether the pipeline retrieved \*enough\* of the right information. |
+| \*\*Context Precision\*\* | • 0 | • 0 | The proportion of the retrieved context that is actually relevant to answering the query — measures whether retrieval pulled in irrelevant/noisy chunks. |
+| \*\*Faithfulness Score\*\* | 🟢 0.14 | 🔴 0.11 | Measures how well the generated answer is grounded in the retrieved context, rather than the model's own unsupported knowledge. Higher means the answer sticks more closely to what was actually retrieved. |
+| \*\*Hallucination Rate\*\* | • 60.00% | • 60.00% | The percentage of generated answers containing claims not supported by the retrieved context. A high value on both models here signals the pipeline (dataset, chunking, or retrieval quality) needs attention — see the interpretation note below. |
+| \*\*Answer Length Ratio\*\* | • 0 | • 0 | Ratio of the generated answer's length to the reference answer's length — flags answers that are unusually short or long relative to expectations. |
+| \*\*Deepeval Exact Match\*\* | • 0 | • 0 | Exact-match scoring computed via the DeepEval evaluation framework, used as a cross-check against Q0's native Exact Match metric. |
+| \*\*Answer Relevance Score\*\* | 🟢 0.26 | 🔴 0.24 | Measures how directly the generated answer addresses the actual query asked, independent of whether it's grounded in context. Higher is better. |
+| \*\*Answer Contains Expected\*\* | • 0 | • 0 | Whether the expected/reference answer's key content is contained within the model's generated answer. |
+| \*\*Expected Contains Answer\*\* | • 0 | • 0 | The inverse check — whether the model's generated answer's content is fully contained within the expected/reference answer (flags overly narrow answers). |
+
+<Note>
+  Reading a low Faithfulness Score alongside a high Hallucination Rate:\*\* In this example, both models show a low Faithfulness Score (0.11–0.14) and a 60% Hallucination Rate. Together, these indicate the generated answers are not staying well-grounded in the content retrieved from the Knowledge Base — worth investigating the Knowledge Base's chunking strategy, embedding model, or dataset query difficulty (see \[Knowledge Base\](/knowledge-base) documentation) before treating either model as production-ready on this pipeline.
+</Note>
+
+**2. Retrieval Metrics**
+
+Retrieval Metrics isolate the performance of the Knowledge Base's retrieval step — independent of the generation model — showing how well relevant context was found and how quickly.
+
+| Metric | Gpt-Oss-20b (Model 1) | Gpt-Oss-20b (Model 2) | Description |
+| --- | --- | --- | --- |
+| \*\*Retrieval Mrr\*\* (Mean Reciprocal Rank) | • 0 | • 0 | Measures how high up the correct/relevant context chunk ranked in the retrieval results, averaged across all queries. Higher is better. |
+| \*\*Avg Context Tokens\*\* | • 118.80 | • 118.80 | Average number of tokens in the retrieved context passed to the model per query. Equal across models — confirms both were given identical retrieved context for a fair comparison. |
+| \*\*Avg Retrieval Score\*\* | • 0.39 | • 0.39 | The average similarity/relevance score of retrieved chunks against the query, as computed by the Knowledge Base's vector search. |
+| \*\*Top1 Retrieval Score\*\* | • 0.40 | • 0.40 | The relevance score of the single highest-ranked retrieved chunk, averaged across all queries. |
+| \*\*Retrieval Context Hit\*\* | • 0 | • 0 | Whether the correct/expected context chunk was present anywhere in the retrieved results for a query. |
+| \*\*Retrieval Success Rate\*\* | • 100.00% | • 100.00% | Percentage of queries for which the retrieval step successfully returned at least one context chunk. |
+| \*\*Avg Retrieval Latency\*\* | 🟢 30.64 ms | 🔴 29.52 ms | Average time taken by the Knowledge Base to retrieve relevant context per query. Since retrieval uses the same pipeline for both models, small differences typically reflect measurement noise rather than a true retrieval difference. |
+| \*\*P50 Retrieval Latency Ms\*\* | 🟢 25.55 ms | 🔴 24.52 ms | Median retrieval latency across all queries. |
+| \*\*P95 Retrieval Latency Ms\*\* | 🟢 42.37 ms | 🔴 45.11 ms | 95th percentile retrieval latency — reflects near-worst-case retrieval time. |
+| \*\*Avg Retrieved Context Count\*\* | • 3 | • 3 | Average number of context chunks retrieved and passed to the model per query. |
+
+**3. Performance Metrics**
+
+Performance Metrics combine retrieval and generation timing into end-to-end latency and throughput figures for the full RAG pipeline.
+
+| Metric | Gpt-Oss-20b (Model 1) | Gpt-Oss-20b (Model 2) | Description |
+| --- | --- | --- | --- |
+| \*\*Ttft Ms\*\* (Time to First Token) | 🟢 30.64 ms | 🔴 29.52 ms | Time from query submission to the first output token, including retrieval time. |
+| \*\*Concurrency\*\* | • 4 | • 4 | The number of simultaneous requests simulated during the benchmark, as configured for the run. |
+| \*\*Samples Per Second\*\* | 🟢 0.49 | 🔴 0.50 | The rate at which queries were fully processed (retrieval \+ generation) per second. |
+| \*\*Total Tokens Input\*\* | • 63 | • 63 | Total input tokens (query \+ retrieved context) processed across the full run. |
+| \*\*Requests Per Minute\*\* | 🟢 29.39 | 🔴 29.97 | Sustained end-to-end request throughput for the pipeline. |
+| \*\*Avg Total Latency Ms\*\* | 🟢 6894.09 ms | 🔴 6206.64 ms | Average end-to-end latency per query — retrieval time plus generation time combined. |
+| \*\*P50 Total Latency Ms\*\* | 🟢 7592.72 ms | 🔴 5912.77 ms | Median end-to-end latency across all queries. |
+| \*\*P95 Total Latency Ms\*\* | 🟢 9106.93 ms | 🔴 9946.86 ms | 95th percentile end-to-end latency. |
+| \*\*P99 Total Latency Ms\*\* | 🟢 9423.87 ms | 🔴 11208.58 ms | 99th percentile end-to-end latency — worst-case tail latency for the full pipeline. |
+| \*\*Avg Tokens Per Second\*\* | 🟢 13.64 | 🔴 11.98 | Average output token generation rate across all queries. |
+| \*\*Total Tokens Generated\*\* | 🟢 936 | 🔴 740 | Total output tokens generated by the model across the full run. |
+| \*\*Avg Input Length Tokens\*\* | • 6.30 | • 6.30 | Average number of tokens in the raw query (before context is added), per request. |
+| \*\*Total Wall Time Seconds\*\* | 🟢 20.41 s | 🔴 20.02 s | Total wall-clock time to complete the entire benchmark run. |
+| \*\*Avg Output Length Tokens\*\* | 🟢 93.60 | 🔴 74 | Average number of tokens in the model's generated answers. |
+| \*\*Avg Generation Latency Ms\*\* | 🟢 6863.46 ms | 🔴 6177.12 ms | Average time spent specifically on answer generation, excluding retrieval time. |
+| \*\*Max Generation Latency Ms\*\* | 🟢 9466.30 ms | 🔴 11478.90 ms | The longest generation time observed for a single query. |
+| \*\*Min Generation Latency Ms\*\* | 🟢 3762.18 ms | 🔴 2980.97 ms | The shortest generation time observed for a single query. |
+| \*\*P50 Generation Latency Ms\*\* | 🟢 7552.64 ms | 🔴 5882.75 ms | Median generation-only latency. |
+| \*\*P95 Generation Latency Ms\*\* | 🟢 9067.27 ms | 🔴 9901.75 ms | 95th percentile generation-only latency. |
+| \*\*P99 Generation Latency Ms\*\* | 🟢 9386.49 ms | 🔴 11163.47 ms | 99th percentile generation-only latency. |
+| \*\*Retrieval Latency Fraction\*\* | • 0.00 | • 0.00 | The proportion of total end-to-end latency attributable to retrieval, on a 0–1 scale. \`0.00\` indicates retrieval time is negligible relative to generation time for this run. |
+| \*\*Generation Latency Fraction\*\* | • 1.00 | • 1.00 | The proportion of total end-to-end latency attributable to generation. \`1.00\` confirms generation dominates total latency, consistent with the near-zero Retrieval Latency Fraction above. |
+| \*\*Generation Latency Std Dev Ms\*\* | 🟢 1865.22 ms | 🔴 2432.59 ms | Standard deviation of generation latency across all queries — measures consistency of generation speed. Lower is more predictable. |
+| \*\*Avg Latency Per Output Token Ms\*\* | 🟢 73.33 ms | 🔴 83.47 ms | Average time taken to generate each individual output token — a normalized speed metric independent of total response length. |
+
+<Tip>
+  **Retrieval vs. Generation Latency Fraction**:These two fields always sum to `1.00` and show where end-to-end latency is actually being spent. In this run, retrieval accounts for effectively none of the total latency `0.00`) while generation accounts for all of it `1.00`) — meaning any latency optimization effort should focus on the generation model or its inference settings, not the Knowledge Base's retrieval step.
+</Tip>
+
+**4. Reliability Metrics**
+
+| Metric | Gpt-Oss-20b (Model 1) | Gpt-Oss-20b (Model 2) | Description |
+| --- | --- | --- | --- |
+| \*\*Error Rate\*\* | • 0.00% | • 0.00% | Percentage of queries that returned an error anywhere in the pipeline (retrieval or generation). |
+| \*\*Timeout Rate\*\* | • 0.00% | • 0.00% | Percentage of queries that exceeded the configured timeout threshold. |
+| \*\*Response Rate\*\* | • 100.00% | • 100.00% | Percentage of queries that returned any response, successful or otherwise. |
+| \*\*Total Samples\*\* | • 10 | • 10 | Total number of queries submitted to the pipeline during the run. |
+| \*\*Successful Samples\*\* | • 10 | • 10 | Number of queries that completed successfully end-to-end. |
+| \*\*Empty Response Rate\*\* | • 0.00% | • 0.00% | Percentage of queries for which the model returned an empty or null answer. |
+| \*\*Retrieval Error Rate\*\* | • 0.00% | • 0.00% | Percentage of queries for which the retrieval step specifically failed. |
+| \*\*Generation Error Rate\*\* | • 0.00% | • 0.00% | Percentage of queries for which the generation step specifically failed. |
+| \*\*Retrieval Successful Samples\*\* | • 10 | • 10 | Number of queries for which retrieval completed successfully. |
+| \*\*Generation Successful Samples\*\* | • 10 | • 10 | Number of queries for which answer generation completed successfully. |
+
+<Note>
+  A fully reliable run `100%` Response Rate, `0%` Error/Timeout/Empty Response rates across both retrieval and generation stages) is what's shown here — all 10 samples succeeded end-to-end for both models. This confirms the Quality and Faithfulness scores above reflect genuine model/pipeline behavior, not artifacts of failed or empty responses
+</Note>
+
+**5. Output Quality**
+
+| Metric | Gpt-Oss-20b (Model 1) | Gpt-Oss-20b (Model 2) | Description |
+| --- | --- | --- | --- |
+| \*\*Std Dev Output Length\*\* | 🟢 43.78 | 🔴 32.70 | Standard deviation of generated answer length (in tokens) across all queries — measures consistency of response length. |
+| \*\*Avg Output Length Tokens\*\* | 🟢 93.60 | 🔴 74 | Average length of generated answers, in tokens. |
+| \*\*Max Output Length Tokens\*\* | 🟢 179 | 🔴 149 | The longest generated answer observed across all queries. |
+| \*\*Min Output Length Tokens\*\* | 🟢 45 | 🔴 47 | The shortest generated answer observed across all queries. |
