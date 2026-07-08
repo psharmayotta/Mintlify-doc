@@ -33,12 +33,16 @@ Batch Inference is the process of running a model against a large collection of 
 
 Provide **Batch Name-** A unique, required name to identify this batch inference job and **Description -** Optional free-text field
 
+<Frame>
+  ![Image](/images/image-69.png)
+</Frame>
+
 ## **Step 2 — Model**
 
 This step selects and configures the model that will process the batch dataset. Fields are identical to those used in Benchmarking model configuration, providing a consistent experience across the platform.
 
 <Frame>
-  ![Image](/images/image-7.png)
+  ![Image](/images/image-70.png)
 </Frame>
 
 - **Model Source**: The platform or service where the model is hosted (e.g., `GCP`, `Huggingface`). Determines the expected format of the Model Path and the authentication method required
@@ -47,9 +51,17 @@ This step selects and configures the model that will process the batch dataset. 
 - **Secret** :Cloud credentials required to access the model source securely. Choose between: **Existing Secret** — select a previously saved credential (e.g., `GCPtest`) or **Create New Secret** — add new credentials if none exist yet
 - **Select Secret**: Dropdown to select the specific saved credential to use, scoped to the chosen Model Source
 
+<Frame>
+  ![Image](/images/image-72.png)
+</Frame>
+
 ## **Step 3 — Dataset**
 
 This step attaches and configures the input dataset that the model will process in batch.
+
+<Frame>
+  ![Image](/images/image-73.png)
+</Frame>
 
 - Existing Dataset: Select a dataset already available in Q0 (previously uploaded or created). The Select An Existing Dataset dropdown lists all available datasets (e.g., `Lama`).
 - Create New Dataset: Upload a new dataset file specifically for this batch job. Supported formats: **CSV, JSON, and JSONL**, up to **50MB** per file.
@@ -83,5 +95,5 @@ This step controls how the model generates output for every record in the batch 
 Once submitted, the job opens its detail page showing the live pipeline status and full configuration summary.
 
 <Frame>
-  ![Image](/images/image-8.png)
+  ![Image](/images/image-74.png)
 </Frame>
