@@ -93,7 +93,10 @@
           },
           "settings",
           "billing",
-          "dashboard-resources-writeup"
+          "dashboard-resources-writeup",
+          "build-an-agent",
+          "nextjs-chatbot-quickstart",
+          "build-rag-workflow"
         ]
       },
       {
@@ -103,8 +106,7 @@
           "introduction",
           "train-your-model",
           "large-language-model",
-          "vision-language-model",
-          "untitled-page"
+          "vision-language-model"
         ]
       }
     ]

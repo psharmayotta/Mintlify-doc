@@ -1,0 +1,198 @@
+---
+title: "Next.js Chatbot"
+description: "Wire a Next.js App Router project to a Q0 deployment endpoint and stream tokens into a chat UI."
+---
+
+## What you're building
+
+A minimal chat interface where the browser never talks to Q0 directly. A Next.js **route handler** holds your API key and proxies requests to your deployed model; the browser only ever talks to your own server.
+
+<Frame>
+  ```mermaid
+  sequenceDiagram
+    participant Browser
+    participant NextRoute as Next.js /api/chat route
+    participant Q0 as Q0 deployment endpoint
+    Browser->>NextRoute: POST message history
+    NextRoute->>Q0: chat.completions.create(stream=true)
+    Q0-->>NextRoute: token, token, token ...
+    NextRoute-->>Browser: forwarded SSE stream
+    Browser->>Browser: append tokens to UI as they arrive
+  ```
+</Frame>
+
+Keeping the API key server-side also means you can switch endpoints, add retries, or add rate limiting later without touching the client.
+
+## Prerequisites
+
+- Node.js 18\+
+- A Q0 API key
+- A deployed **LLM** model — a **shared** endpoint is enough to build against; move to a **dedicated** endpoint before sending it real user traffic
+
+## Step 1 — Scaffold the project
+
+```sh
+npx create-next-app@latest q0-chat --typescript --app --tailwind
+cd q0-chat
+```
+
+Add your credentials to `.env.local`:
+
+```bash
+Q0_API_KEY=sk-...
+Q0_BASE_URL=https://api.q0.dev/v1
+Q0_MODEL=your-deployed-model-name
+```
+
+## Step 2 — Create the streaming route handler
+
+```ts
+// app/api/chat/route.ts
+export const runtime = "edge";
+
+export async function POST(req: Request) {
+  const { messages } = await req.json();
+
+  const upstream = await fetch(`${process.env.Q0_BASE_URL}/chat/completions`, {
+    method: "POST",
+    headers: {
+      Authorization: `Bearer ${process.env.Q0_API_KEY}`,
+      "Content-Type": "application/json",
+    },
+    body: JSON.stringify({
+      model: process.env.Q0_MODEL,
+      messages,
+      stream: true,
+    }),
+  });
+
+  // Forward the upstream SSE stream straight through to the browser
+  return new Response(upstream.body, {
+    headers: { "Content-Type": "text/event-stream" },
+  });
+}
+```
+
+Running on the edge runtime keeps time-to-first-token low since there's no cold Node process sitting between the browser and your endpoint.
+
+## Step 3 — Parse the stream on the client
+
+Q0's streaming responses follow the standard `data: {...}` server-sent-event format, ending in `data: [DONE]`.
+
+```ts
+// lib/streamChat.ts
+export async function streamChat(
+  messages: { role: string; content: string }[],
+  onToken: (token: string) => void
+) {
+  const res = await fetch("/api/chat", {
+    method: "POST",
+    body: JSON.stringify({ messages }),
+  });
+
+  const reader = res.body!.getReader();
+  const decoder = new TextDecoder();
+  let buffer = "";
+
+  while (true) {
+    const { done, value } = await reader.read();
+    if (done) break;
+    buffer += decoder.decode(value, { stream: true });
+
+    const lines = buffer.split("\n");
+    buffer = lines.pop() ?? "";
+
+    for (const line of lines) {
+      if (!line.startsWith("data: ")) continue;
+      const payload = line.slice(6);
+      if (payload === "[DONE]") return;
+
+      const json = JSON.parse(payload);
+      const token = json.choices?.[0]?.delta?.content;
+      if (token) onToken(token);
+    }
+  }
+}
+```
+
+## Step 4 — Build the chat component
+
+```tsx
+// app/page.tsx
+"use client";
+import { useState } from "react";
+import { streamChat } from "@/lib/streamChat";
+
+type Message = { role: "user" | "assistant"; content: string };
+
+export default function Chat() {
+  const [messages, setMessages] = useState<Message[]>([]);
+  const [input, setInput] = useState("");
+
+  async function send() {
+    const next: Message[] = [...messages, { role: "user", content: input }];
+    setMessages([...next, { role: "assistant", content: "" }]);
+    setInput("");
+
+    await streamChat(next, (token) => {
+      setMessages((prev) => {
+        const updated = [...prev];
+        updated[updated.length - 1].content += token;
+        return updated;
+      });
+    });
+  }
+
+  return (
+    <div className="max-w-xl mx-auto p-4 flex flex-col gap-3">
+      {messages.map((m, i) => (
+        <div key={i} className={m.role === "user" ? "text-right" : "text-left"}>
+          <span className="inline-block bg-gray-100 rounded-lg px-3 py-2">
+            {m.content}
+          </span>
+        </div>
+      ))}
+      <div className="flex gap-2">
+        <input
+          className="flex-1 border rounded-lg px-3 py-2"
+          value={input}
+          onChange={(e) => setInput(e.target.value)}
+          onKeyDown={(e) => e.key === "Enter" && send()}
+        />
+        <button onClick={send} className="bg-black text-white rounded-lg px-4">
+          Send
+        </button>
+      </div>
+    </div>
+  );
+}
+```
+
+## Step 5 — Add a system prompt and history limits
+
+Two things matter once this leaves your machine:
+
+- **System prompt.** Prepend a `{ role: "system", content: "..." }` message server-side (not client-side) so users can't override your assistant's instructions from the browser.
+- **Context length.** Trim older turns before sending to the endpoint — track token usage from the response and drop the oldest user/assistant pair once you approach the model's context window.
+
+```ts
+const trimmed = messages.slice(-12); // keep the last 12 turns
+const withSystem = [
+  { role: "system", content: "You are a support assistant for Acme Corp." },
+  ...trimmed,
+];
+```
+
+## Going to production
+
+| Concern | What to change |
+| --- | --- |
+| Traffic from many concurrent users | Move from a shared to a **dedicated** endpoint so latency doesn't degrade under load |
+| Cost control | Cap `max_tokens` per response and trim conversation history aggressively |
+| Reliability | Add a retry with backoff around the upstream `fetch` for transient 5xxs |
+| Latency-sensitive UX | Pick an **H100** tier deployment; **L40S** is usually the more cost-effective choice for lower-traffic bots |
+
+## Next steps
+
+- Read the **Deployments** module docs for shared vs. dedicated endpoint details and region selection (NM1 / DL1).
+- See **Build RAG Application** to ground this chatbot's answers in your own documents instead of the model's general knowledge.

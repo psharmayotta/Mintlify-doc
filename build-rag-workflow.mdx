@@ -1,0 +1,170 @@
+---
+title: "Build a RAG Application"
+description: "Ground an LLM's answers in your own documents using Q0's Datasets, Knowledge Base, and LLM Inference Engine modules together."
+---
+
+## What you're building
+
+Retrieval-Augmented Generation (RAG) solves a specific problem: a general-purpose model doesn't know the contents of your internal documents, and fine-tuning a model on them every time they change is slow and expensive. Instead, RAG retrieves the _relevant few paragraphs_ at question time and hands them to the model as context.
+
+On Q0, this maps directly onto three modules working together:
+
+<Frame>
+  ```mermaid
+  flowchart TB
+    subgraph Ingestion [One-time / on-update]
+        F[Source documents] --> DS[Datasets module]
+        DS --> KB[Knowledge Base: chunking + embedding model]
+        KB --> VS[(Vector store)]
+    end
+    subgraph "Query time"
+        Q[User question] --> E[Embed the question\nsame embedding model]
+        E --> VS
+        VS --> R[Top-k relevant chunks]
+        R --> P[Augmented prompt]
+        Q --> P
+        P --> L[Q0 LLM Inference Engine]
+        L --> A[Answer with citations]
+    end
+  ```
+</Frame>
+
+The key detail people miss: the model that answers the question and the embedding model that indexed your documents are **two separate deployments**, doing two different jobs.
+
+## Prerequisites
+
+| Component | Choice to make |
+| --- | --- |
+| Documents | Uploaded to the **Datasets** module (PDFs, docs, structured text) |
+| Embedding model | One of Q0's 6 supported embedding models — shorter documents with simple language can use a smaller/faster model; dense technical corpora benefit from a larger one |
+| Vector store | One of 6 supported vector stores — pick based on expected corpus size and whether you need metadata filtering |
+| Chat model | A deployed **LLM** category endpoint to generate the final answer |
+
+## Step 1 — Upload and prepare your documents
+
+Documents go into the **Datasets** module first. Q0 handles parsing common formats (PDF, DOCX, plain text, Markdown) into clean text before chunking.
+
+```python
+import requests
+
+Q0_BASE_URL = "https://api.q0.dev/v1"
+HEADERS = {"Authorization": f"Bearer {Q0_API_KEY}"}
+
+with open("product-handbook.pdf", "rb") as f:
+    resp = requests.post(
+        f"{Q0_BASE_URL}/datasets",
+        headers=HEADERS,
+        files={"file": f},
+        data={"name": "product-handbook"},
+    )
+dataset_id = resp.json()["dataset_id"]
+```
+
+## Step 2 — Create a Knowledge Base from the dataset
+
+This is where you choose the embedding model, chunking strategy, and vector store. Chunk size trades off two things: too large and irrelevant text dilutes the model's context; too small and you lose surrounding meaning.
+
+```python
+kb_resp = requests.post(
+    f"{Q0_BASE_URL}/knowledge-bases",
+    headers=HEADERS,
+    json={
+        "name": "product-handbook-kb",
+        "dataset_id": dataset_id,
+        "embedding_model": "q0-embed-base",   # one of Q0's 6 embedding models
+        "vector_store": "q0-vector-store-a",  # one of Q0's 6 vector stores
+        "chunk_size_tokens": 512,
+        "chunk_overlap_tokens": 64,
+    },
+)
+kb_id = kb_resp.json()["knowledge_base_id"]
+```
+
+## Step 3 — Trigger indexing
+
+Indexing runs as a background job — chunking, embedding, and writing vectors into the store all happen server-side.
+
+```python
+requests.post(f"{Q0_BASE_URL}/knowledge-bases/{kb_id}/index", headers=HEADERS)
+
+# Poll until ready
+status = requests.get(f"{Q0_BASE_URL}/knowledge-bases/{kb_id}", headers=HEADERS).json()
+print(status["indexing_status"])  # "pending" -> "indexed"
+```
+
+## Step 4 — Retrieve relevant chunks at query time
+
+```python
+def retrieve(kb_id: str, question: str, top_k: int = 5):
+    r = requests.post(
+        f"{Q0_BASE_URL}/knowledge-bases/{kb_id}/query",
+        headers=HEADERS,
+        json={"query": question, "top_k": top_k},
+    )
+    return [chunk["text"] for chunk in r.json()["results"]]
+```
+
+## Step 5 — Build the augmented prompt and call the LLM
+
+```python
+from together import Together  # Q0's Inference Engine speaks an OpenAI-compatible API
+
+client = Together(base_url=Q0_BASE_URL, api_key=Q0_API_KEY)
+
+def answer_question(kb_id: str, question: str, model: str) -> str:
+    chunks = retrieve(kb_id, question)
+    context = "\n\n---\n\n".join(chunks)
+
+    messages = [
+        {
+            "role": "system",
+            "content": (
+                "Answer only using the provided context. "
+                "If the context doesn't contain the answer, say so."
+            ),
+        },
+        {
+            "role": "user",
+            "content": f"Context:\n{context}\n\nQuestion: {question}",
+        },
+    ]
+
+    response = client.chat.completions.create(model=model, messages=messages)
+    return response.choices[0].message.content
+
+
+print(answer_question(kb_id, "What's the warranty period on the device?", "your-deployed-model-name"))
+```
+
+Sample output:
+
+```text
+Retrieved 5 chunks from product-handbook-kb (top_k=5)
+
+Answer: According to the handbook, the standard warranty period is 12 months
+from the date of purchase, extendable to 24 months with product registration.
+```
+
+## Step 6 — Keep the Knowledge Base current
+
+Documents change. Re-run indexing whenever the underlying dataset is updated rather than treating the Knowledge Base as a one-time setup step:
+
+```python
+requests.post(f"{Q0_BASE_URL}/datasets/{dataset_id}/versions", headers=HEADERS, files={"file": open("product-handbook-v2.pdf", "rb")})
+requests.post(f"{Q0_BASE_URL}/knowledge-bases/{kb_id}/index", headers=HEADERS)
+```
+
+## Common failure modes to check for
+
+| Symptom | Likely cause | Fix |
+| --- | --- | --- |
+| Answers ignore the context | Chunk size too small, key facts split across chunks | Increase `chunk_overlap_tokens` |
+| Retrieval returns unrelated chunks | Wrong embedding model for the domain (e.g. general-purpose model on highly technical text) | Try a different one of the 6 embedding models |
+| Slow query responses | Vector store not suited to corpus size | Re-evaluate vector store choice, or reduce `top_k` |
+| Model "answers" even when context is empty | System prompt not strict enough | Explicitly instruct the model to say "not found in context" |
+
+## Next steps
+
+- Use the **Benchmarking** module to compare answer latency across embedding model \+ vector store combinations before committing to one in production.
+- See **Build a Next.js Chatbot** to put a chat UI in front of this same `answer_question` function.
+- See **Build an Agent** if you want the assistant to also take actions, not just answer questions, on top of retrieved context.
