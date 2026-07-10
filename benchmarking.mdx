@@ -65,11 +65,11 @@ Following are the Benchmarking Type User can use -
 
 ## Model to Model Benchmarking
 
-#### Step 1 — Basic Details
+#### Provide Basic Details
 
 Add Benchmarking Name and Description to identify this benchmarking experiment
 
-#### Step 2 — Benchmarking Type
+#### Set Benchmarking Type
 
 Select “**Model Benchmarking”,** Compares performance between two different AI models — using the same or different model sources — across selected metrics like accuracy, latency, and cost.
 
@@ -197,27 +197,27 @@ For **Model Benchmarking** runs on Diffusion Models (Text to Image), Q0 generate
 
 | Column | Example | Description |
 | --- | --- | --- |
-| \*\*Model 1\*\* | \`Gpt-Oss-20b\` ⭐ | The first model in the comparison. Marked with a star (⭐) if it is the better overall performer across the run. |
-| \*\*Model 2\*\* | \`Stable-Diffusion-3.5-Large\` | The second model in the comparison. |
+| Model 1 | \`Gpt-Oss-20b\` ⭐ | The first model in the comparison. Marked with a star (⭐) if it is the better overall performer across the run. |
+| Model 2 | \`Stable-Diffusion-3.5-Large\` | The second model in the comparison. |
 
 **Result Navigation Tabs**
 
 | Tab | Description |
 | --- | --- |
-| \*\*Overview\*\* | Aggregated results across all datasets used in the run. In this example it mirrors the DrawBench Quality Metrics, since DrawBench is the primary quality-scoring dataset. |
-| \*\*DrawBench\*\* | Dataset-specific results from the DrawBench dataset — a prompt suite designed to stress-test text-to-image models across categories like color accuracy and object counting. |
-| \*\*COCO\*\* | Dataset-specific results from the COCO dataset — a general-purpose image benchmark used to score realism and semantic alignment via FID and CLIP Score. |
+| Overview | Aggregated results across all datasets used in the run. In this example it mirrors the DrawBench Quality Metrics, since DrawBench is the primary quality-scoring dataset. |
+| DrawBench | Dataset-specific results from the DrawBench dataset — a prompt suite designed to stress-test text-to-image models across categories like color accuracy and object counting. |
+| COCO | Dataset-specific results from the COCO dataset — a general-purpose image benchmark used to score realism and semantic alignment via FID and CLIP Score. |
 
 **1. Quality Metrics — DrawBench**
 
 | Metric | Gpt-Oss-20b (Model 1) | Stable-Diffusion-3.5-Large (Model 2) | Description |
 | --- | --- | --- | --- |
-| \*\*Success Rate\*\* | • 50.00% | • 50.00% | Percentage of DrawBench prompts each model successfully generated an image for, without errors or timeouts. |
-| \*\*Overall Score\*\* | • 39.47 | • 39.47 | A composite quality score aggregating all DrawBench category scores into a single number for the model. |
-| \*\*Category Scores – Colors\*\* | • 78.95 | • 78.95 | How accurately the model rendered the specific colors requested in the prompt (e.g., "a red cube next to a blue sphere"). |
-| \*\*Category Scores – Counting\*\* | • 0 | • 0 | How accurately the model rendered the correct number of objects requested in the prompt (e.g., "three apples on a table"). |
-| \*\*Human Preference\*\* | • 50 | • 50 | A relative preference score based on (simulated or collected) human judgments comparing outputs from both models on the same prompts. |
-| \*\*Generation Quality\*\* | • estimated fair | • estimated fair | An overall qualitative rating of image generation quality, estimated from the combined DrawBench category scores. |
+| Success Rate | • 50.00% | • 50.00% | Percentage of DrawBench prompts each model successfully generated an image for, without errors or timeouts. |
+| Overall Score | • 39.47 | • 39.47 | A composite quality score aggregating all DrawBench category scores into a single number for the model. |
+| Category Scores – Colors | • 78.95 | • 78.95 | How accurately the model rendered the specific colors requested in the prompt (e.g., "a red cube next to a blue sphere"). |
+| Category Scores – Counting | • 0 | • 0 | How accurately the model rendered the correct number of objects requested in the prompt (e.g., "three apples on a table"). |
+| Human Preference | • 50 | • 50 | A relative preference score based on (simulated or collected) human judgments comparing outputs from both models on the same prompts. |
+| Generation Quality | • estimated fair | • estimated fair | An overall qualitative rating of image generation quality, estimated from the combined DrawBench category scores. |
 
 <Note>
   **DrawBench** includes additional prompt categories beyond Colors and Counting (e.g., Position, Text Rendering, Conflicting Prompts) in the full benchmark suite. Only categories with non-zero coverage for the current run are shown here — the specific categories displayed depend on which DrawBench prompt subsets were included in the dataset selection.
@@ -227,12 +227,12 @@ For **Model Benchmarking** runs on Diffusion Models (Text to Image), Q0 generate
 
 | Metric | Gpt-Oss-20b (Model 1) | Stable-Diffusion-3.5-Large (Model 2) | Description |
 | --- | --- | --- | --- |
-| \*\*FID\*\* (Fréchet Inception Distance) | • 100 | • 100 | Measures how close the distribution of generated images is to the distribution of real COCO images. Lower values normally indicate more realistic, higher-fidelity generations. |
-| \*\*CLIP Score\*\* | • 0 | • 0 | Measures how well each generated image semantically matches its text prompt, using CLIP embeddings to score image-text alignment. |
-| \*\*Success Rate\*\* | • 0.00% | • 0.00% | Percentage of COCO prompts each model successfully generated an image for. |
-| \*\*Inception Score\*\* | • 1 | • 1 | A measure of both the quality and diversity of generated images, based on how confidently and variably an Inception classifier labels them. |
-| \*\*Latency Ms – P95\*\* | • 0.00 ms | • 0.00 ms | 95th percentile generation latency for COCO prompts specifically. |
-| \*\*Latency Ms – P99\*\* | • 0.00 ms | • 0.00 ms | 99th percentile generation latency for COCO prompts specifically. |
+| FID (Fréchet Inception Distance) | • 100 | • 100 | Measures how close the distribution of generated images is to the distribution of real COCO images. Lower values normally indicate more realistic, higher-fidelity generations. |
+| CLIP Score | • 0 | • 0 | Measures how well each generated image semantically matches its text prompt, using CLIP embeddings to score image-text alignment. |
+| Success Rate | • 0.00% | • 0.00% | Percentage of COCO prompts each model successfully generated an image for. |
+| Inception Score | • 1 | • 1 | A measure of both the quality and diversity of generated images, based on how confidently and variably an Inception classifier labels them. |
+| Latency Ms – P95 | • 0.00 ms | • 0.00 ms | 95th percentile generation latency for COCO prompts specifically. |
+| Latency Ms – P99 | • 0.00 ms | • 0.00 ms | 99th percentile generation latency for COCO prompts specifically. |
 
 <Tip>
   **Reading FID and CLIP Score together**:FID captures overall image realism/fidelity against real photos, while CLIP Score captures prompt faithfulness. A model can score well on one and poorly on the other — for example, generating photorealistic but semantically unrelated images. Always check both metrics together rather than optimizing for just one.
@@ -242,26 +242,26 @@ For **Model Benchmarking** runs on Diffusion Models (Text to Image), Q0 generate
 
 | Metric | Gpt-Oss-20b (Model 1) | Stable-Diffusion-3.5-Large (Model 2) | Description |
 | --- | --- | --- | --- |
-| \*\*Latency Ms – P95\*\* | 🟢 14358.87 ms | 🔴 14403.86 ms | 95th percentile time to generate a single image, across all prompts in the run. Lower is better. |
-| \*\*Latency Ms – P99\*\* | 🟢 14375.83 ms | 🔴 14409.31 ms | 99th percentile image generation latency — reflects near-worst-case generation time. Lower is better. |
-| \*\*Latency Ms – Mean\*\* | 🟢 14185.76 ms | 🔴 14257.62 ms | Average time to generate a single image across all prompts. Lower is better. |
-| \*\*Latency Ms – Median\*\* | 🟢 14263.04 ms | 🔴 14286.44 ms | Median (P50) image generation latency — less sensitive to outliers than the mean. Lower is better. |
-| \*\*Throughput – Images Per Hour\*\* | 🟢 253.78 | 🔴 252.50 | The sustained number of images each model can generate per hour under the benchmark's hardware and concurrency settings. Higher is better. |
-| \*\*Throughput – Images Per Minute\*\* | 🟢 4.23 | 🔴 4.21 | The sustained number of images generated per minute. Higher is better. |
-| \*\*Throughput – Pixels Per Second\*\* | 🟢 73,918 | 🔴 73,545 | Total pixel volume generated per second — accounts for both generation speed and output resolution. Higher is better. |
+| Latency Ms – P95 | 🟢 14358.87 ms | 🔴 14403.86 ms | 95th percentile time to generate a single image, across all prompts in the run. Lower is better. |
+| Latency Ms – P99 | 🟢 14375.83 ms | 🔴 14409.31 ms | 99th percentile image generation latency — reflects near-worst-case generation time. Lower is better. |
+| Latency Ms – Mean | 🟢 14185.76 ms | 🔴 14257.62 ms | Average time to generate a single image across all prompts. Lower is better. |
+| Latency Ms – Median | 🟢 14263.04 ms | 🔴 14286.44 ms | Median (P50) image generation latency — less sensitive to outliers than the mean. Lower is better. |
+| Throughput – Images Per Hour | 🟢 253.78 | 🔴 252.50 | The sustained number of images each model can generate per hour under the benchmark's hardware and concurrency settings. Higher is better. |
+| Throughput – Images Per Minute | 🟢 4.23 | 🔴 4.21 | The sustained number of images generated per minute. Higher is better. |
+| Throughput – Pixels Per Second | 🟢 73,918 | 🔴 73,545 | Total pixel volume generated per second — accounts for both generation speed and output resolution. Higher is better. |
 
 **4. Image Specs & Reliability**
 
 | Metric | Gpt-Oss-20b (Model 1) | Stable-Diffusion-3.5-Large (Model 2) | Description |
 | --- | --- | --- | --- |
-| \*\*Image Specs – Average Resolution\*\* | • 10,48,576 | • 10,48,576 | The average total pixel count (width × height) of images generated by each model (e.g., 1024×1024 = 10,48,576 pixels). Equal values confirm both models were configured to generate at the same output resolution. |
-| \*\*Image Specs – Total Pixels Generated\*\* | • 1,57,28,640 | • 1,57,28,640 | The cumulative pixel count across every image generated during the run, for each model. |
-| \*\*Reliability – Success Rate\*\* | • 50.00% | • 50.00% | Percentage of all generation requests (across both datasets) that completed successfully. |
-| \*\*Reliability – Total Samples\*\* | • 30 | • 30 | Total number of prompts submitted to each model across the full run. |
-| \*\*Reliability – Failed Samples\*\* | • 15 | • 15 | Number of prompts that failed to generate a valid image. |
-| \*\*Reliability – Successful Samples\*\* | • 15 | • 15 | Number of prompts that successfully generated a valid image. |
-| \*\*Total Time Minutes\*\* | 🟢 3.55 min | 🔴 3.56 min | Total wall-clock time taken to complete the full benchmark run, in minutes. Lower is better. |
-| \*\*Total Time Seconds\*\* | 🟢 212.79 s | 🔴 213.86 s | Total wall-clock time taken to complete the full benchmark run, in seconds. Lower is better. |
+| Image Specs – Average Resolution | • 10,48,576 | • 10,48,576 | The average total pixel count (width × height) of images generated by each model (e.g., 1024×1024 = 10,48,576 pixels). Equal values confirm both models were configured to generate at the same output resolution. |
+| Image Specs – Total Pixels Generated | • 1,57,28,640 | • 1,57,28,640 | The cumulative pixel count across every image generated during the run, for each model. |
+| Reliability – Success Rate | • 50.00% | • 50.00% | Percentage of all generation requests (across both datasets) that completed successfully. |
+| Reliability – Total Samples | • 30 | • 30 | Total number of prompts submitted to each model across the full run. |
+| Reliability – Failed Samples | • 15 | • 15 | Number of prompts that failed to generate a valid image. |
+| Reliability – Successful Samples | • 15 | • 15 | Number of prompts that successfully generated a valid image. |
+| Total Time Minutes | 🟢 3.55 min | 🔴 3.56 min | Total wall-clock time taken to complete the full benchmark run, in minutes. Lower is better. |
+| Total Time Seconds | 🟢 212.79 s | 🔴 213.86 s | Total wall-clock time taken to complete the full benchmark run, in seconds. Lower is better. |
 
 <Note>
   **Reading this example**:
@@ -377,8 +377,8 @@ Once a Hardware Benchmarking run reaches **Benchmark Completed**, Q0 generates a
 
 | Column | Example | Description |
 | --- | --- | --- |
-| \*\*Hardware 1\*\* | \`H100-2x-Cluster\` | The first hardware configuration — GPU type and count (e.g., H100 × 2 GPUs). Marked with ⭐ if it is the better overall performer. |
-| \*\*Hardware 2\*\* | \`L40S-1x-Cluster\` | The second hardware configuration (e.g., L40S × 1 GPU). |
+| Hardware 1 | \`H100-2x-Cluster\` | The first hardware configuration — GPU type and count (e.g., H100 × 2 GPUs). Marked with ⭐ if it is the better overall performer. |
+| Hardware 2 | \`L40S-1x-Cluster\` | The second hardware configuration (e.g., L40S × 1 GPU). |
 
 <Info>
   Green dots (🟢) indicate the better value for that metric; red dots (🔴) indicate the lower value. 
@@ -390,13 +390,13 @@ The Request Summary provides a high-level snapshot of how each hardware configur
 
 | Metric | H100-2x-Cluster (Hardware 1) | L40S-1x-Cluster (Hardware 2) | Description |
 | --- | --- | --- | --- |
-| \*\*Avg Latency Ms\*\* | 🟢 131.84 ms | 🔴 353.08 ms | Average time per inference request across the full dataset. Lower is better. |
-| \*\*Total Requests\*\* | 120 | 120 | Total number of inference requests submitted to each hardware configuration. Should match across both setups for a fair comparison. |
-| \*\*Failed Requests\*\* | 0 | 0 | Number of requests that returned an error or did not complete. \`0\` on both indicates a clean, fully successful run. |
-| \*\*Total Input Tokens\*\* | 4,696 | 4,696 | Total tokens sent as input across all requests. Equal on both — confirms the same workload was applied to each hardware. |
-| \*\*Successful Requests\*\* | 120 | 120 | Number of requests that returned a valid response. \`120/120\` = 100% success on both. |
-| \*\*Total Output Tokens\*\* | 🟢 658 | 🔴 653 | Total tokens generated by the model across all responses. Minor variance between hardware setups can reflect subtle differences in how each processes and truncates output. |
-| \*\*Success Rate Percent\*\* | 100.00% | 100.00% | Percentage of total requests that completed successfully. |
+| Avg Latency Ms | 🟢 131.84 ms | 🔴 353.08 ms | Average time per inference request across the full dataset. Lower is better. |
+| Total Requests | 120 | 120 | Total number of inference requests submitted to each hardware configuration. Should match across both setups for a fair comparison. |
+| Failed Requests | 0 | 0 | Number of requests that returned an error or did not complete. \`0\` on both indicates a clean, fully successful run. |
+| Total Input Tokens | 4,696 | 4,696 | Total tokens sent as input across all requests. Equal on both — confirms the same workload was applied to each hardware. |
+| Successful Requests | 120 | 120 | Number of requests that returned a valid response. \`120/120\` = 100% success on both. |
+| Total Output Token | 🟢 658 | 🔴 653 | Total tokens generated by the model across all responses. Minor variance between hardware setups can reflect subtle differences in how each processes and truncates output. |
+| Success Rate Percent | 100.00% | 100.00% | Percentage of total requests that completed successfully. |
 
 **2. Performance Metrics**
 
@@ -404,11 +404,11 @@ Performance Metrics measure the raw speed and throughput of each hardware config
 
 | Metric | H100-2x-Cluster (Hardware 1) | L40S-1x-Cluster (Hardware 2) | Description |
 | --- | --- | --- | --- |
-| \*\*TTFT Ms\*\* (Time to First Token) | 0.00 ms | 0.00 ms | Time elapsed from when a request is submitted to when the first output token is produced. Critical for streaming/real-time applications where perceived responsiveness matters. |
-| \*\*P95 Latency Ms\*\* | 🟢 182.45 ms | 🔴 468.99 ms | 95th percentile latency — 95% of all requests completed within this time. The key SLA metric for production deployments where tail latency must stay within acceptable bounds. |
-| \*\*Tokens Per Second\*\* | 🟢 63.14 | 🔴 35.57 | The rate at which the hardware generates output tokens across all concurrent requests. Higher is better — reflects raw generative throughput of each hardware setup. |
-| \*\*Peak Throughput RPS\*\* | 9 | 9 | The peak number of requests per second observed during the benchmark run. |
-| \*\*Requests Per Second\*\* | 🟢 11.52 | 🔴 6.54 | The average sustained throughput — how many inference requests each hardware completed per second across the full benchmark. Higher is better. |
+| TTFT M (Time to First Token) | 0.00 ms | 0.00 ms | Time elapsed from when a request is submitted to when the first output token is produced. Critical for streaming/real-time applications where perceived responsiveness matters. |
+| P95 Latency Ms | 🟢 182.45 ms | 🔴 468.99 ms | 95th percentile latency — 95% of all requests completed within this time. The key SLA metric for production deployments where tail latency must stay within acceptable bounds. |
+| Tokens Per Second | 🟢 63.14 | 🔴 35.57 | The rate at which the hardware generates output tokens across all concurrent requests. Higher is better — reflects raw generative throughput of each hardware setup. |
+| Peak Throughput RPS | 9 | 9 | The peak number of requests per second observed during the benchmark run. |
+| Requests Per Second | 🟢 11.52 | 🔴 6.54 | The average sustained throughput — how many inference requests each hardware completed per second across the full benchmark. Higher is better. |
 
 **3. Resource Metrics**
 
@@ -416,10 +416,10 @@ Resource Metrics show how efficiently each hardware configuration utilized its a
 
 | Metric | H100-2x-Cluster (Hardware 1) | L40S-1x-Cluster (Hardware 2) | Description |
 | --- | --- | --- | --- |
-| \*\*GPU Memory Used (GB)\*\* | 🟢 47.90 GB | 🔴 30.95 GB | Total GPU memory consumed by the model and its inference process. Higher memory usage on H100 reflects its larger memory capacity being actively used by the model. |
-| \*\*Memory Pressure Events\*\* | 0 | 0 | Number of times the system experienced GPU memory pressure (near-OOM conditions) during the benchmark. \`0\` on both indicates stable, unconstrained memory operation. |
-| \*\*CPU Utilization Percent\*\* | 🟢 4.71% | 🔴 4.32% | Percentage of available CPU capacity used during the benchmark. Low CPU utilization on both setups is expected — GPU inference is GPU-bound, not CPU-bound. |
-| \*\*GPU Utilization Percent\*\* | 🟢 0.32% | 🔴 0.52% | Percentage of GPU compute capacity actively in use during the benchmark. Low GPU utilization may indicate the workload was not large enough to fully saturate the GPU — or that the model is memory-bandwidth bound rather than compute-bound. |
+| GPU Memory Used (GB) | 🟢 47.90 GB | 🔴 30.95 GB | Total GPU memory consumed by the model and its inference process. Higher memory usage on H100 reflects its larger memory capacity being actively used by the model. |
+| Memory Pressure Events | 0 | 0 | Number of times the system experienced GPU memory pressure (near-OOM conditions) during the benchmark. \`0\` on both indicates stable, unconstrained memory operation. |
+| CPU Utilization Percent | 🟢 4.71% | 🔴 4.32% | Percentage of available CPU capacity used during the benchmark. Low CPU utilization on both setups is expected — GPU inference is GPU-bound, not CPU-bound. |
+| GPU Utilization Percent | 🟢 0.32% | 🔴 0.52% | Percentage of GPU compute capacity actively in use during the benchmark. Low GPU utilization may indicate the workload was not large enough to fully saturate the GPU — or that the model is memory-bandwidth bound rather than compute-bound. |
 
 **4. Accuracy Results**
 
@@ -427,10 +427,10 @@ Accuracy Results confirm that both hardware configurations produce identical mod
 
 | Metric | H100-2x-Cluster (Hardware 1) | L40S-1x-Cluster (Hardware 2) | Description |
 | --- | --- | --- | --- |
-| \*\*Total Correct\*\* | 48 | 48 | Number of evaluation questions answered correctly by the model on each hardware. Equal values confirm hardware-independent model accuracy. |
-| \*\*Datasets Tested\*\* | mmlu | mmlu | The evaluation dataset used for accuracy scoring. |
-| \*\*Total Questions\*\* | 120 | 120 | Total questions in the evaluation dataset submitted to each hardware. |
-| \*\*Overall Accuracy Percent\*\* | 40.00% | 40.00% | The model's overall accuracy score across all questions on each hardware. Equal values confirm the model produces the same quality outputs regardless of which hardware it runs on. |
+| Total Correct | 48 | 48 | Number of evaluation questions answered correctly by the model on each hardware. Equal values confirm hardware-independent model accuracy. |
+| Datasets Tested | mmlu | mmlu | The evaluation dataset used for accuracy scoring. |
+| Total Questions | 120 | 120 | Total questions in the evaluation dataset submitted to each hardware. |
+| Overall Accuracy Percent | 40.00% | 40.00% | The model's overall accuracy score across all questions on each hardware. Equal values confirm the model produces the same quality outputs regardless of which hardware it runs on. |
 
 <Note>
   **Accuracy Results** are expected to be identical across hardware configurations in a Hardware Benchmarking run, since the same model runs on both setups. Differences here would indicate a numerical precision issue introduced by the hardware or driver configuration.
@@ -442,9 +442,9 @@ Quality of Service metrics measure how reliably each hardware configuration meet
 
 | Metric | H100-2x-Cluster (Hardware 1) | L40S-1x-Cluster (Hardware 2) | Description |
 | --- | --- | --- | --- |
-| \*\*SLO Compliance Rate Percent\*\* | 95.00% | 95.00% | The percentage of requests that met the configured Service Level Objective (latency threshold). A value of 95% means 95 out of 100 requests completed within the defined SLO target. |
-| \*\*Error Budget Remaining Percent\*\* | 85.00% | 85.00% | The proportion of the allowable error budget that has not yet been consumed. Higher values mean more headroom before SLA breach thresholds are hit. |
-| \*\*Response Time Satisfaction Percent\*\* | 90.00% | 90.00% | The percentage of requests for which users would experience satisfactory response times, based on a predefined latency satisfaction threshold. |
+| SLO Compliance Rate Percent | 95.00% | 95.00% | The percentage of requests that met the configured Service Level Objective (latency threshold). A value of 95% means 95 out of 100 requests completed within the defined SLO target. |
+| Error Budget Remaining Percent | 85.00% | 85.00% | The proportion of the allowable error budget that has not yet been consumed. Higher values mean more headroom before SLA breach thresholds are hit. |
+| Response Time Satisfaction Percent | 90.00% | 90.00% | The percentage of requests for which users would experience satisfactory response times, based on a predefined latency satisfaction threshold. |
 
 **6. Reliability Metrics**
 
@@ -452,9 +452,9 @@ Reliability Metrics validate the stability and correctness of each hardware conf
 
 | Metric | H100-2x-Cluster (Hardware 1) | L40S-1x-Cluster (Hardware 2) | Description |
 | --- | --- | --- | --- |
-| \*\*OOM Incidents\*\* | 0 | 0 | Number of Out-of-Memory (OOM) events during the benchmark. \`0\` on both confirms neither hardware ran out of GPU memory under the test workload. |
-| \*\*Error Rate Percent\*\* | 0.00% | 0.00% | Percentage of requests that returned an error. \`0.00%\` on both indicates a fully reliable run with no failures on either hardware. |
-| \*\*Success Rate Percent\*\* | 100.00% | 100.00% | Percentage of requests that completed successfully. \`100.00%\` on both confirms complete reliability across the benchmark. |
+| OOM Incidents | 0 | 0 | Number of Out-of-Memory (OOM) events during the benchmark. \`0\` on both confirms neither hardware ran out of GPU memory under the test workload. |
+| Error Rate Percent | 0.00% | 0.00% | Percentage of requests that returned an error. \`0.00%\` on both indicates a fully reliable run with no failures on either hardware. |
+| Success Rate Percent | 100.00% | 100.00% | Percentage of requests that completed successfully. \`100.00%\` on both confirms complete reliability across the benchmark. |
 
 **7. Scalability Metrics**
 
@@ -462,10 +462,10 @@ Scalability Metrics reveal how each hardware configuration handles increasing lo
 
 | Metric | H100-2x-Cluster (Hardware 1) | L40S-1x-Cluster (Hardware 2) | Description |
 | --- | --- | --- | --- |
-| \*\*Scale Up Time Seconds\*\* | 0.00 s | 0.00 s | Time taken to bring a new replica online when scaling up. \`0.00 s\` indicates pre-warmed or near-instant scaling in the benchmark environment. |
-| \*\*Max Concurrent Requests\*\* | 30 | 30 | The maximum number of simultaneous inference requests each hardware configuration handled during the benchmark, as configured by the Concurrent Users setting. |
-| \*\*Pod Startup Time Seconds\*\* | 0.00 s | 0.00 s | Time for a new pod/container to start and become ready to serve requests after provisioning. |
-| \*\*Horizontal Scaling Efficiency Percent\*\* | 95.00% | 95.00% | The efficiency of adding additional replicas — how close to linear the throughput gain is when a new replica is added. \`95%\` indicates near-linear scaling efficiency on both setups. |
+| Scale Up Time Seconds | 0.00 s | 0.00 s | Time taken to bring a new replica online when scaling up. \`0.00 s\` indicates pre-warmed or near-instant scaling in the benchmark environment. |
+| Max Concurrent Requests | 30 | 30 | The maximum number of simultaneous inference requests each hardware configuration handled during the benchmark, as configured by the Concurrent Users setting. |
+| Pod Startup Time Seconds | 0.00 s | 0.00 s | Time for a new pod/container to start and become ready to serve requests after provisioning. |
+| Horizontal Scaling Efficiency Percent | 95.00% | 95.00% | The efficiency of adding additional replicas — how close to linear the throughput gain is when a new replica is added. \`95%\` indicates near-linear scaling efficiency on both setups. |
 
 **8. Infrastructure Health**
 
@@ -473,9 +473,9 @@ Infrastructure Health metrics provide a view into the underlying system stabilit
 
 | Metric | H100-2x-Cluster (Hardware 1) | L40S-1x-Cluster (Hardware 2) | Description |
 | --- | --- | --- | --- |
-| \*\*GPU ECC Errors\*\* | 0 | 0 | Number of GPU Error Correcting Code (ECC) memory errors detected during the benchmark. ECC errors indicate hardware-level memory faults. \`0\` on both confirms clean, healthy GPU hardware. |
-| \*\*System Load Average\*\* | 🟢 11.04 | 🔴 12.63 | Average system load (CPU queue depth) across the benchmark duration. Lower indicates a less burdened system; H100's higher core count handles the same workload at lower relative load. |
-| \*\*Disk Space Available Percent\*\* | 75.00% | 75.00% | Percentage of total disk space remaining on each node. Confirms adequate storage headroom for model weights, caches, and temporary files during inference. |
+| GPU ECC Errors | 0 | 0 | Number of GPU Error Correcting Code (ECC) memory errors detected during the benchmark. ECC errors indicate hardware-level memory faults. \`0\` on both confirms clean, healthy GPU hardware. |
+| System Load Average | 🟢 11.04 | 🔴 12.63 | Average system load (CPU queue depth) across the benchmark duration. Lower indicates a less burdened system; H100's higher core count handles the same workload at lower relative load. |
+| Disk Space Available Percent | 75.00% | 75.00% | Percentage of total disk space remaining on each node. Confirms adequate storage headroom for model weights, caches, and temporary files during inference. |
 
 **9. Advanced Analytics**
 
@@ -483,8 +483,8 @@ Advanced Analytics provide deeper operational insights into queuing behavior and
 
 | Metric | H100-2x-Cluster (Hardware 1) | L40S-1x-Cluster (Hardware 2) | Description |
 | --- | --- | --- | --- |
-| \*\*Queue Wait Time Ms\*\* | 0.00 ms | 0.00 ms | Average time requests spent waiting in queue before inference began. \`0.00 ms\` indicates no queuing bottleneck — all requests were immediately processed. |
-| \*\*Cost Efficiency Score\*\* | 85 | 85 | A composite score (0–100) representing how efficiently each hardware configuration converts GPU cost into inference throughput and quality. Higher is better. Helps contextualize performance results against the ₹/GPU/hr cost of each setup. |
+| Queue Wait Time Ms | 0.00 ms | 0.00 ms | Average time requests spent waiting in queue before inference began. \`0.00 ms\` indicates no queuing bottleneck — all requests were immediately processed. |
+| Cost Efficiency Score | 85 | 85 | A composite score (0–100) representing how efficiently each hardware configuration converts GPU cost into inference throughput and quality. Higher is better. Helps contextualize performance results against the ₹/GPU/hr cost of each setup. |
 
 **10. Kubernetes Metrics**
 
@@ -492,8 +492,8 @@ Kubernetes Metrics confirm the health of the container orchestration layer runni
 
 | Metric | H100-2x-Cluster (Hardware 1) | L40S-1x-Cluster (Hardware 2) | Description |
 | --- | --- | --- | --- |
-| \*\*Pod Scheduling Success Rate Percent\*\* | 100.00% | 100.00% | The percentage of pod scheduling requests that were successfully placed on available nodes. \`100%\` on both confirms no scheduling failures or resource contention during the benchmark. |
-| \*\*Resource Request Utilization Percent\*\* | 85.00% | 85.00% | The percentage of requested CPU/memory/GPU resources that were actively utilized during the benchmark. \`85%\` indicates efficient resource allocation — close to fully using what was provisioned without waste. |
+| Pod Scheduling Success Rate Percent | 100.00% | 100.00% | The percentage of pod scheduling requests that were successfully placed on available nodes. \`100%\` on both confirms no scheduling failures or resource contention during the benchmark. |
+| Resource Request Utilization Percent | 85.00% | 85.00% | The percentage of requested CPU/memory/GPU resources that were actively utilized during the benchmark. \`85%\` indicates efficient resource allocation — close to fully using what was provisioned without waste. |
 
 **11. Concurrent User Breakdown**
 
@@ -501,10 +501,10 @@ For benchmarks configured with multiple Concurrent User levels, results are also
 
 | Metric | H100-2x-Cluster (Hardware 1) | L40S-1x-Cluster (Hardware 2) | Description |
 | --- | --- | --- | --- |
-| \*\*Avg Latency Ms\*\* | 🟢 93.25 ms | 🔴 275.06 ms | Average inference latency at this specific concurrency level (e.g., 1 concurrent user). |
-| \*\*Correct Answers\*\* | 12 | 12 | Number of correct answers at this concurrency level. Equal values confirm hardware-independent accuracy. |
-| \*\*Total Questions\*\* | 30 | 30 | Questions evaluated at this concurrency level (a subset of the full dataset, proportioned across concurrent user levels). |
-| \*\*Accuracy Percent\*\* | 40.00% | 40.00% | Model accuracy at this specific concurrency level. |
+| Avg Latency Ms | 🟢 93.25 ms | 🔴 275.06 ms | Average inference latency at this specific concurrency level (e.g., 1 concurrent user). |
+| Correct Answers | 12 | 12 | Number of correct answers at this concurrency level. Equal values confirm hardware-independent accuracy. |
+| Total Questions | 30 | 30 | Questions evaluated at this concurrency level (a subset of the full dataset, proportioned across concurrent user levels). |
+| Accuracy Percent | 40.00% | 40.00% | Model accuracy at this specific concurrency level. |
 
 <Tip>
   **How to read Hardware Benchmarking results**: Focus first on **Avg Latency Ms** and **Tokens Per Second** in Performance Metrics — these are the clearest indicators of which hardware is faster. Then check **Resource Metrics** to understand utilization efficiency, and **Cost Efficiency Score** in Advanced Analytics to contextualize performance against hourly GPU cost. If both configurations show identical Accuracy Results, the hardware choice is purely a performance and cost decision.
@@ -649,12 +649,12 @@ Task Metrics measure how accurately and correctly the model completed the evalua
 
 | Metric | Description | Ideal Value |
 | --- | --- | --- |
-| \*\*F1\*\* | The harmonic mean of Precision and Recall. Measures how well the model's answers overlap with the reference answers — balancing false positives (incorrect content generated) and false negatives (correct content missed). A score of \`1.0\` is perfect; \`0\` means no overlap. | Higher is better (max 1.0) |
-| \*\*AnIs\*\* | Average Normalized Inverse Score — a normalized measure of answer quality that accounts for variations in phrasing. Useful for tasks where partial credit should be given for near-correct answers. | Higher is better |
-| \*\*Accuracy\*\* | The percentage of evaluation samples for which the model's output exactly or substantially matches the correct answer. Computed as: \`Correct predictions / Total predictions\`. | Higher is better (max 1.0 / 100%) |
-| \*\*Exact Match\*\* | The strictest accuracy metric — the proportion of samples where the model's output is a character-for-character match with the reference answer, with no tolerance for minor phrasing differences. Used heavily in QA benchmarks like SQuAD and MMLU. | Higher is better (max 1.0) |
-| \*\*Choice Accuracy\*\* | For multiple-choice tasks (e.g., MMLU), the percentage of questions where the model selected the correct answer option (A, B, C, D). More lenient than Exact Match — scores the answer choice, not the full text. | Higher is better (max 1.0) |
-| \*\*Avg Latency Ms\*\* | The average time (in milliseconds) the model took to generate a response per sample across the entire evaluation dataset. Included in Task Metrics as a quick latency reference alongside quality scores. | Lower is better |
+| F1 | The harmonic mean of Precision and Recall. Measures how well the model's answers overlap with the reference answers — balancing false positives (incorrect content generated) and false negatives (correct content missed). A score of \`1.0\` is perfect; \`0\` means no overlap. | Higher is better (max 1.0) |
+| AnIs | Average Normalized Inverse Score — a normalized measure of answer quality that accounts for variations in phrasing. Useful for tasks where partial credit should be given for near-correct answers. | Higher is better |
+| Accuracy | The percentage of evaluation samples for which the model's output exactly or substantially matches the correct answer. Computed as: \`Correct predictions / Total predictions\`. | Higher is better (max 1.0 / 100%) |
+| Exact Match | The strictest accuracy metric — the proportion of samples where the model's output is a character-for-character match with the reference answer, with no tolerance for minor phrasing differences. Used heavily in QA benchmarks like SQuAD and MMLU. | Higher is better (max 1.0) |
+| Choice Accuracy | For multiple-choice tasks (e.g., MMLU), the percentage of questions where the model selected the correct answer option (A, B, C, D). More lenient than Exact Match — scores the answer choice, not the full text. | Higher is better (max 1.0) |
+| Avg Latency Ms | The average time (in milliseconds) the model took to generate a response per sample across the entire evaluation dataset. Included in Task Metrics as a quick latency reference alongside quality scores. | Lower is better |
 
 **2. Performance Metrics**
 
@@ -666,14 +666,14 @@ Performance Metrics measure the speed and throughput characteristics of the mode
 | Max Latency Ms | ms | The maximum observed latency across all samples — the worst-case response time seen during the evaluation run. | Lower is better |
 | Min Latency Ms | ms | The minimum observed latency — the fastest response time seen across all samples. | Lower is better |
 | P50 Latency Ms | ms | The 50th percentile (median) latency — half of all requests were completed faster than this value. A robust central-tendency measure less affected by extreme outliers than the mean. | Lower is better |
-| \*\*P95 Latency Ms\*\* | ms | The 95th percentile latency — 95% of requests completed within this time. A key SLA metric for real-world applications where tail latency matters. | Lower is better |
-| \*\*P99 Latency Ms\*\* | ms | The 99th percentile latency — 99% of requests completed within this time. Reflects worst-case performance for the vast majority of traffic; critical for latency-sensitive production workloads. | Lower is better |
-| \*\*Latency Std Dev Ms\*\* | ms | Standard deviation of latency across all samples — measures how consistent (or variable) the model's response times are. A high standard deviation indicates unpredictable latency spikes. | Lower is better |
-| \*\*Total Tokens Input\*\* | count | The total number of input tokens processed across all evaluation samples (e.g., \`1,200\`). Useful for cost estimation and understanding the total prompt volume the model handled. | Reference value |
-| \*\*Avg Tokens Per \[Request\]\*\* | count | The average number of input tokens per evaluation sample — reflects the typical prompt length for this dataset and task. | Reference value |
-| \*\*Total Tokens Generated\*\* | count | The total number of output tokens generated by the model across all samples (e.g., \`100\`). | Reference value |
-| \*\*Avg Input Length Tokens\*\* | count | Average number of tokens per input prompt across the dataset (e.g., \`12\`). Indicates how concise or detailed the evaluation prompts were. | Reference value |
-| \*\*Avg Output Length Tokens\*\* | count | Average number of tokens per model response across the dataset (e.g., \`1\`). For choice-based tasks like MMLU, this is typically very small (1–3 tokens). | Reference value |
+| P95 Latency Ms | ms | The 95th percentile latency — 95% of requests completed within this time. A key SLA metric for real-world applications where tail latency matters. | Lower is better |
+| P99 Latency Ms | ms | The 99th percentile latency — 99% of requests completed within this time. Reflects worst-case performance for the vast majority of traffic; critical for latency-sensitive production workloads. | Lower is better |
+| Latency Std Dev Ms | ms | Standard deviation of latency across all samples — measures how consistent (or variable) the model's response times are. A high standard deviation indicates unpredictable latency spikes. | Lower is better |
+| Total Tokens Input | count | The total number of input tokens processed across all evaluation samples (e.g., \`1,200\`). Useful for cost estimation and understanding the total prompt volume the model handled. | Reference value |
+| Avg Tokens Per \[Request\] | count | The average number of input tokens per evaluation sample — reflects the typical prompt length for this dataset and task. | Reference value |
+| Total Tokens Generated | count | The total number of output tokens generated by the model across all samples (e.g., \`100\`). | Reference value |
+| Avg Input Length Tokens | count | Average number of tokens per input prompt across the dataset (e.g., \`12\`). Indicates how concise or detailed the evaluation prompts were. | Reference value |
+| Avg Output Length Tokens | count | Average number of tokens per model response across the dataset (e.g., \`1\`). For choice-based tasks like MMLU, this is typically very small (1–3 tokens). | Reference value |
 
 **3. Reliability Metrics**
 
@@ -681,12 +681,12 @@ Reliability Metrics measure the stability and robustness of the model's response
 
 | Metric | Unit | Description | Ideal Value |
 | --- | --- | --- | --- |
-| \*\*Error Rate\*\* | % | The percentage of evaluation samples for which the model returned an error — failed requests, timeouts, or malformed responses — rather than a valid output (e.g., \`100.00%\` means all requests failed; \`0%\` means none failed). | Lower is better (target: 0%) |
-| \*\*Timeout Rate\*\* | % | The percentage of requests that exceeded the configured response timeout threshold and were terminated before a response was produced. | Lower is better (target: 0%) |
-| \*\*Response Rate\*\* | % | The percentage of evaluation samples for which the model returned any response (successful or otherwise). Complement of Error Rate: \`Response Rate \+ Error Rate = 100%\` when no timeouts occur. | Higher is better (target: 100%) |
-| \*\*Total Samples\*\* | count | The total number of evaluation samples in the dataset that were submitted to the model (e.g., \`100\`). Confirms the full evaluation scope. | Reference value |
-| \*\*Successful Samples\*\* | count | The number of samples for which the model returned a valid, parseable response (e.g., \`0\` in a failed run). | Higher is better (target: Total Samples) |
-| \*\*Empty Response Rate\*\* | % | The percentage of requests for which the model returned an empty or null response — even when no error was technically raised (e.g., \`100.00%\` means all responses were empty). A high Empty Response Rate alongside a high Error Rate typically indicates an authentication, access, or model configuration issue. | Lower is better (target: 0%) |
+| Error Rate | % | The percentage of evaluation samples for which the model returned an error — failed requests, timeouts, or malformed responses — rather than a valid output (e.g., \`100.00%\` means all requests failed; \`0%\` means none failed). | Lower is better (target: 0%) |
+| Timeout Rate | % | The percentage of requests that exceeded the configured response timeout threshold and were terminated before a response was produced. | Lower is better (target: 0%) |
+| Response Rate | % | The percentage of evaluation samples for which the model returned any response (successful or otherwise). Complement of Error Rate: \`Response Rate \+ Error Rate = 100%\` when no timeouts occur. | Higher is better (target: 100%) |
+| Total Samples | count | The total number of evaluation samples in the dataset that were submitted to the model (e.g., \`100\`). Confirms the full evaluation scope. | Reference value |
+| Successful Samples | count | The number of samples for which the model returned a valid, parseable response (e.g., \`0\` in a failed run). | Higher is better (target: Total Samples) |
+| Empty Response Rate | % | The percentage of requests for which the model returned an empty or null response — even when no error was technically raised (e.g., \`100.00%\` means all responses were empty). A high Empty Response Rate alongside a high Error Rate typically indicates an authentication, access, or model configuration issue. | Lower is better (target: 0%) |
 
 <Note>
   **Interpreting Reliability Metrics**: An `Error Rate` of 100% combined with an `Empty Response Rate` of 100% and `Successful Samples` of 0 indicates that none of the model's requests completed successfully. This typically points to an infrastructure or authentication issue (e.g., restricted model access, invalid credentials, network failure) rather than a model quality issue. Check the benchmarking run's logs for specific error messages
@@ -698,13 +698,13 @@ Output Quality metrics evaluate characteristics of the model's generated text be
 
 | Metric | Unit | Description | Ideal Value |
 | --- | --- | --- | --- |
-| \*\*Toxicity Score\*\* | 0–1 | A measure of how much harmful, offensive, or inappropriate content appears in the model's outputs, scored by an automated toxicity classifier. A score of \`0\` means no toxic content was detected; \`1\` means all outputs were flagged as toxic. | Lower is better (target: 0) |
-| \*\*Repetition Score\*\* | 0–1 | Measures how often the model repeats the same phrases, sentences, or token sequences within or across its responses. High repetition indicates degenerate output patterns (e.g., the model getting "stuck" repeating content). | Lower is better (target: 0) |
-| \*\*Hallucination Rate\*\* | % | The estimated percentage of responses containing factually incorrect or fabricated information not grounded in the prompt or dataset context. Measured by automated fact-checking or consistency checking against the dataset's reference answers. | Lower is better (target: 0%) |
-| \*\*Std Dev Output Length\*\* | tokens | Standard deviation of output length in tokens across all responses — measures consistency of response length. A high value means the model produces wildly variable-length outputs; a low value means responses are consistently sized. | Lower is better for consistency |
-| \*\*Vocabulary Richness (TTR)\*\* | 0–1 | Type-Token Ratio — the ratio of unique tokens to total tokens across all generated responses. Higher TTR means the model uses a diverse, rich vocabulary; lower TTR indicates repetitive or formulaic language patterns. | Higher is better for creative/generative tasks; lower may be acceptable for structured QA |
-| \*\*Avg Output Length Tokens\*\* | tokens | Average number of tokens across all model responses (e.g., \`1\`). A very low average (1–2 tokens) is expected for multiple-choice tasks; higher values are expected for summarization, generation, or reasoning tasks. | Task-dependent |
-| \*\*Max Output Length Tokens | tokens | The longest response generated across all evaluation samples (e.g., \`1\`). Indicates the upper bound of model verbosity for this dataset and configuration. | Task-dependent |
+| Toxicity Score | 0–1 | A measure of how much harmful, offensive, or inappropriate content appears in the model's outputs, scored by an automated toxicity classifier. A score of \`0\` means no toxic content was detected; \`1\` means all outputs were flagged as toxic. | Lower is better (target: 0) |
+| Repetition Score | 0–1 | Measures how often the model repeats the same phrases, sentences, or token sequences within or across its responses. High repetition indicates degenerate output patterns (e.g., the model getting "stuck" repeating content). | Lower is better (target: 0) |
+| Hallucination Rate | % | The estimated percentage of responses containing factually incorrect or fabricated information not grounded in the prompt or dataset context. Measured by automated fact-checking or consistency checking against the dataset's reference answers. | Lower is better (target: 0%) |
+| Std Dev Output Length | tokens | Standard deviation of output length in tokens across all responses — measures consistency of response length. A high value means the model produces wildly variable-length outputs; a low value means responses are consistently sized. | Lower is better for consistency |
+| Vocabulary Richness (TTR) | 0–1 | Type-Token Ratio — the ratio of unique tokens to total tokens across all generated responses. Higher TTR means the model uses a diverse, rich vocabulary; lower TTR indicates repetitive or formulaic language patterns. | Higher is better for creative/generative tasks; lower may be acceptable for structured QA |
+| Avg Output Length Tokens | tokens | Average number of tokens across all model responses (e.g., \`1\`). A very low average (1–2 tokens) is expected for multiple-choice tasks; higher values are expected for summarization, generation, or reasoning tasks. | Task-dependent |
+| Max Output Length Tokens | tokens | The longest response generated across all evaluation samples (e.g., \`1\`). Indicates the upper bound of model verbosity for this dataset and configuration. | Task-dependent |
 | Min Output Length Tokens | tokens | The shortest response generated across all evaluation samples (e.g., \`1\`). Along with Max and Avg, forms the complete output length distribution. | Task-dependent |
 
 ## Knowledge Base Benchmarking
@@ -740,11 +740,11 @@ Provide a unique **Benchmarking Name** (e.g., `Bench_Hardware`) and an optional 
 
 | Field | Description |
 | --- | --- |
-| \*\*Model Source\*\*\* | Where the model comes from — e.g., \`Huggingface\` for Model 1, \`GCP\` for Model 2. Each model can be sourced independently. |
-| \*\*Model Path\*\*\* | The repo path (Huggingface) or storage URI (GCP/cloud) where the model is located. Verified automatically with a green \*\*Verified\*\* badge once confirmed. |
-| \*\*Model Class\*\*\* | The model architecture/pipeline class used to load the model (e.g., \`WhisperForConditionalGeneration\`). Must match the model's actual implementation. |
-| \*\*Secret\*\*\* | Authentication method — \*\*Existing Secret\*\* (select a previously saved credential, e.g., \`Hugg\`, \`GCPtest\`) or \*\*Create New Secret\*\*. |
-| \*\*Select Secret\*\*\* | The specific saved secret to use, scoped to the chosen Model Source. |
+| Model Source | Where the model comes from — e.g., \`Huggingface\` for Model 1, \`GCP\` for Model 2. Each model can be sourced independently. |
+| Model Path | The repo path (Huggingface) or storage URI (GCP/cloud) where the model is located. Verified automatically with a green \*\*Verified\*\* badge once confirmed. |
+| Model Class | The model architecture/pipeline class used to load the model (e.g., \`WhisperForConditionalGeneration\`). Must match the model's actual implementation. |
+| Secret | Authentication method — \*\*Existing Secret\*\* (select a previously saved credential, e.g., \`Hugg\`, \`GCPtest\`) or \*\*Create New Secret\*\*. |
+| Select Secret | The specific saved secret to use, scoped to the chosen Model Source. |
 
 <Note>
   Configuring **Model 2** is optional for Knowledge Base Pipeline benchmarking. Configure only **Model 1** to evaluate a single model's performance against the Knowledge Base, or configure both to run a side-by-side comparison of two models against the same Knowledge Base and dataset — mirroring how \[Model Benchmarking\](#step-2--benchmarking-type) compares two models directly.
@@ -756,9 +756,9 @@ Select the dataset of queries/prompts that will be sent through the Knowledge Ba
 
 | Field | Description |
 | --- | --- |
-| \*\*Existing Dataset / Create New Dataset\*\* | Toggle between reusing a dataset already in Q0 (library or custom) or creating a new one specifically for this run. See \[Step 3 — Dataset\](#step-3--dataset) for full field details. |
-| \*\*Select An Existing Dataset\*\*\* | Dropdown to choose the dataset once \*\*Existing Dataset\*\* is selected. |
-| \*\*Add Another Dataset\*\* | Adds an additional dataset to the run, letting the Knowledge Base pipeline be evaluated against more than one dataset (e.g., different query sets or topics) in a single benchmarking run — each will appear as its own results tab once the run completes. |
+| Existing Dataset / Create New Dataset | Toggle between reusing a dataset already in Q0 (library or custom) or creating a new one specifically for this run. See \[Step 3 — Dataset\](#step-3--dataset) for full field details. |
+| Select An Existing Dataset | Dropdown to choose the dataset once \*\*Existing Dataset\*\* is selected. |
+| Add Another Dataset | Adds an additional dataset to the run, letting the Knowledge Base pipeline be evaluated against more than one dataset (e.g., different query sets or topics) in a single benchmarking run — each will appear as its own results tab once the run completes. |
 
 #### Step 4 — Inferencing Settings
 
@@ -790,8 +790,8 @@ Once submitted, a Knowledge Base Pipeline run progresses through the same \[Benc
 
 | Tab | Description |
 | --- | --- |
-| \*\*Overview\*\* | Aggregated results across all datasets used in the run. In this example it mirrors the single dataset tab, since only one dataset (\`QO Test1\`) was used. |
-| \*\*\[Dataset Name\]\*\* (e.g., QO Test1) | Dataset-specific results, showing metrics computed only against that dataset's queries run through the Knowledge Base pipeline. |
+| Overview | Aggregated results across all datasets used in the run. In this example it mirrors the single dataset tab, since only one dataset (\`QO Test1\`) was used. |
+| \[Dataset Name\]\*\* (e.g., QO Test1) | Dataset-specific results, showing metrics computed only against that dataset's queries run through the Knowledge Base pipeline. |
 
 **1. Quality Metrics**
 
@@ -799,21 +799,21 @@ Quality Metrics measure how accurate, grounded, and relevant each model's genera
 
 | Metric | Gpt-Oss-20b (Model 1) | Gpt-Oss-20b (Model 2) | Description |
 | --- | --- | --- | --- |
-| \*\*Bleu\*\* | • 0 | • 0 | Measures n-gram overlap between the model's generated answer and a reference answer. Commonly used for translation/generation quality; \`0\` here indicates no exact reference match on this dataset. |
-| \*\*Rouge 1\*\* | • 0 | • 0 | Unigram (single-word) overlap between generated and reference answers. |
-| \*\*Rouge 2\*\* | • 0 | • 0 | Bigram (two-word sequence) overlap between generated and reference answers — a stricter phrasing match than Rouge 1. |
-| \*\*Rouge L\*\* | • 0 | • 0 | Longest Common Subsequence overlap between generated and reference answers — captures sentence-level structural similarity. |
-| \*\*Token F1\*\* | • 0 | • 0 | The harmonic mean of token-level precision and recall between the generated answer and the reference answer. |
-| \*\*Exact Match\*\* | • 0 | • 0 | Whether the generated answer exactly matches the reference answer, character-for-character. |
-| \*\*Context Recall\*\* | • 0 | • 0 | The proportion of information in the reference answer that is actually present in the retrieved context — measures whether the pipeline retrieved \*enough\* of the right information. |
-| \*\*Context Precision\*\* | • 0 | • 0 | The proportion of the retrieved context that is actually relevant to answering the query — measures whether retrieval pulled in irrelevant/noisy chunks. |
-| \*\*Faithfulness Score\*\* | 🟢 0.14 | 🔴 0.11 | Measures how well the generated answer is grounded in the retrieved context, rather than the model's own unsupported knowledge. Higher means the answer sticks more closely to what was actually retrieved. |
-| \*\*Hallucination Rate\*\* | • 60.00% | • 60.00% | The percentage of generated answers containing claims not supported by the retrieved context. A high value on both models here signals the pipeline (dataset, chunking, or retrieval quality) needs attention — see the interpretation note below. |
-| \*\*Answer Length Ratio\*\* | • 0 | • 0 | Ratio of the generated answer's length to the reference answer's length — flags answers that are unusually short or long relative to expectations. |
-| \*\*Deepeval Exact Match\*\* | • 0 | • 0 | Exact-match scoring computed via the DeepEval evaluation framework, used as a cross-check against Q0's native Exact Match metric. |
-| \*\*Answer Relevance Score\*\* | 🟢 0.26 | 🔴 0.24 | Measures how directly the generated answer addresses the actual query asked, independent of whether it's grounded in context. Higher is better. |
-| \*\*Answer Contains Expected\*\* | • 0 | • 0 | Whether the expected/reference answer's key content is contained within the model's generated answer. |
-| \*\*Expected Contains Answer\*\* | • 0 | • 0 | The inverse check — whether the model's generated answer's content is fully contained within the expected/reference answer (flags overly narrow answers). |
+| Bleu | • 0 | • 0 | Measures n-gram overlap between the model's generated answer and a reference answer. Commonly used for translation/generation quality; \`0\` here indicates no exact reference match on this dataset. |
+| Rouge 1 | • 0 | • 0 | Unigram (single-word) overlap between generated and reference answers. |
+| Rouge 2 | • 0 | • 0 | Bigram (two-word sequence) overlap between generated and reference answers — a stricter phrasing match than Rouge 1. |
+| Rouge L | • 0 | • 0 | Longest Common Subsequence overlap between generated and reference answers — captures sentence-level structural similarity. |
+| Token F1 | • 0 | • 0 | The harmonic mean of token-level precision and recall between the generated answer and the reference answer. |
+| Exact Match | • 0 | • 0 | Whether the generated answer exactly matches the reference answer, character-for-character. |
+| Context Recall | • 0 | • 0 | The proportion of information in the reference answer that is actually present in the retrieved context — measures whether the pipeline retrieved \*enough\* of the right information. |
+| Context Precision | • 0 | • 0 | The proportion of the retrieved context that is actually relevant to answering the query — measures whether retrieval pulled in irrelevant/noisy chunks. |
+| Faithfulness Score | 🟢 0.14 | 🔴 0.11 | Measures how well the generated answer is grounded in the retrieved context, rather than the model's own unsupported knowledge. Higher means the answer sticks more closely to what was actually retrieved. |
+| Hallucination Rate | • 60.00% | • 60.00% | The percentage of generated answers containing claims not supported by the retrieved context. A high value on both models here signals the pipeline (dataset, chunking, or retrieval quality) needs attention — see the interpretation note below. |
+| Answer Length Ratio | • 0 | • 0 | Ratio of the generated answer's length to the reference answer's length — flags answers that are unusually short or long relative to expectations. |
+| Deepeval Exact Match | • 0 | • 0 | Exact-match scoring computed via the DeepEval evaluation framework, used as a cross-check against Q0's native Exact Match metric. |
+| Answer Relevance Score | 🟢 0.26 | 🔴 0.24 | Measures how directly the generated answer addresses the actual query asked, independent of whether it's grounded in context. Higher is better. |
+| Answer Contains Expected | • 0 | • 0 | Whether the expected/reference answer's key content is contained within the model's generated answer. |
+| Expected Contains Answer | • 0 | • 0 | The inverse check — whether the model's generated answer's content is fully contained within the expected/reference answer (flags overly narrow answers). |
 
 <Note>
   Reading a low Faithfulness Score alongside a high Hallucination Rate:\*\* In this example, both models show a low Faithfulness Score (0.11–0.14) and a 60% Hallucination Rate. Together, these indicate the generated answers are not staying well-grounded in the content retrieved from the Knowledge Base — worth investigating the Knowledge Base's chunking strategy, embedding model, or dataset query difficulty (see \[Knowledge Base\](/knowledge-base) documentation) before treating either model as production-ready on this pipeline.
@@ -825,16 +825,16 @@ Retrieval Metrics isolate the performance of the Knowledge Base's retrieval step
 
 | Metric | Gpt-Oss-20b (Model 1) | Gpt-Oss-20b (Model 2) | Description |
 | --- | --- | --- | --- |
-| \*\*Retrieval Mrr\*\* (Mean Reciprocal Rank) | • 0 | • 0 | Measures how high up the correct/relevant context chunk ranked in the retrieval results, averaged across all queries. Higher is better. |
-| \*\*Avg Context Tokens\*\* | • 118.80 | • 118.80 | Average number of tokens in the retrieved context passed to the model per query. Equal across models — confirms both were given identical retrieved context for a fair comparison. |
-| \*\*Avg Retrieval Score\*\* | • 0.39 | • 0.39 | The average similarity/relevance score of retrieved chunks against the query, as computed by the Knowledge Base's vector search. |
-| \*\*Top1 Retrieval Score\*\* | • 0.40 | • 0.40 | The relevance score of the single highest-ranked retrieved chunk, averaged across all queries. |
-| \*\*Retrieval Context Hit\*\* | • 0 | • 0 | Whether the correct/expected context chunk was present anywhere in the retrieved results for a query. |
-| \*\*Retrieval Success Rate\*\* | • 100.00% | • 100.00% | Percentage of queries for which the retrieval step successfully returned at least one context chunk. |
-| \*\*Avg Retrieval Latency\*\* | 🟢 30.64 ms | 🔴 29.52 ms | Average time taken by the Knowledge Base to retrieve relevant context per query. Since retrieval uses the same pipeline for both models, small differences typically reflect measurement noise rather than a true retrieval difference. |
-| \*\*P50 Retrieval Latency Ms\*\* | 🟢 25.55 ms | 🔴 24.52 ms | Median retrieval latency across all queries. |
-| \*\*P95 Retrieval Latency Ms\*\* | 🟢 42.37 ms | 🔴 45.11 ms | 95th percentile retrieval latency — reflects near-worst-case retrieval time. |
-| \*\*Avg Retrieved Context Count\*\* | • 3 | • 3 | Average number of context chunks retrieved and passed to the model per query. |
+| Retrieval Mrr\*\* (Mean Reciprocal Rank) | • 0 | • 0 | Measures how high up the correct/relevant context chunk ranked in the retrieval results, averaged across all queries. Higher is better. |
+| Avg Context Tokens | • 118.80 | • 118.80 | Average number of tokens in the retrieved context passed to the model per query. Equal across models — confirms both were given identical retrieved context for a fair comparison. |
+| Avg Retrieval Score | • 0.39 | • 0.39 | The average similarity/relevance score of retrieved chunks against the query, as computed by the Knowledge Base's vector search. |
+| Top1 Retrieval Score | • 0.40 | • 0.40 | The relevance score of the single highest-ranked retrieved chunk, averaged across all queries. |
+| Retrieval Context Hit | • 0 | • 0 | Whether the correct/expected context chunk was present anywhere in the retrieved results for a query. |
+| Retrieval Success Rate | • 100.00% | • 100.00% | Percentage of queries for which the retrieval step successfully returned at least one context chunk. |
+| Avg Retrieval Latency | 🟢 30.64 ms | 🔴 29.52 ms | Average time taken by the Knowledge Base to retrieve relevant context per query. Since retrieval uses the same pipeline for both models, small differences typically reflect measurement noise rather than a true retrieval difference. |
+| P50 Retrieval Latency Ms | 🟢 25.55 ms | 🔴 24.52 ms | Median retrieval latency across all queries. |
+| P95 Retrieval Latency Ms | 🟢 42.37 ms | 🔴 45.11 ms | 95th percentile retrieval latency — reflects near-worst-case retrieval time. |
+| Avg Retrieved Context Count | • 3 | • 3 | Average number of context chunks retrieved and passed to the model per query. |
 
 **3. Performance Metrics**
 
@@ -842,30 +842,30 @@ Performance Metrics combine retrieval and generation timing into end-to-end late
 
 | Metric | Gpt-Oss-20b (Model 1) | Gpt-Oss-20b (Model 2) | Description |
 | --- | --- | --- | --- |
-| \*\*Ttft Ms\*\* (Time to First Token) | 🟢 30.64 ms | 🔴 29.52 ms | Time from query submission to the first output token, including retrieval time. |
-| \*\*Concurrency\*\* | • 4 | • 4 | The number of simultaneous requests simulated during the benchmark, as configured for the run. |
-| \*\*Samples Per Second\*\* | 🟢 0.49 | 🔴 0.50 | The rate at which queries were fully processed (retrieval \+ generation) per second. |
-| \*\*Total Tokens Input\*\* | • 63 | • 63 | Total input tokens (query \+ retrieved context) processed across the full run. |
-| \*\*Requests Per Minute\*\* | 🟢 29.39 | 🔴 29.97 | Sustained end-to-end request throughput for the pipeline. |
-| \*\*Avg Total Latency Ms\*\* | 🟢 6894.09 ms | 🔴 6206.64 ms | Average end-to-end latency per query — retrieval time plus generation time combined. |
-| \*\*P50 Total Latency Ms\*\* | 🟢 7592.72 ms | 🔴 5912.77 ms | Median end-to-end latency across all queries. |
-| \*\*P95 Total Latency Ms\*\* | 🟢 9106.93 ms | 🔴 9946.86 ms | 95th percentile end-to-end latency. |
-| \*\*P99 Total Latency Ms\*\* | 🟢 9423.87 ms | 🔴 11208.58 ms | 99th percentile end-to-end latency — worst-case tail latency for the full pipeline. |
-| \*\*Avg Tokens Per Second\*\* | 🟢 13.64 | 🔴 11.98 | Average output token generation rate across all queries. |
-| \*\*Total Tokens Generated\*\* | 🟢 936 | 🔴 740 | Total output tokens generated by the model across the full run. |
-| \*\*Avg Input Length Tokens\*\* | • 6.30 | • 6.30 | Average number of tokens in the raw query (before context is added), per request. |
-| \*\*Total Wall Time Seconds\*\* | 🟢 20.41 s | 🔴 20.02 s | Total wall-clock time to complete the entire benchmark run. |
-| \*\*Avg Output Length Tokens\*\* | 🟢 93.60 | 🔴 74 | Average number of tokens in the model's generated answers. |
-| \*\*Avg Generation Latency Ms\*\* | 🟢 6863.46 ms | 🔴 6177.12 ms | Average time spent specifically on answer generation, excluding retrieval time. |
-| \*\*Max Generation Latency Ms\*\* | 🟢 9466.30 ms | 🔴 11478.90 ms | The longest generation time observed for a single query. |
-| \*\*Min Generation Latency Ms\*\* | 🟢 3762.18 ms | 🔴 2980.97 ms | The shortest generation time observed for a single query. |
-| \*\*P50 Generation Latency Ms\*\* | 🟢 7552.64 ms | 🔴 5882.75 ms | Median generation-only latency. |
-| \*\*P95 Generation Latency Ms\*\* | 🟢 9067.27 ms | 🔴 9901.75 ms | 95th percentile generation-only latency. |
-| \*\*P99 Generation Latency Ms\*\* | 🟢 9386.49 ms | 🔴 11163.47 ms | 99th percentile generation-only latency. |
-| \*\*Retrieval Latency Fraction\*\* | • 0.00 | • 0.00 | The proportion of total end-to-end latency attributable to retrieval, on a 0–1 scale. \`0.00\` indicates retrieval time is negligible relative to generation time for this run. |
-| \*\*Generation Latency Fraction\*\* | • 1.00 | • 1.00 | The proportion of total end-to-end latency attributable to generation. \`1.00\` confirms generation dominates total latency, consistent with the near-zero Retrieval Latency Fraction above. |
-| \*\*Generation Latency Std Dev Ms\*\* | 🟢 1865.22 ms | 🔴 2432.59 ms | Standard deviation of generation latency across all queries — measures consistency of generation speed. Lower is more predictable. |
-| \*\*Avg Latency Per Output Token Ms\*\* | 🟢 73.33 ms | 🔴 83.47 ms | Average time taken to generate each individual output token — a normalized speed metric independent of total response length. |
+| Ttft Ms (Time to First Token) | 🟢 30.64 ms | 🔴 29.52 ms | Time from query submission to the first output token, including retrieval time. |
+| Concurrency | • 4 | • 4 | The number of simultaneous requests simulated during the benchmark, as configured for the run. |
+| Samples Per Second | 🟢 0.49 | 🔴 0.50 | The rate at which queries were fully processed (retrieval \+ generation) per second. |
+| Total Tokens Input | • 63 | • 63 | Total input tokens (query \+ retrieved context) processed across the full run. |
+| Requests Per Minute | 🟢 29.39 | 🔴 29.97 | Sustained end-to-end request throughput for the pipeline. |
+| Avg Total Latency Ms | 🟢 6894.09 ms | 🔴 6206.64 ms | Average end-to-end latency per query — retrieval time plus generation time combined. |
+| P50 Total Latency Ms | 🟢 7592.72 ms | 🔴 5912.77 ms | Median end-to-end latency across all queries. |
+| P95 Total Latency Ms | 🟢 9106.93 ms | 🔴 9946.86 ms | 95th percentile end-to-end latency. |
+| P99 Total Latency Ms | 🟢 9423.87 ms | 🔴 11208.58 ms | 99th percentile end-to-end latency — worst-case tail latency for the full pipeline. |
+| Avg Tokens Per Second | 🟢 13.64 | 🔴 11.98 | Average output token generation rate across all queries. |
+| Total Tokens Generated | 🟢 936 | 🔴 740 | Total output tokens generated by the model across the full run. |
+| Avg Input Length Tokens | • 6.30 | • 6.30 | Average number of tokens in the raw query (before context is added), per request. |
+| Total Wall Time Seconds | 🟢 20.41 s | 🔴 20.02 s | Total wall-clock time to complete the entire benchmark run. |
+| Avg Output Length Tokens | 🟢 93.60 | 🔴 74 | Average number of tokens in the model's generated answers. |
+| Avg Generation Latency Ms | 🟢 6863.46 ms | 🔴 6177.12 ms | Average time spent specifically on answer generation, excluding retrieval time. |
+| Max Generation Latency Ms | 🟢 9466.30 ms | 🔴 11478.90 ms | The longest generation time observed for a single query. |
+| Min Generation Latency Ms | 🟢 3762.18 ms | 🔴 2980.97 ms | The shortest generation time observed for a single query. |
+| P50 Generation Latency Ms | 🟢 7552.64 ms | 🔴 5882.75 ms | Median generation-only latency. |
+| P95 Generation Latency Ms | 🟢 9067.27 ms | 🔴 9901.75 ms | 95th percentile generation-only latency. |
+| P99 Generation Latency Ms | 🟢 9386.49 ms | 🔴 11163.47 ms | 99th percentile generation-only latency. |
+| Retrieval Latency Fraction | • 0.00 | • 0.00 | The proportion of total end-to-end latency attributable to retrieval, on a 0–1 scale. \`0.00\` indicates retrieval time is negligible relative to generation time for this run. |
+| Generation Latency Fraction | • 1.00 | • 1.00 | The proportion of total end-to-end latency attributable to generation. \`1.00\` confirms generation dominates total latency, consistent with the near-zero Retrieval Latency Fraction above. |
+| Generation Latency Std Dev Ms | 🟢 1865.22 ms | 🔴 2432.59 ms | Standard deviation of generation latency across all queries — measures consistency of generation speed. Lower is more predictable. |
+| Avg Latency Per Output Token Ms | 🟢 73.33 ms | 🔴 83.47 ms | Average time taken to generate each individual output token — a normalized speed metric independent of total response length. |
 
 <Tip>
   **Retrieval vs. Generation Latency Fraction**:These two fields always sum to `1.00` and show where end-to-end latency is actually being spent. In this run, retrieval accounts for effectively none of the total latency `0.00`) while generation accounts for all of it `1.00`) — meaning any latency optimization effort should focus on the generation model or its inference settings, not the Knowledge Base's retrieval step.
@@ -875,16 +875,16 @@ Performance Metrics combine retrieval and generation timing into end-to-end late
 
 | Metric | Gpt-Oss-20b (Model 1) | Gpt-Oss-20b (Model 2) | Description |
 | --- | --- | --- | --- |
-| \*\*Error Rate\*\* | • 0.00% | • 0.00% | Percentage of queries that returned an error anywhere in the pipeline (retrieval or generation). |
-| \*\*Timeout Rate\*\* | • 0.00% | • 0.00% | Percentage of queries that exceeded the configured timeout threshold. |
-| \*\*Response Rate\*\* | • 100.00% | • 100.00% | Percentage of queries that returned any response, successful or otherwise. |
-| \*\*Total Samples\*\* | • 10 | • 10 | Total number of queries submitted to the pipeline during the run. |
-| \*\*Successful Samples\*\* | • 10 | • 10 | Number of queries that completed successfully end-to-end. |
-| \*\*Empty Response Rate\*\* | • 0.00% | • 0.00% | Percentage of queries for which the model returned an empty or null answer. |
-| \*\*Retrieval Error Rate\*\* | • 0.00% | • 0.00% | Percentage of queries for which the retrieval step specifically failed. |
-| \*\*Generation Error Rate\*\* | • 0.00% | • 0.00% | Percentage of queries for which the generation step specifically failed. |
-| \*\*Retrieval Successful Samples\*\* | • 10 | • 10 | Number of queries for which retrieval completed successfully. |
-| \*\*Generation Successful Samples\*\* | • 10 | • 10 | Number of queries for which answer generation completed successfully. |
+| Error Rate | • 0.00% | • 0.00% | Percentage of queries that returned an error anywhere in the pipeline (retrieval or generation). |
+| Timeout Rate | • 0.00% | • 0.00% | Percentage of queries that exceeded the configured timeout threshold. |
+| Response Rate | • 100.00% | • 100.00% | Percentage of queries that returned any response, successful or otherwise. |
+| Total Samples | • 10 | • 10 | Total number of queries submitted to the pipeline during the run. |
+| Successful Samples | • 10 | • 10 | Number of queries that completed successfully end-to-end. |
+| Empty Response Rate | • 0.00% | • 0.00% | Percentage of queries for which the model returned an empty or null answer. |
+| Retrieval Error Rate | • 0.00% | • 0.00% | Percentage of queries for which the retrieval step specifically failed. |
+| Generation Error Rate | • 0.00% | • 0.00% | Percentage of queries for which the generation step specifically failed. |
+| Retrieval Successful Samples | • 10 | • 10 | Number of queries for which retrieval completed successfully. |
+| Generation Successful Samples | • 10 | • 10 | Number of queries for which answer generation completed successfully. |
 
 <Note>
   A fully reliable run `100%` Response Rate, `0%` Error/Timeout/Empty Response rates across both retrieval and generation stages) is what's shown here — all 10 samples succeeded end-to-end for both models. This confirms the Quality and Faithfulness scores above reflect genuine model/pipeline behavior, not artifacts of failed or empty responses
@@ -894,7 +894,7 @@ Performance Metrics combine retrieval and generation timing into end-to-end late
 
 | Metric | Gpt-Oss-20b (Model 1) | Gpt-Oss-20b (Model 2) | Description |
 | --- | --- | --- | --- |
-| \*\*Std Dev Output Length\*\* | 🟢 43.78 | 🔴 32.70 | Standard deviation of generated answer length (in tokens) across all queries — measures consistency of response length. |
-| \*\*Avg Output Length Tokens\*\* | 🟢 93.60 | 🔴 74 | Average length of generated answers, in tokens. |
-| \*\*Max Output Length Tokens\*\* | 🟢 179 | 🔴 149 | The longest generated answer observed across all queries. |
-| \*\*Min Output Length Tokens\*\* | 🟢 45 | 🔴 47 | The shortest generated answer observed across all queries. |
+| Std Dev Output Length | 🟢 43.78 | 🔴 32.70 | Standard deviation of generated answer length (in tokens) across all queries — measures consistency of response length. |
+| Avg Output Length Tokens | 🟢 93.60 | 🔴 74 | Average length of generated answers, in tokens. |
+| Max Output Length Tokens | 🟢 179 | 🔴 149 | The longest generated answer observed across all queries. |
+| \*Min Output Length Tokens | 🟢 45 | 🔴 47 | The shortest generated answer observed across all queries. |
