@@ -4,7 +4,7 @@ title: "Large Language Model"
 
 LLM training on Q0 lets you take a pretrained text-generation model — like Llama 3.1 — and adapt it to your own instructions, tone, or domain-specific knowledge. Whether you're teaching a model your product's support playbook or aligning its responses to specific preferences, the same 7-step wizard handles data, compute, and evaluation for you. This page walks through every step for the **LLM** category, using a `Llama3-1-8B` SFT/RLHF run as the reference example.
 
-## Step 1 — Basic Info
+## Basic Info
 
 Provide a unique name, type, and description to identify your fine-tuning job.
 
@@ -12,13 +12,13 @@ Provide a unique name, type, and description to identify your fine-tuning job.
   ![Image](/images/image-33.png)
 </Frame>
 
-## Step 2 — Model
+## Model
 
 <Frame>
   ![Image](/images/image-34.png)
 </Frame>
 
-## Step 3 — Train Configuration
+## Train Configuration
 
 Adjust advanced options to control how your model learns, optimizes, and performs. Fields here differ based on **Training Type**.
 
@@ -72,13 +72,13 @@ Adjust advanced options to control how your model learns, optimizes, and perform
 
 These appear in addition to all fields above when **Training Type** is set to `RLHF`. They configure the DPO stage specifically, separate from the core Learning Rate/Batch Size/Epochs fields.
 
-## Step 4 — Dataset Details
+## Dataset Details
 
 <Frame>
   ![Image](/images/image-35.png)
 </Frame>
 
-## Step 5 — Evaluation
+## Evaluation
 
 Define evaluation settings to measure performance and validate your fine-tuned model.
 
@@ -88,13 +88,13 @@ Define evaluation settings to measure performance and validate your fine-tuned m
 
 **Use custom dataset** — Lets you point to a separate, purpose-built validation dataset instead of splitting the training set. Useful when you want evaluation on a curated, held-out benchmark that's distinct from (and not diluted by) your training distribution — e.g. testing OCR accuracy on a specific document type the training set doesn't fully represent.
 
-## Step 6 — Infrastructure Configuration
+##  Infrastructure Configuration
 
 <Frame>
   ![Image](/images/image-35.png)
 </Frame>
 
-## Step 7 — Optional Settings
+## Optional Settings
 
 Modify extra settings to tailor the model's training and output to your needs.
 

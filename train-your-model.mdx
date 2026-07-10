@@ -4,7 +4,7 @@ title: "Diffusion Model"
 
 Diffusion model training on Q0 lets you take a pretrained text-to-image model — like Stable Diffusion 3.5 — and fine-tune it on your own images and prompts, so it learns a specific style, subject, or visual domain. Instead of hand-tuning denoising and sampling scripts yourself, the same 7-step wizard used across Q0 handles data, compute, evaluation, and deployment prep. This page walks through every step for the **Diffusion Model** category, using a `Stable-diffusion-3.5` Text-to-Image run as the reference example.
 
-## Step 1 — Basic Info
+## Basic Info
 
 <Frame>
   ![Image](/images/image-42.png)
@@ -12,13 +12,13 @@ Diffusion model training on Q0 lets you take a pretrained text-to-image model �
 
 Provide basic info in **Display Name** and **Description** for the Model to be trained
 
-## Step 2 — Model
+## Model
 
 <Frame>
   ![Image](/images/image-43.png)
 </Frame>
 
-## Step 3 — Train Configuration
+## Train Configuration
 
 <Frame>
   ![Image](/images/image-44.png)
@@ -107,7 +107,7 @@ Fraction of the dataset held out for validation during RLHF training (e.g. `0.1`
 | DPO Num Epochs | Number of epochs run during the DPO training stage. |
 | DPO Batch Size | Batch size used during the DPO training stage. |
 
-## Step 4 — Dataset Details
+## Dataset Details
 
 <Frame>
   ![Image](/images/image-45.png)
@@ -119,7 +119,7 @@ Fraction of the dataset held out for validation during RLHF training (e.g. `0.1`
 | Select An Existing Dataset | The dataset to use for training, selected from your previously uploaded datasets. Required when Dataset is set to \`Existing Dataset\`. |
 | Download Sample Dataset | Downloads a correctly-formatted example file, useful when preparing your own image dataset for upload. |
 
-## Step 5 — Evaluation
+## Evaluation
 
 Define evaluation settings to measure performance and validate your fine-tuned model.
 
@@ -129,10 +129,10 @@ Define evaluation settings to measure performance and validate your fine-tuned m
 | Auto-split training data \*(Recommended)\* | Automatically holds out a portion of the training dataset to compute validation metrics (CLIP/FID/KID) during training, with no extra setup needed. Recommended for most runs. |
 | Use custom dataset | Uses a separate, dedicated dataset for validation instead of splitting the training set — useful for benchmarking against a curated, held-out image set. |
 
-## Step 6 — Infrastructure Configuration
+##  Infrastructure Configuration
 
 Configure the compute resources and environment used for training your model.
 
-## Step 7 — Optional Settings
+## Optional Settings
 
 Modify extra settings to tailor the model's training and output to your needs.
