@@ -27,7 +27,7 @@ This module is the foundation for use cases like enterprise search, document Q&A
 
 Clicking **Create Knowledge Base** opens a 5-step guided wizard. Contextual help text on the right panel explains each field as you go.
 
-## **Step 1 — Basic Details**
+##  **Basic Details**
 
 Add **Knowledge Base Name-**  A unique, required name to identify this Knowledge Base (e.g., `RAG_Test`). Used as the display name across the platform and in API references.
 
@@ -37,7 +37,7 @@ Add **Knowledge Base Name-**  A unique, required name to identify this Knowledg
   ![Image](/images/image-69.png)
 </Frame>
 
-## **Step 2 — Source Configuration**
+## **Source Configuration**
 
 This step defines **where the data for the Knowledge Base will come from**. Q0 supports four source types, each suited to different data architectures:
 
@@ -84,7 +84,7 @@ Add below details –
 
 Use **Auto Sync t**oggle to enable automatic re-ingestion of the database source on a set schedule. When enabled, Q0 will re-run the ingestion pipeline (pulling new or updated records) at the configured frequency
 
-## **Step 3 — Embedded AI Model**
+## **Embedded AI Model**
 
 This step selects the embedding model that converts document text into numerical vectors for storage and retrieval. The choice of embedding model directly affects retrieval quality, language support, and vector store size.
 
@@ -111,7 +111,7 @@ This step selects the embedding model that converts document text into numerical
   ![Image](/images/image-72.png)
 </Frame>
 
-## **Step 4 — Chunk Settings**
+## **Chunk Settings**
 
 This step defines how documents are split into chunks before embedding. Chunking strategy has a significant impact on retrieval quality — too-large chunks dilute relevance, while too-small chunks lose context
 
@@ -126,7 +126,7 @@ This step defines how documents are split into chunks before embedding. Chunking
   ![Image](/images/image-73.png)
 </Frame>
 
-## **Step 5 — Vector Store**
+## **Vector Store**
 
 The vector database infrastructure to use for storing and querying embeddings. The cloud region where the vector store is deployed.
 

@@ -28,11 +28,8 @@ The **Datasets** module is Q0's central repository for managing the data that po
 Collect basic dataset information 
 
 - **Dataset Name:** A descriptive, unique name so teammates can find this dataset quickly Shown in dataset lists across Training, Benchmarking, and Batch Inference modules.  
-
 - **Description:** Captures what the dataset contains, its source, or how it will be used (up to 500 characters). Helps teammates understand the dataset's purpose at a glance. 
-
 - **Usage Purpose:** Selects the downstream module where this dataset will be used, so it is correctly classified and surfaced in the right contexts. 
-
 - **AI Model Category:** Associates the dataset with the model category it is designed to support, ensuring compatibility with the correct model types and evaluation task 
 
 <Frame>
@@ -43,7 +40,7 @@ Collect basic dataset information 
 
 Usage Purpose field tells Q0 which workflow this dataset is intended for. This determines where the dataset appears in module-specific dataset selectors: 
 
-| **Usage Purpose ** | ** Description ** |
+| Usage Purpose | Description |
 | :-- | :-- |
 | Training | Dataset is used to fine-tune or train an AI model. Selected datasets feed into the My Trainings workflow. |
 | Benchmarking & Evaluation | Dataset is used to evaluate model performance against standardized tasks. Selected datasets appear in the Benchmarking module's dataset selector. |
@@ -53,7 +50,7 @@ Usage Purpose field tells Q0 which workflow this dataset is intended for. This d
 
 **AI Model Category** field associates the dataset with the type of model it is designed to support. This determines which model types the dataset can be paired with across training, benchmarking, and inference workflows:
 
-| **AI Model Category ** | ** Description ** |
+| AI Model Category | Description |
 | :-- | :-- |
 | Large Language Model | Text datasets for LLMs — instruction-response pairs, Q&A, summarization corpora, chat transcripts, or raw text for language model training and evaluation. |
 | Diffusion Model | Image-text paired datasets for text-to-image or image editing models — prompt-image pairs, image collections with captions, or editing task datasets. |
@@ -61,11 +58,11 @@ Usage Purpose field tells Q0 which workflow this dataset is intended for. This d
 | Automatic Speech Recognition | Audio datasets for speech-to-text models — audio recordings paired with transcripts, evaluated using Word Error Rate (WER). |
 | Text-to-Speech | Text corpora with corresponding audio recordings for training or evaluating voice synthesis models. |
 
-### **Step 2 — Source** 
+### **Selecting Source** 
 
 Import your dataset from preferred sources and define its details for processing
 
-| **Source ** | ** Description ** |
+| Source | Description |
 | :-- | :-- |
 | AWS | Import from an Amazon S3 bucket. Provide the dataset path (S3 URI) and authenticate with an AWS secret. |
 | GCP | Import from a Google Cloud Storage bucket. Provide the dataset path (GCS URI, e.g., `gs://q0-test/batch-infer/llama3_text_format_1000.json`) and authenticate with a GCP secret. |
@@ -84,13 +81,9 @@ This step defines where the dataset data lives and how Q0 should access it. Five
 When AWS, GCP, or Azure is selected, the following connection fields appear: 
 
 - **Dataset Path:** The exact bucket path, registry ID, or storage URI where the dataset file is located 
-
 - **Secret:** Cloud access credentials to authenticate Q0 with the storage provider. Two options:  
-
 - **Existing Secret** — select a previously saved credential from the dropdown  
-
 - **Create New Secret** — add new credentials if none exist yet. 
-
 - **Select Secret:** Dropdown to pick the specific saved secret scoped to the chosen cloud provider  
 
 When **File Upload** is selected, User can a drag-and-drop or upload the path/secret. Supported file format are `JSON`, `JSONL`, `ZIP`, `CSV`, `TSV`, `TXT`, \`XML and file sixe of 500MB/Upload 
@@ -99,7 +92,7 @@ Click **Create Dataset** to submit and begin processing the dataset, User can vi
 
 Each row in the dataset list represents one dataset and displays the following fields:
 
-| **Column ** | ** Description ** |
+| Column | Description |
 | :-- | :-- |
 | Dataset Name | Display name of the dataset, alongside the dataset's unique system ID (truncated, with a copy icon). |
 | Model Source | The cloud provider or source the dataset was ingested from, shown as an icon and label (e.g., GCP logo for datasets imported from Google Cloud Storage). |

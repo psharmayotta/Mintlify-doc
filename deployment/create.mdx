@@ -3,15 +3,11 @@ title: "Create Deployment"
 description: "Learn how to deploy your first model."
 ---
 
-Before creating a deployment, Q0 shows an **Estimated Price Range** in the right panel based on the hardware options available: 
-
-<Frame>
-  ![Estimated Price](/EstimatedPrice.png)
-</Frame>
+Before creating a deployment, Q0 shows an **Estimated Price Range** in the right panel based on the hardware options available.
 
 This range reflects the cost of running the deployment on available GPU types (L40S at the lower end, H100 at the higher end). The actual per-hour cost is determined by the GPU type and GPU count selected
 
-## **Step 1 — Basic Details**
+## **Basic Details**
 
 Provide following information 
 
@@ -22,7 +18,7 @@ Provide following information 
   ![Images](/images.png)
 </Frame>
 
-## **Step 2 — Model** 
+## **Model** 
 
 This step selects the model to be deployed. Q0 provides two tabs — **Model Library** and **Custom Model** — giving users the choice between pre-built Marketplace models and their own fine-tuned models. 
 
@@ -36,7 +32,7 @@ The Model Library lists all models available from the Q0 Marketplace, organized 
   **_Model Library_**\_ vs. **Custom Model**: Use Model Library to deploy a pre-built, well-known foundation model directly. Use Custom Model to deploy a version you've fine-tuned on your own data — for example, a Llama model tuned on proprietary company documents or domain-specific datasets.\_
 </Note>
 
-## **Step 3 — Performance**
+## **Performance**
 
 Configure optimization and runtime settings to balance speed, accuracy, and cost. 
 
@@ -59,7 +55,7 @@ L40S — NVIDIA L40S (48GB GDDR6 ECC), 4 CPUs per node. Cost-efficient mid-range
   **Scaling Options**: Increasing GPU count per pod improves generation speed and maximum QPS for a deployment, but the improvement is sub-linear — doubling GPUs does not double throughput. For very large models, more GPUs per pod are required for the model to fit in memory at all (sharding), rather than purely for speed. 
 </Note>
 
-## **Step 4 — Scaling** 
+## **Scaling** 
 
 Define how your deployment scales across replicas to handle workload demands.
 

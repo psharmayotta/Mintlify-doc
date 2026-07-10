@@ -5,7 +5,7 @@ description: "Learn how to bring your own models to Q0."
 
 Upload your weights and configuration to get started with custom models
 
-## **Step 1 — Basic Details**
+## **Basic Details**
 
 Provide a display name and description to identify your model deployment
 
@@ -15,7 +15,7 @@ Provide a display name and description to identify your model deployment
 
  
 
-## **Step 2 — Model Source Details**
+## **Model Source Details**
 
 Defines where the model is hosted and how Q0 should access it. Five source types are supported:
 
@@ -74,7 +74,7 @@ Docker supports two registry types: **Public** and **Private**
   ![Image](/images/image-26.png)
 </Frame>
 
-## **Step 3 — Infrastructure**
+## **Infrastructure**
 
 Tailor your infrastructure setup to achieve the best performance for your workload
 
@@ -97,7 +97,7 @@ This step selects the compute infrastructure Q0 will use to run model optimizati
   Start with `1` GPU for most models up to ~7B parameters. For models in the 13B–70B range, `24` GPUs are typically required to fit the model in memory. For very large models (\>70B), `48` GPUs with sharding may be needed. Selecting more GPUs than the model requires wastes cost without performance benefit.
 </Tip>
 
-## **Step 4 — Configuration**
+## **Configuration**
 
 Define quantization, optimization, and runtime settings to tailor your deployment. Controls how the model is optimized for inference and how it is loaded at runtime
 
