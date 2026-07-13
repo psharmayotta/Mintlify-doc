@@ -13,99 +13,107 @@
     "dark": "/logo/dark.svg"
   },
   "navigation": {
-    "tabs": [
+    "dropdowns": [
       {
-        "tab": "Documentation",
-        "pages": [
+        "dropdown": "",
+        "tabs": [
           {
-            "group": "Overview",
+            "tab": "Documentation",
             "pages": [
-              "index",
-              "overview/deploy-models-your-way"
+              {
+                "group": "Overview",
+                "pages": [
+                  "index",
+                  "overview/deploy-models-your-way"
+                ]
+              },
+              {
+                "group": "Get Started",
+                "pages": [
+                  "getting-started/signup",
+                  "getting-started/api-key",
+                  "getting-started/first-call"
+                ]
+              },
+              {
+                "group": "Core Guides",
+                "pages": [
+                  "getting-started/inference",
+                  "getting-started/deploy-first-model"
+                ]
+              },
+              {
+                "group": "Deployments",
+                "pages": [
+                  "deployment/guide",
+                  "deployment/create",
+                  "deployment/monitoring",
+                  "deployment/scaling"
+                ]
+              },
+              {
+                "group": "Models & Training",
+                "pages": [
+                  "models/introduction",
+                  "models/supported",
+                  "models/upload",
+                  "training/overview"
+                ]
+              },
+              {
+                "group": "AI Tool Integrations",
+                "pages": [
+                  "ai-tools/cursor",
+                  "ai-tools/windsurf",
+                  "ai-tools/claude-code"
+                ]
+              },
+              {
+                "group": "API Reference",
+                "pages": [
+                  "api-reference/introduction",
+                  "api-reference/chunk-management"
+                ]
+              },
+              {
+                "group": "Model Operations",
+                "pages": [
+                  "benchmarking",
+                  "knowledge",
+                  "batch-inference"
+                ]
+              },
+              "dataset",
+              "dashboard",
+              "marketplace",
+              "playground",
+              {
+                "group": "Integrations",
+                "icon": "integral",
+                "pages": [
+                  "Secret/Overview"
+                ]
+              },
+              "settings",
+              "billing",
+              "dashboard-resources-writeup",
+              "nextjs-chatbot-quickstart",
+              "create-training-end-to-end",
+              "build-rag-workflow"
             ]
           },
           {
-            "group": "Get Started",
+            "tab": "Trainings",
+            "icon": "briefcase",
             "pages": [
-              "getting-started/signup",
-              "getting-started/api-key",
-              "getting-started/first-call"
+              "introduction",
+              "training-models",
+              "untitled-page",
+              "train-your-model",
+              "large-language-model",
+              "vision-language-model"
             ]
-          },
-          {
-            "group": "Core Guides",
-            "pages": [
-              "getting-started/inference",
-              "getting-started/deploy-first-model"
-            ]
-          },
-          {
-            "group": "Deployments",
-            "pages": [
-              "deployment/guide",
-              "deployment/create",
-              "deployment/monitoring",
-              "deployment/scaling"
-            ]
-          },
-          {
-            "group": "Models & Training",
-            "pages": [
-              "models/introduction",
-              "models/supported",
-              "models/upload",
-              "training/overview"
-            ]
-          },
-          {
-            "group": "AI Tool Integrations",
-            "pages": [
-              "ai-tools/cursor",
-              "ai-tools/windsurf",
-              "ai-tools/claude-code"
-            ]
-          },
-          {
-            "group": "API Reference",
-            "pages": [
-              "api-reference/introduction",
-              "api-reference/chunk-management"
-            ]
-          },
-          {
-            "group": "Model Operations",
-            "pages": [
-              "benchmarking",
-              "knowledge",
-              "batch-inference"
-            ]
-          },
-          "dataset",
-          "dashboard",
-          "marketplace",
-          "playground",
-          {
-            "group": "Integrations",
-            "icon": "integral",
-            "pages": [
-              "Secret/Overview"
-            ]
-          },
-          "settings",
-          "billing",
-          "dashboard-resources-writeup",
-          "nextjs-chatbot-quickstart",
-          "build-rag-workflow"
-        ]
-      },
-      {
-        "tab": "Trainings",
-        "icon": "briefcase",
-        "pages": [
-          "introduction",
-          "train-your-model",
-          "large-language-model",
-          "vision-language-model"
+          }
         ]
       }
     ]

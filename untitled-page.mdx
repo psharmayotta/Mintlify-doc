@@ -1,0 +1,111 @@
+---
+title: "Training Configurations"
+---
+
+This is where the real differences live. The rest of this section breaks it down in three layers: **the training-type concept**, **fields common to most/all models**, and **fields unique to each model**.
+
+### Training Type: SFT/RLHF vs. Full Fine-tuning/LoRA
+
+| Model | What "Training Type" controls |
+| :-- | :-- |
+| LLM, Diffusion Model | `SFT` vs `RLHF` — the training _objective_. SFT learns directly from labeled examples; RLHF (via DPO) tunes an already-fine-tuned checkpoint using preference data. Switching this reveals a DPO field group. |
+| VLM | Not exposed as a separate toggle in the same way — training is SFT-style by default. |
+| ASR | `Full Fine-tuning` vs `LoRA` — the adaptation _method_ (update all weights vs. a lightweight adapter), a different axis entirely from SFT/RLHF. |
+
+<Tip>
+  **Common workflow**: SFT first (teach the task), then RLHF/DPO on top (polish the output) — not RLHF alone.
+</Tip>
+
+**SFT vs RLHF, in short (LLM & Diffusion Model):**
+
+| Training Type | What it does |
+| :-- | :-- |
+| **SFT (Supervised Fine-Tuning)** | Trains the model on labeled examples so it learns to reproduce that content/style directly. Default starting point for teaching new knowledge, formats, or behaviors. |
+| **RLHF (Reinforcement Learning from Human Feedback)** | Runs on top of an already fine-tuned checkpoint, using preference data (which of two outputs is better) to align the model with human preference rather than teach new facts. Implemented via **DPO (Direct Preference Optimization)** — adds a small DPO-specific field group. |
+
+### Fields common across most/all models
+
+These hyperparameters appear in every (or almost every) model category, sometimes under a slightly different label.
+
+| Concept | LLM label | Diffusion label | VLM label | ASR label |
+| :-- | :-- | :-- | :-- | :-- |
+| Adapter method | Adapter Type (LoRA) | _(implicit — LoRA fields present)_ | Adapter type (LoRA) | Training Type (Full Fine-tuning / LoRA) |
+| Epochs | Num Epochs | Epochs | Train Epochs | Number of Epochs |
+| Batch size | Train Batch Size | Batch Size | Train Batch Size | Batch Size |
+| Eval batch size | Eval Batch Size | _(n/a — uses Valuate fields)_ | Evaluate Batch Size | Eval Batch Size _(not shown)_ |
+| Hard step cap | _(n/a)_ | Max Train Steps | _(n/a)_ | Max Steps |
+| Grad accumulation | _(n/a)_ | Gradient Accum | Gradient Accumulation Steps | Gradient Accumulation Steps |
+| Learning rate | Learning rate | LR | Learning Rate | Learning Rate |
+| Grad clipping | _(n/a)_ | Clip Grad Norm | Max Gradient Norm | Max Gradient Norm |
+| LR schedule shape | _(n/a)_ | LR Scheduler | Scheduler Type | LR Scheduler |
+| Warmup | _(n/a)_ | Warmup Ratio | Warmup ratio | Warmup Ratio (\+ Warmup Steps) |
+| LoRA rank/alpha/dropout | Lora Rank / Alpha / Dropout | Lora Rank / Alpha | LoRA Rank / Alpha / Dropout | LoRA Rank / Alpha / Dropout |
+| LoRA target modules | Lora Target Modules | _(n/a)_ | LoRA Target Modules | Lora Target Modules |
+| Checkpoint frequency | Save Steps | Save every steps | Save Steps | Save Steps |
+| Checkpoint retention | Save total limit | Save Limit | Save Total limit | Save Total Limit |
+| Eval frequency | Eval Steps | Valuate Every steps | Evaluate Steps | Evaluation Steps |
+| Logging frequency | Logging steps | Log Every | Logging Steps | Logging Steps |
+| Gradient checkpointing | _(n/a)_ | Gradient Checkpointing | Gradient Checkpointing | Gradient Checkpointing |
+| Distribution strategy | Distribution Type (DDP/DeepSpeed) | Distribution Type (DDP/DeepSpeed) | Type (DDP/DeepSpeed) | Training Strategy (Single GPU/DDP/DeepSpeed/**FSDP**) |
+| Conditional distribution field | World Size (DDP) / Strategy (DeepSpeed) | — | World Size (DDP) / Strategy (DeepSpeed) | _(not exposed the same way)_ |
+
+<Note>
+  ASR's **Training Strategy** is the only one that adds a fourth option, `FSDP` (Fully Sharded Data Parallel), alongside `Single GPU`, `DDP`, and `DeepSpeed`.
+</Note>
+
+### Fields unique to each model
+
+<Tabs>
+  <Tab title="LLM">
+    | Field | Description |
+    | :-- | :-- |
+    | Torch Type | Floating-point precision for loading/training, e.g. `bfloat16`. |
+    | Tuner Backend | The PEFT library backend implementing the adapter, e.g. `PEFT`. |
+    | Dataloader Num Workers | Number of subprocesses used to load training data in parallel. |
+    | Prompt max length | Maximum token length for input prompts; longer prompts are truncated. |
+    | DPO Learning rate / Num Epochs / Batch Size | RLHF-only DPO-stage parameters, separate from the core LR/Epochs/Batch Size fields. |
+  </Tab>
+  <Tab title="Diffusion Model">
+    | Field | Description |
+    | :-- | :-- |
+    | Deterministic | Forces deterministic CUDA/cuDNN ops for reproducible runs (some speed cost). |
+    | Valuate Steps / Guidance / Prompts | Denoising steps, CFG scale, and prompt(s) used to generate sample images during evaluation. |
+    | Use Xformers | Enables memory-efficient attention via the xFormers library. |
+    | Allow\_TF32 | Allows TensorFloat-32 precision on supported GPUs. |
+    | Verbose Logs / Log GPU Memory / Log Throughput / Log Grad Norm | Granular logging toggles specific to the diffusion training loop. |
+    | Metrics Clip / Fid / kid (\+ sample counts) | Image-quality evaluation metrics — CLIP score, FID, KID — unique to image generation models. |
+    | Image Size | Resolution training/eval images are resized to. |
+    | Split Seed | Reproducible train/validation split seed. |
+    | Mixed Precision | `None` / `FP16` / `BF16`. |
+    | Value Split _(RLHF only)_ | Fraction of data held out for validation during RLHF training. |
+    | DPO Learning rate / Num Epochs / Batch Size | RLHF-only DPO-stage parameters. |
+  </Tab>
+  <Tab title="VLM">
+    | Field | Description |
+    | :-- | :-- |
+    | Torch type | Floating-point precision for loading/training, e.g. `bfloat16`. |
+    | Tuner Backend | The PEFT library backend implementing the adapter, e.g. `PEFT`. |
+    | **Optim** | The optimizer algorithm, e.g. `adamw_torch_fused` — new relative to LLM/Diffusion's implicit optimizer choice. |
+    | **Save Strategy** | What triggers a checkpoint save (e.g. `Steps` vs. epoch-based) — new relative to LLM/Diffusion. |
+    | Prompt max length | Same concept as LLM. |
+
+    <Note>
+      VLM's Step 3 field set is otherwise nearly identical to LLM's — `Optim` and `Save Strategy` are the two genuinely new additions.
+    </Note>
+  </Tab>
+  <Tab title="ASR">
+    ASR exposes by far the most granular Step 3 — it's a near-direct surface of Hugging Face `Trainer`/`Seq2SeqTrainingArguments` plus Whisper-specific audio preprocessing. Grouped summary (see the [ASR doc](/training-module/create-training-asr-model) for the full field-by-field table):
+
+    | Group | Examples |
+    | :-- | :-- |
+    | Audio & Task Config | Language, Task (Transcribe), Min/Max Audio Length, Sample Rate, Model Size, Audio Normalization, Noise Reduction |
+    | Data Augmentation | Enable Augmentation, Speed Perturbation (Prob/Min/Max), Noise Injection Probability, Noise SNR Min/Max (dB) |
+    | Optimizer internals | Optimizer, Adam Beta 1/2, Adam Epsilon, Warmup Steps, Optimizer Arguments |
+    | LoRA variants | Use RS-LoRA, Use DoRA, Max Token Length, Gradient Checkpointing Args |
+    | Evaluation & Metrics | Evaluation Strategy, Eval Accumulation Steps, Metric for Best Model (WER), Greater is Better, Load Best Model at End, Compute WER/CER, Normalize Text for WER, Early Stopping (\+ Patience/Threshold) |
+    | Generation | Generation Max Length, Num Beams, Length Penalty, Length Column Name |
+    | Distributed training extras | DDP Backend, DDP Find Unused Parameters, DDP Bucket Cap, Auto Find Batch Size, Group By Length, Dataloader Prefetch Factor |
+    | Checkpointing | Random Seed, Save Only Model, Save Safetensors |
+    | Logging & Debug | Log Level, Log First Step, Disable TQDM, Disable Progress Bars, Debug Mode |
+  </Tab>
+</Tabs>

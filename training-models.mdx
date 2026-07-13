@@ -1,0 +1,82 @@
+---
+title: "Training Models"
+---
+
+## **Training models**
+
+The Training Module wizard has 7 steps and for the selected Model and Training Configuration user can perform the trainings. 
+
+**Basic 7 Steps followed are -**
+
+1. **Basic Details** - Provide a unique name, type, and description to identify your fine-tuning job
+2. **Model Selection** – Select based on Model Categories
+   1.  Diffusion Model
+   2. Large Language Model
+   3. Vision Language Model
+   4. Automatic Speech Recognition
+
+ 
+
+3.  **Training Configuration** -Fields differ based on the selected **Training Type**: **SFT** or **RLHF**
+
+This is where the real differences live. The rest of this section breaks it down in three layers: **the training-type concept**, **fields common to most/all models**, and **fields unique to each model**.
+
+ 4. **Dataset Details** – Attach and configure the dataset that will be used for training your model.
+
+Select an existing Dataset or Create a New Dataset
+
+5. **Evaluation** - Define evaluation settings to measure performance and validate your fine-tuned model.
+
+| Field / Option | Description |
+| :-- | :-- |
+| Skip validation dataset | No data held back for evaluation; trains on 100% of available data. Best for quick runs or very small datasets. |
+| Auto-split training data _(Recommended)_ | Automatically holds out a portion of the training data for validation, no extra setup needed. |
+| Use custom dataset | Uses a separate, dedicated dataset for validation instead of splitting the training set. |
+
+5. **Infrastructure Configuration** - Configure the compute resources and environment used for training your model
+
+| Field | Description |
+| :-- | :-- |
+| Infrastructure Type | The infrastructure account training runs on, e.g. `Yotta Infrastructure Account`. |
+| GPU type | `H100` (8 CPUs, 80GB HBM3, ₹432.00/GPU/hr) or `L40S` (4 CPUs, 48GB GDDR6 ECC, ₹190.80/GPU/hr). |
+| Node count | `1`, `2`, `4`, or `8`. |
+| GPU Count Per Node | `1`–`8`. |
+
+5. **Optional Settings** - Modify extra settings to tailor the model's training and output to your needs
+
+Deployment Configurations set up by selecting **Quantisation**
+
+Selecting **Create Training** submits the job.
+
+## After Submission — Training Status
+
+Identical structure for every model category: a details page with **Details**, **Usage**, and **Logs** tabs.
+
+| Tab | What it shows |
+| :-- | :-- |
+| Details | Training Status stepper (`Training Received` → `Downloading Data` → `Training Started` → `Training Completed` → `Saving Weights` → `Completed`), General Details panel, and expandable sections for Dataset Details, Evaluation, Infrastructure Configuration, and Train Configuration. **Deploy** becomes available once training completes. |
+| Usage | Request ID and Job ID. |
+| Logs | Streaming training logs, filterable by level, time range, and timezone. |
+
+<Frame>
+  ![Image](/images/image-97.png)
+</Frame>
+
+For every successful training, user can deploy Model directly or User could also upload the Trainings Weights to Cloud Provider.
+
+## Full Comparison Matrix
+
+A single-glance summary of everything above.
+
+| Aspect | LLM | Diffusion Model | VLM | ASR |
+| :-- | :-- | :-- | :-- | :-- |
+| Model Task | Text generation | Text-to-Image | Image-to-Text | audio-to-text |
+| Training Type meaning | SFT / RLHF | SFT / RLHF | _(not a toggle)_ | Full Fine-tuning / LoRA |
+| Preference tuning method | DPO | DPO | _(n/a)_ | _(n/a)_ |
+| Distribution options | DDP, DeepSpeed | DDP, DeepSpeed | DDP, DeepSpeed | Single GPU, DDP, DeepSpeed, FSDP |
+| Domain-specific eval metrics | _(none exposed)_ | CLIP, FID, KID | _(none exposed)_ | WER, CER |
+| Unique preprocessing fields | _(none)_ | Image Size, Mixed Precision | _(none major)_ | Audio length/rate, normalization, augmentation |
+
+<Tip>
+  If you're maintaining these docs going forward, this matrix is the fastest place to spot when a new model category needs its own doc versus when it can just slot into the shared Step 1/4/5/6 tables.
+</Tip>
