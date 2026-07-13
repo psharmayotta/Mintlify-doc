@@ -98,9 +98,10 @@
               {
                 "group": "Resources",
                 "pages": [
-                  "build-an-agent-2",
                   "nextjs-chatbot-quickstart",
-                  "build-rag-workflow"
+                  "build-an-agent-2",
+                  "build-rag-workflow",
+                  "realtime-image-app-1"
                 ]
               }
             ]

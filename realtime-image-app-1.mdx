@@ -1,0 +1,170 @@
+---
+title: "Build a Real-Time Image App"
+description: "Deploy an image generation model on Q0 and build a UI that feels real-time, with the right GPU tier and quantization choices for latency."
+---
+
+## What you're building
+
+"Real-time" for image generation doesn't mean instant — it means the gap between a user typing a prompt and seeing a result is short enough that the interaction feels like a live conversation rather than a batch job. That gap is mostly determined by two decisions you make at deployment time: which **GPU tier** you deploy on, and which **quantization format** the model runs in.
+
+<Frame>
+  <svg width="100%" viewBox="0 0 680 500" style="font-family: -apple-system, sans-serif;">
+  <defs>
+    <marker id="arrow5" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="6" markerHeight="6" orient="auto-start-reverse">
+      <path d="M2 1L8 5L2 9" fill="none" stroke="#5F5E5A" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" />
+    </marker>
+  </defs>
+
+  <rect x="240" y="40" width="200" height="44" rx="8" fill="#F1EFE8" stroke="#5F5E5A" stroke-width="0.75" />
+
+  <text x="340" y="66" text-anchor="middle" font-size="14" font-weight="500" fill="#2C2C2A">Frontend prompt</text>
+
+  <rect x="240" y="124" width="200" height="56" rx="8" fill="#EEEDFE" stroke="#534AB7" stroke-width="0.75" />
+
+  <text x="340" y="147" text-anchor="middle" font-size="14" font-weight="500" fill="#26215C">Image generation engine</text>
+  <text x="340" y="165" text-anchor="middle" font-size="12" fill="#3C3489">Submits generation job</text>
+
+  <rect x="240" y="220" width="200" height="56" rx="8" fill="#E1F5EE" stroke="#0F6E56" stroke-width="0.75" />
+
+  <text x="340" y="243" text-anchor="middle" font-size="14" font-weight="500" fill="#04342C">Job status</text>
+  <text x="340" y="261" text-anchor="middle" font-size="12" fill="#085041">Queued, running, complete</text>
+
+  <rect x="240" y="316" width="200" height="44" rx="8" fill="#FAECE7" stroke="#993C1D" stroke-width="0.75" />
+
+  <text x="340" y="342" text-anchor="middle" font-size="14" font-weight="500" fill="#4A1B0C">Rendered image</text>
+
+  <line x1="340" y1="84" x2="340" y2="122" stroke="#888780" stroke-width="0.75" marker-end="url(#arrow5)" />
+
+  <line x1="340" y1="180" x2="340" y2="218" stroke="#888780" stroke-width="0.75" marker-end="url(#arrow5)" />
+
+  <line x1="340" y1="276" x2="340" y2="314" stroke="#888780" stroke-width="0.75" marker-end="url(#arrow5)" />
+
+  <path d="M240 248 C110 248 110 62 238 62" fill="none" stroke="#888780" stroke-width="0.75" marker-end="url(#arrow5)" />
+
+  <text x="20" y="150" font-size="12" fill="#5F5E5A">polls every</text>
+  <text x="20" y="166" font-size="12" fill="#5F5E5A">\~500ms</text>
+</svg>
+</Frame>
+
+Under the hood this is a **Diffusion Model** category deployment — the same deployment mechanics as an LLM endpoint, but the request/response shape is prompt-in, image-out.
+
+## Prerequisites
+
+| Decision | Recommendation |
+| --- | --- |
+| GPU tier | **H100** for sub-few-second generations; **L40S** is more cost-effective for non-interactive/batch generation |
+| Endpoint type | **Dedicated** — image generation is compute-heavy per request, so a warm dedicated instance avoids cold-start latency that a shared endpoint can introduce under load |
+| Quantization | **FP8** or **MXFP4** meaningfully cut latency with limited quality loss; keep **F16** if visual fidelity matters more than speed |
+| Region | Pick NM1 or DL1 based on where the majority of your users are, to minimize network round-trip |
+
+## 1. Deploy the diffusion model
+
+From the Q0 dashboard, create a deployment with model category **Diffusion Model**, choose your GPU tier and quantization, and select a dedicated endpoint for consistent latency.
+
+```python
+import requests
+
+Q0_BASE_URL = "https://api.q0.dev/v1"
+HEADERS = {"Authorization": f"Bearer {Q0_API_KEY}"}
+
+deploy_resp = requests.post(
+    f"{Q0_BASE_URL}/deployments",
+    headers=HEADERS,
+    json={
+        "model_category": "diffusion",
+        "model_name": "your-selected-diffusion-model",
+        "endpoint_type": "dedicated",
+        "gpu_tier": "H100",
+        "quantization": "FP8",
+        "region": "NM1",
+    },
+)
+endpoint_id = deploy_resp.json()["endpoint_id"]
+```
+
+## 2. Submit a generation job
+
+Image generation is asynchronous even on a dedicated endpoint — you submit a job and get a `job_id` back immediately, rather than blocking on the full generation.
+
+```python
+def submit_generation(endpoint_id: str, prompt: str, steps: int = 25, width: int = 1024, height: int = 1024):
+    r = requests.post(
+        f"{Q0_BASE_URL}/deployments/{endpoint_id}/generate",
+        headers=HEADERS,
+        json={
+            "prompt": prompt,
+            "steps": steps,
+            "width": width,
+            "height": height,
+        },
+    )
+    return r.json()["job_id"]
+
+job_id = submit_generation(endpoint_id, "a lighthouse at dusk, watercolor style")
+```
+
+Fewer `steps` generally means faster generation at some cost to detail — a useful dial to expose to users who want speed over fidelity.
+
+## 3. Poll for the result
+
+```python
+import time
+
+def wait_for_image(endpoint_id: str, job_id: str, timeout_s: int = 30):
+    start = time.time()
+    while time.time() - start < timeout_s:
+        r = requests.get(
+            f"{Q0_BASE_URL}/deployments/{endpoint_id}/jobs/{job_id}",
+            headers=HEADERS,
+        )
+        data = r.json()
+        if data["status"] == "complete":
+            return data["image_url"]
+        if data["status"] == "failed":
+            raise RuntimeError(data.get("error", "generation failed"))
+        time.sleep(0.5)
+    raise TimeoutError("generation did not complete in time")
+
+image_url = wait_for_image(endpoint_id, job_id)
+```
+
+## 4. Make the frontend feel live
+
+Short-poll from the browser so the UI updates the moment the job completes, rather than waiting on a single long request:
+
+```tsx
+async function generateAndDisplay(prompt: string, setImageUrl: (url: string) => void) {
+  const { job_id } = await fetch("/api/generate", {
+    method: "POST",
+    body: JSON.stringify({ prompt }),
+  }).then((r) => r.json());
+
+  const poll = setInterval(async () => {
+    const status = await fetch(`/api/generate/${job_id}`).then((r) => r.json());
+    if (status.status === "complete") {
+      clearInterval(poll);
+      setImageUrl(status.image_url);
+    }
+  }, 500);
+}
+```
+
+For a smoother feel, show a progress indicator based on `steps` elapsed if your job status response includes step-level progress, rather than a generic spinner.
+
+## 5. Tune for your actual latency budget
+
+| Lever | Effect |
+| --- | --- |
+| GPU tier (H100 vs L40S) | Biggest single lever on raw generation speed |
+| Quantization (F16 → FP8 → MXFP4) | Progressively faster, progressively more compression artifacts — test visually before committing |
+| `steps` | Linear tradeoff between speed and detail |
+| Resolution | Higher width/height scales compute roughly quadratically |
+| Endpoint type | Dedicated avoids queuing behind other tenants' jobs on a shared endpoint |
+
+Use the **Benchmarking** module to measure actual p50/p95 generation time for your chosen combination under realistic concurrent load — the right settings for a demo rarely survive contact with real traffic unchanged.
+
+## Next steps
+
+- Read the **Deployments** module docs for the full GPU tier and region comparison.
+- Read the **Benchmarking** module docs to set up a repeatable load test before launch.
+- See **Build a Next.js Chatbot** if you want to pair this with a conversational prompt-refinement assistant in front of the image generator.
