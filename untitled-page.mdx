@@ -57,16 +57,16 @@ These hyperparameters appear in every (or almost every) model category, sometime
 
 <Tabs>
   <Tab title="LLM">
-    | Field | Description |
-    | :-- | :-- |
-    | Torch Type | Floating-point precision for loading/training, e.g. `bfloat16`. |
-    | Tuner Backend | The PEFT library backend implementing the adapter, e.g. `PEFT`. |
-    | Dataloader Num Workers | Number of subprocesses used to load training data in parallel. |
-    | Prompt max length | Maximum token length for input prompts; longer prompts are truncated. |
-    | DPO Learning rate / Num Epochs / Batch Size | RLHF-only DPO-stage parameters, separate from the core LR/Epochs/Batch Size fields. |
+    | **Field** | **Description** |  |
+    | :-- | :-- | :-- |
+    | Torch Type | Floating-point precision for loading/training, e.g. `bfloat16`. |  |
+    | Tuner Backend | The PEFT library backend implementing the adapter, e.g. `PEFT`. |  |
+    | Dataloader Num Workers | Number of subprocesses used to load training data in parallel. |  |
+    | Prompt max length | Maximum token length for input prompts; longer prompts are truncated. |  |
+    | DPO Learning rate / Num Epochs / Batch Size | RLHF-only DPO-stage parameters, separate from the core LR/Epochs/Batch Size fields. |  |
   </Tab>
   <Tab title="Diffusion Model">
-    | Field | Description |
+    | **Field** | **Description** |
     | :-- | :-- |
     | Deterministic | Forces deterministic CUDA/cuDNN ops for reproducible runs (some speed cost). |
     | Valuate Steps / Guidance / Prompts | Denoising steps, CFG scale, and prompt(s) used to generate sample images during evaluation. |
@@ -81,7 +81,7 @@ These hyperparameters appear in every (or almost every) model category, sometime
     | DPO Learning rate / Num Epochs / Batch Size | RLHF-only DPO-stage parameters. |
   </Tab>
   <Tab title="VLM">
-    | Field | Description |
+    | **Field** | **Description** |
     | :-- | :-- |
     | Torch type | Floating-point precision for loading/training, e.g. `bfloat16`. |
     | Tuner Backend | The PEFT library backend implementing the adapter, e.g. `PEFT`. |
@@ -96,7 +96,7 @@ These hyperparameters appear in every (or almost every) model category, sometime
   <Tab title="ASR">
     ASR exposes by far the most granular Step 3 — it's a near-direct surface of Hugging Face `Trainer`/`Seq2SeqTrainingArguments` plus Whisper-specific audio preprocessing. Grouped summary (see the [ASR doc](/training-module/create-training-asr-model) for the full field-by-field table):
 
-    | Group | Examples |
+    | **Group** | **Examples** |
     | :-- | :-- |
     | Audio & Task Config | Language, Task (Transcribe), Min/Max Audio Length, Sample Rate, Model Size, Audio Normalization, Noise Reduction |
     | Data Augmentation | Enable Augmentation, Speed Perturbation (Prob/Min/Max), Noise Injection Probability, Noise SNR Min/Max (dB) |

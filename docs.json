@@ -44,23 +44,6 @@
                 "hidden": true
               },
               {
-                "group": "Deployments",
-                "pages": [
-                  "deployment/guide",
-                  "deployment/create",
-                  "deployment/monitoring",
-                  "deployment/scaling"
-                ]
-              },
-              {
-                "group": "Create Your Model",
-                "pages": [
-                  "models/introduction",
-                  "models/supported",
-                  "models/upload"
-                ]
-              },
-              {
                 "group": "AI Tool Integrations",
                 "pages": [
                   "ai-tools/cursor",
@@ -84,18 +67,8 @@
                   "batch-inference"
                 ]
               },
-              "dataset",
-              {
-                "group": "Trainings",
-                "pages": [
-                  "introduction",
-                  "training-models",
-                  "untitled-page"
-                ]
-              },
               "dashboard",
               "marketplace",
-              "playground",
               {
                 "group": "Integrations",
                 "icon": "integral",
@@ -103,8 +76,45 @@
                   "Secret/Overview"
                 ]
               },
-              "settings",
-              "billing",
+              {
+                "group": "Services",
+                "pages": [
+                  {
+                    "group": "Trainings",
+                    "pages": [
+                      "introduction",
+                      "training-models",
+                      "untitled-page"
+                    ]
+                  },
+                  "dataset",
+                  {
+                    "group": "Deployments",
+                    "pages": [
+                      "deployment/guide",
+                      "deployment/create",
+                      "deployment/monitoring",
+                      "deployment/scaling"
+                    ]
+                  },
+                  {
+                    "group": "Create Your Model",
+                    "pages": [
+                      "models/introduction",
+                      "models/supported",
+                      "models/upload"
+                    ]
+                  }
+                ]
+              },
+              {
+                "group": "Quick Operations",
+                "pages": [
+                  "settings",
+                  "billing",
+                  "playground"
+                ]
+              },
               {
                 "group": "Resources",
                 "pages": [
