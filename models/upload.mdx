@@ -23,7 +23,7 @@ Defines where the model is hosted and how Q0 should access it. Five source types
   ![Image](/images/image-23.png)
 </Frame>
 
-| **Source** | ** Description** |
+| **Source** | Description |
 | :-- | :-- |
 | Huggingface | Import a model directly from the Huggingface Hub using the model repository ID and an access token. Best for open-source foundation models and fine-tuned variants hosted on Huggingface. |
 | AWS | Connect a model stored in an Amazon S3 bucket using a Model Path (S3 URI) and AWS credentials secret. |
@@ -33,7 +33,7 @@ Defines where the model is hosted and how Q0 should access it. Five source types
 
 When **Huggingface**, **AWS**, **GCP**, or **Azure** is selected, the following fields appears
 
-| **Field** | ** Description** |
+| **Field** | Description |
 | :-- | :-- |
 | Secret | Authentication credentials to access the model source. Two options: <br />• **Existing Secret** — select a previously saved credential from the Secrets module <br />• **Create New Secret** — add new credentials if none exist yet. |
 | Select Secret | Dropdown to select the specific saved secret scoped to the chosen provider. |
@@ -49,7 +49,7 @@ When **Huggingface**, **AWS**, **GCP**, or **Azure** is selected, the following 
 
 **When Source is Docker**
 
-When **Docker** is selected, the fields change to reflect container registry configuration. 
+When **Docker** is selected, the fields change to reflect container registry configuration.
 
 Docker supports two registry types: **Public** and **Private**
 
@@ -61,7 +61,7 @@ Docker supports two registry types: **Public** and **Private**
 
 **Docker Image URL**: The full image reference in the container registry. Format: `registry/org/image:tag` (e.g., `nginx:latest`, `registry.io/org/image:tag`).
 
-** For Private-**
+**For Private-**
 
 - **Host Provider:** The cloud or registry platform hosting the private container image (e.g., GCP Artifact Registry, AWS ECR, Azure Container Registry, Docker Hub private).
 - **Docker Image URL:** The full image reference including the private registry hostname, organization, image name, and tag (e.g., `registry.io/org/image:tag`).
@@ -80,7 +80,7 @@ Tailor your infrastructure setup to achieve the best performance for your worklo
 
 This step selects the compute infrastructure Q0 will use to run model optimization and serve the registered model
 
-| **Field** | ** Description** |
+| **Field** | Description |
 | :-- | :-- |
 | Cloud Account | The compute account under which infrastructure is provisioned. Currently available: **Yotta Infrastructure Account** — Q0's managed GPU cloud. |
 | Region | The geographic region where the infrastructure is deployed. Selectable from a searchable dropdown: <br />• **NM1**— India · Navi Mumbai<br />• **DL1** — India · Delhi <br />Choose the region closest to your users or downstream systems to minimize inference latency. |
@@ -109,7 +109,7 @@ Define quantization, optimization, and runtime settings to tailor your deploymen
 
 Quantization reduces a model's memory footprint and increases inference speed by representing weights in lower numerical precision, at a small trade-off in output quality. Q0 supports six quantization schemes — each suited to different model types, hardware constraints, and accuracy requirements:
 
-| **Quantisation Scheme** | ** Full Name** | ** Description** | ** Best For** |
+| **Quantisation Scheme** | Full Name | Description | Best For |
 | :-- | :-- | :-- | :-- |
 | F16 | Float16 (Half Precision) | Represents model weights in 16-bit floating point — half the size of standard 32-bit (FP32) with minimal quality loss. The most widely used scheme for GPU inference; broadly supported across all model architectures. | General-purpose production inference; the default starting point for most deployments. Balances memory efficiency and accuracy with near-zero quality degradation. |
 | BITSANDBYTES | BitsAndBytes 4-bit / 8-bit | Aggressive 4-bit or 8-bit quantization using the BitsAndBytes library. Enables loading very large models on fewer GPUs by drastically reducing memory usage, at the cost of slightly more quality degradation than F16. Supports NF4 (NormalFloat4) for 4-bit and INT8 for 8-bit. | Running large models (13B–70B\+) on constrained GPU memory; cost-sensitive deployments where a small quality trade-off is acceptable. |
@@ -128,7 +128,7 @@ Once submitted, the model opens its detail page with a live processing status, c
   ![Image](/images/image-30.png)
 </Frame>
 
-| **Stage** | ** Description** |
+| **Stage** | Description |
 | :-- | :-- |
 | Accepted | Q0 has received the model registration request and validated the basic configuration. |
 | Launched Optimisation Cluster | Q0 provisions the selected GPU infrastructure to run the optimization pipeline. |
