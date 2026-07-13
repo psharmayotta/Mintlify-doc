@@ -606,11 +606,11 @@ This is the step unique to Model Evaluation. After selecting a Model Category, t
 | --- | --- |
 | TTS Quality | Evaluates the naturalness, clarity, and intelligibility of synthesized speech output. Typically assessed using Mean Opinion Score (MOS) or automated metrics that approximate human perceptual quality. |
 
-#### Steps 4–6 (Dataset, Inferencing Settings, Hardware Configuration)
+#### Dataset, Inferencing Settings, Hardware Configuration
 
-- **Dataset (Step 4)**: Select from the Dataset Library (e.g., MMLU, HellaSwag for LLMs; DrawBench, COCO for diffusion/image models) or a Custom Dataset aligned to the chosen Evaluation Task.
-- **Inferencing Settings (Step 5)**: Configure generation parameters for the single model being evaluated — Max Tokens, Temperature, System Prompt, Top-P, Frequency/Presence Penalty, and other task-relevant settings. See \[Inferencing Settings (Hardware Benchmarking)\]
-- **Hardware Configuration (Step 6)**: Select GPU Type (H100 or L40S) and GPU Count Per Node to run the evaluation on. See \[Hardware Configuration (Model Benchmarking)\](#step-5--hardware-configuration) for full details.
+- **Dataset**: Select from the Dataset Library (e.g., MMLU, HellaSwag for LLMs; DrawBench, COCO for diffusion/image models) or a Custom Dataset aligned to the chosen Evaluation Task.
+- **Inferencing Settings**: Configure generation parameters for the single model being evaluated — Max Tokens, Temperature, System Prompt, Top-P, Frequency/Presence Penalty, and other task-relevant settings. See \[Inferencing Settings (Hardware Benchmarking)\]
+- **Hardware Configuration**: Select GPU Type (H100 or L40S) and GPU Count Per Node to run the evaluation on. See \[Hardware Configuration (Model Benchmarking)\](#step-5--hardware-configuration) for full details.
 
 <Frame>
   ![Image](/images/image-61.png)
@@ -779,7 +779,7 @@ Once submitted, a Knowledge Base Pipeline run progresses through the same \[Benc
 | Tab | Description |
 | --- | --- |
 | Overview | Aggregated results across all datasets used in the run. In this example it mirrors the single dataset tab, since only one dataset (\`QO Test1\`) was used. |
-| \[Dataset Name\]\*\* (e.g., QO Test1) | Dataset-specific results, showing metrics computed only against that dataset's queries run through the Knowledge Base pipeline. |
+| \[Dataset Name (e.g., QO Test1) | Dataset-specific results, showing metrics computed only against that dataset's queries run through the Knowledge Base pipeline. |
 
 **1. Quality Metrics**
 

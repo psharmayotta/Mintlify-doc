@@ -29,7 +29,7 @@ Keeping the API key server-side also means you can switch endpoints, add retries
 - A Q0 API key
 - A deployed **LLM** model — a **shared** endpoint is enough to build against; move to a **dedicated** endpoint before sending it real user traffic
 
-## Step 1 — Scaffold the project
+## Scaffold the project
 
 ```sh
 npx create-next-app@latest q0-chat --typescript --app --tailwind
@@ -44,7 +44,7 @@ Q0_BASE_URL=https://api.q0.dev/v1
 Q0_MODEL=your-deployed-model-name
 ```
 
-## Step 2 — Create the streaming route handler
+## Create the streaming route handler
 
 ```ts
 // app/api/chat/route.ts
@@ -75,7 +75,7 @@ export async function POST(req: Request) {
 
 Running on the edge runtime keeps time-to-first-token low since there's no cold Node process sitting between the browser and your endpoint.
 
-## Step 3 — Parse the stream on the client
+## Parse the stream on the client
 
 Q0's streaming responses follow the standard `data: {...}` server-sent-event format, ending in `data: [DONE]`.
 
@@ -115,7 +115,7 @@ export async function streamChat(
 }
 ```
 
-## Step 4 — Build the chat component
+## Build the chat component
 
 ```tsx
 // app/page.tsx
@@ -168,7 +168,7 @@ export default function Chat() {
 }
 ```
 
-## Step 5 — Add a system prompt and history limits
+## Add a system prompt and history limits
 
 Two things matter once this leaves your machine:
 
