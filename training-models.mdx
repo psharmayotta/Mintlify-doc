@@ -4,13 +4,13 @@ title: "Training Models"
 
 ## **Training models**
 
-The Training Module wizard has 7 steps and for the selected Model and Training Configuration user can perform the trainings. 
+The Training Module wizard has 7 steps and for the selected Model and Training Configuration user can perform the trainings.
 
 **Basic 7 Steps followed are -**
 
 1. **Basic Details** - Provide a unique name, type, and description to identify your fine-tuning job
 2. **Model Selection** – Select based on Model Categories
-   1.  Diffusion Model
+   1. Diffusion Model
    2. Large Language Model
    3. Vision Language Model
    4. Automatic Speech Recognition
@@ -19,13 +19,25 @@ The Training Module wizard has 7 steps and for the selected Model and Training C
 
 3.  **Training Configuration** -Fields differ based on the selected **Training Type**: **SFT** or **RLHF**
 
-This is where the real differences live. The rest of this section breaks it down in three layers: **the training-type concept**, **fields common to most/all models**, and **fields unique to each model**.
+Adjust advanced options to control how your model learns, optimizes, and performs. Fields here differ based on **Training Type**.
 
- 4. **Dataset Details** – Attach and configure the dataset that will be used for training your model.
+- The fine-tuning strategy for the LLM. Switching between `SFT` and `RLHF` changes which fields appear further down
+
+**SFT (Supervised Fine-Tuning)** — Trains the model on labeled instruction/response pairs so it learns to reproduce that style and content directly. This is the default starting point for teaching a model new knowledge, formats, or behaviors.
+
+**RLHF (Reinforcement Learning from Human Feedback)** — preference-based tuning on top of a fine-tuned checkpoint; adds a **DPO** parameter group.
+
+4. **Dataset Details** – Attach and configure the dataset that will be used for training your model.
 
 Select an existing Dataset or Create a New Dataset
 
 5. **Evaluation** - Define evaluation settings to measure performance and validate your fine-tuned model.
+
+**Skip validation dataset** — No portion of data is held back for evaluation; the model trains on 100% of the available data with no in-training validation metrics computed. Use this when you're confident in your hyperparameters and want to maximize the data used for training (e.g. a small dataset where every example matters), or for quick smoke-test runs where evaluation isn't needed.
+
+**Auto-split training data** — Automatically holds out a portion of the training dataset (not used for weight updates) to compute validation loss/metrics during training. This gives you an unbiased read on whether the model is generalizing or overfitting, without requiring you to prepare a separate file. Recommended for most runs since it needs no extra setup.
+
+**Use custom dataset** — Lets you point to a separate, purpose-built validation dataset instead of splitting the training set. Useful when you want evaluation on a curated, held-out benchmark that's distinct from (and not diluted by) your training distribution — e.g. testing OCR accuracy on a specific document type the training set doesn't fully represent.
 
 | Field / Option | Description |
 | :-- | :-- |
@@ -33,7 +45,7 @@ Select an existing Dataset or Create a New Dataset
 | Auto-split training data _(Recommended)_ | Automatically holds out a portion of the training data for validation, no extra setup needed. |
 | Use custom dataset | Uses a separate, dedicated dataset for validation instead of splitting the training set. |
 
-5. **Infrastructure Configuration** - Configure the compute resources and environment used for training your model
+6. **Infrastructure Configuration** - Configure the compute resources and environment used for training your model
 
 | Field | Description |
 | :-- | :-- |
@@ -42,7 +54,7 @@ Select an existing Dataset or Create a New Dataset
 | Node count | `1`, `2`, `4`, or `8`. |
 | GPU Count Per Node | `1`–`8`. |
 
-5. **Optional Settings** - Modify extra settings to tailor the model's training and output to your needs
+7. **Optional Settings** - Modify extra settings to tailor the model's training and output to your needs
 
 Deployment Configurations set up by selecting **Quantisation**
 
@@ -76,7 +88,3 @@ A single-glance summary of everything above.
 | Distribution options | DDP, DeepSpeed | DDP, DeepSpeed | DDP, DeepSpeed | Single GPU, DDP, DeepSpeed, FSDP |
 | Domain-specific eval metrics | _(none exposed)_ | CLIP, FID, KID | _(none exposed)_ | WER, CER |
 | Unique preprocessing fields | _(none)_ | Image Size, Mixed Precision | _(none major)_ | Audio length/rate, normalization, augmentation |
-
-<Tip>
-  If you're maintaining these docs going forward, this matrix is the fastest place to spot when a new model category needs its own doc versus when it can just slot into the shared Step 1/4/5/6 tables.
-</Tip>

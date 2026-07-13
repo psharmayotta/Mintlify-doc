@@ -33,10 +33,6 @@ Add **Knowledge Base Name-**  A unique, required name to identify this Knowledg
 
 **Description:** Optional free-text field (up to 500 characters) to add context about the Knowledge Base's purpose or contents
 
-<Frame>
-  ![Image](/images/image-69.png)
-</Frame>
-
 ## **Source Configuration**
 
 This step defines **where the data for the Knowledge Base will come from**. Q0 supports four source types, each suited to different data architectures:
@@ -49,7 +45,7 @@ This step defines **where the data for the Knowledge Base will come from**. Q0 s
 | File Upload | Upload documents directly from your device to build the Knowledge Base instantly. Best for small-to-medium collections, quick prototyping, or one-time ingestion of local files. |
 
 <Frame>
-  ![Image](/images/image-70.png)
+  ![Image](/images/image-97.png)
 </Frame>
 
 When **Database** is selected as the source, Q0 prompts for the database connection details. Three database types are supported:
@@ -59,10 +55,6 @@ When **Database** is selected as the source, Q0 prompts for the database connect
 | PostgreSQL | An open-source relational database. Connect via host, port, credentials, and optional SSL. Supports custom SQL queries to select specific records for ingestion. |
 | MySQL | A widely used open-source relational database. Same connection parameters as PostgreSQL — host, port, username, password, database name, and optional custom query. |
 | MongoDB | A document-oriented NoSQL database. Connect via host and credentials to ingest collections of JSON-like documents directly into the Knowledge Base. |
-
-<Frame>
-  ![Image](/images/image-71.png)
-</Frame>
 
 Add below details –
 
@@ -107,10 +99,6 @@ This step selects the embedding model that converts document text into numerical
 | Qwen3-8B-Embedding | Alibaba | Larger Qwen3 embedding model offering higher quality at greater compute cost. |
 | UAE-Large | WhereIsAI | Universal Adaptive Embedding model; strong on zero-shot retrieval tasks. |
 
-<Frame>
-  ![Image](/images/image-72.png)
-</Frame>
-
 ## **Chunk Settings**
 
 This step defines how documents are split into chunks before embedding. Chunking strategy has a significant impact on retrieval quality — too-large chunks dilute relevance, while too-small chunks lose context
@@ -125,10 +113,6 @@ This step defines how documents are split into chunks before embedding. Chunking
 ## **Vector Store**
 
 The vector database infrastructure to use for storing and querying embeddings. The cloud region where the vector store is deployed.
-
-<Frame>
-  ![Image](/images/image-74.png)
-</Frame>
 
 Once created, the Knowledge Base opens its detail page showing the ingestion pipeline status, source list, and configuration summary.
 
