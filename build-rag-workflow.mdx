@@ -40,7 +40,7 @@ The key detail people miss: the model that answers the question and the embeddin
 | Vector store | One of 6 supported vector stores — pick based on expected corpus size and whether you need metadata filtering |
 | Chat model | A deployed **LLM** category endpoint to generate the final answer |
 
-## Step 1 — Upload and prepare your documents
+## Upload and prepare your documents
 
 Documents go into the **Datasets** module first. Q0 handles parsing common formats (PDF, DOCX, plain text, Markdown) into clean text before chunking.
 
@@ -60,7 +60,7 @@ with open("product-handbook.pdf", "rb") as f:
 dataset_id = resp.json()["dataset_id"]
 ```
 
-## Step 2 — Create a Knowledge Base from the dataset
+## Create a Knowledge Base from the dataset
 
 This is where you choose the embedding model, chunking strategy, and vector store. Chunk size trades off two things: too large and irrelevant text dilutes the model's context; too small and you lose surrounding meaning.
 
@@ -80,7 +80,7 @@ kb_resp = requests.post(
 kb_id = kb_resp.json()["knowledge_base_id"]
 ```
 
-## Step 3 — Trigger indexing
+## Trigger indexing
 
 Indexing runs as a background job — chunking, embedding, and writing vectors into the store all happen server-side.
 
@@ -92,7 +92,7 @@ status = requests.get(f"{Q0_BASE_URL}/knowledge-bases/{kb_id}", headers=HEADERS)
 print(status["indexing_status"])  # "pending" -> "indexed"
 ```
 
-## Step 4 — Retrieve relevant chunks at query time
+## Retrieve relevant chunks at query time
 
 ```python
 def retrieve(kb_id: str, question: str, top_k: int = 5):
@@ -104,7 +104,7 @@ def retrieve(kb_id: str, question: str, top_k: int = 5):
     return [chunk["text"] for chunk in r.json()["results"]]
 ```
 
-## Step 5 — Build the augmented prompt and call the LLM
+## Build the augmented prompt and call the LLM
 
 ```python
 from together import Together  # Q0's Inference Engine speaks an OpenAI-compatible API
@@ -145,7 +145,7 @@ Answer: According to the handbook, the standard warranty period is 12 months
 from the date of purchase, extendable to 24 months with product registration.
 ```
 
-## Step 6 — Keep the Knowledge Base current
+## Keep the Knowledge Base current
 
 Documents change. Re-run indexing whenever the underlying dataset is updated rather than treating the Knowledge Base as a one-time setup step:
 

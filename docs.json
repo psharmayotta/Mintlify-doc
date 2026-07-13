@@ -95,9 +95,14 @@
               },
               "settings",
               "billing",
-              "dashboard-resources-writeup",
-              "nextjs-chatbot-quickstart",
-              "build-rag-workflow"
+              {
+                "group": "Resources",
+                "pages": [
+                  "build-an-agent-2",
+                  "nextjs-chatbot-quickstart",
+                  "build-rag-workflow"
+                ]
+              }
             ]
           },
           {
