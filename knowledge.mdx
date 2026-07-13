@@ -27,7 +27,7 @@ This module is the foundation for use cases like enterprise search, document Q&A
 
 Clicking **Create Knowledge Base** opens a 5-step guided wizard. Contextual help text on the right panel explains each field as you go.
 
-##  **Basic Details**
+## **Basic Details**
 
 Add **Knowledge Base Name-**  A unique, required name to identify this Knowledge Base (e.g., `RAG_Test`). Used as the display name across the platform and in API references.
 
@@ -41,7 +41,7 @@ Add **Knowledge Base Name-**  A unique, required name to identify this Knowledg
 
 This step defines **where the data for the Knowledge Base will come from**. Q0 supports four source types, each suited to different data architectures:
 
-| **Source Type** | ** Description** |
+| **Source Type** | Description |
 | :-- | :-- |
 | Cloud Storage | Connect a cloud storage bucket (e.g., S3, GCS) to ingest documents directly at scale. Best for large volumes of unstructured files (PDFs, text, CSVs) already stored in the cloud. |
 | API | Fetch and sync data in real time from external systems using REST APIs. Best for live or frequently updated data that lives in third-party platforms or internal services. |
@@ -54,7 +54,7 @@ This step defines **where the data for the Knowledge Base will come from**. Q0 s
 
 When **Database** is selected as the source, Q0 prompts for the database connection details. Three database types are supported:
 
-| **Database Type** | ** Description** |
+| **Database Type** | Description |
 | :-- | :-- |
 | PostgreSQL | An open-source relational database. Connect via host, port, credentials, and optional SSL. Supports custom SQL queries to select specific records for ingestion. |
 | MySQL | A widely used open-source relational database. Same connection parameters as PostgreSQL — host, port, username, password, database name, and optional custom query. |
@@ -92,7 +92,7 @@ This step selects the embedding model that converts document text into numerical
 
 **Vector Dimensions** - Auto-populated read-only field showing the output vector size for the selected model (e.g., `768` for BGE-Base). Larger dimensions generally capture more semantic nuance but require more storage
 
-| **Model** | ** Provider** | ** Notes** |
+| **Model** | Provider | Notes |
 | :-- | :-- | :-- |
 | BGE-Base | BAAI | General-purpose embedding, 768 dimensions. Good balance of speed and quality. |
 | BGE-Large | BAAI | Larger variant of BGE with higher accuracy at the cost of compute. |
