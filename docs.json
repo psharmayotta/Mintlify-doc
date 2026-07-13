@@ -83,6 +83,14 @@
                 ]
               },
               "dataset",
+              {
+                "group": "Trainings",
+                "pages": [
+                  "introduction",
+                  "training-models",
+                  "untitled-page"
+                ]
+              },
               "dashboard",
               "marketplace",
               "playground",
@@ -111,9 +119,6 @@
             "tab": "Trainings",
             "icon": "briefcase",
             "pages": [
-              "introduction",
-              "training-models",
-              "untitled-page",
               "train-your-model",
               "large-language-model",
               "vision-language-model"
