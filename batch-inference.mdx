@@ -43,7 +43,7 @@ This step selects and configures the model that will process the batch dataset. 
 - **Secret** :Cloud credentials required to access the model source securely. Choose between: **Existing Secret** — select a previously saved credential (e.g., `GCPtest`) or **Create New Secret** — add new credentials if none exist yet
 - **Select Secret**: Dropdown to select the specific saved credential to use, scoped to the chosen Model Source
 
-## **Dataset**
+### **Dataset**
 
 This step attaches and configures the input dataset that the model will process in batch.
 
@@ -55,7 +55,7 @@ This step attaches and configures the input dataset that the model will process 
 
 When the input dataset is expected to update regularly (e.g., a weekly data export), Auto Sync ensures the batch job automatically re-runs with the latest data
 
-## **Configuration**
+### **Configuration**
 
 This step controls how the model generates output for every record in the batch dataset. Settings are applied consistently across all inputs to ensure uniform, reproducible results.
 
