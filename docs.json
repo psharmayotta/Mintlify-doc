@@ -40,7 +40,8 @@
                 "pages": [
                   "getting-started/inference",
                   "getting-started/deploy-first-model"
-                ]
+                ],
+                "hidden": true
               },
               {
                 "group": "Deployments",
@@ -65,7 +66,8 @@
                   "ai-tools/cursor",
                   "ai-tools/windsurf",
                   "ai-tools/claude-code"
-                ]
+                ],
+                "hidden": true
               },
               {
                 "group": "API Reference",
@@ -122,7 +124,8 @@
               "train-your-model",
               "large-language-model",
               "vision-language-model"
-            ]
+            ],
+            "hidden": true
           }
         ]
       }

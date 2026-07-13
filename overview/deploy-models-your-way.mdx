@@ -1,6 +1,7 @@
 ---
 title: "Deploy Models Your Way"
 description: "Our Inference Platform allows you to deploy and serve AI models in multiple ways depending on your infrastructure, scalability requirements, and workload patterns."
+hidden: true
 ---
 
 Our Inference Platform allows you to deploy and serve AI models in multiple ways depending on your infrastructure, scalability requirements, and workload patterns.
@@ -14,12 +15,14 @@ You can quickly get started with pre-built models or deploy your own custom mode
 Shared endpoints allow you to start using AI models instantly without managing infrastructure.
 
 **Features**
+
 - Access multiple pre-deployed models
 - Pay-as-you-go usage
 - No infrastructure management
 - Quick API access
 
 **Best For**
+
 - Prototyping
 - Testing models
 - Low traffic applications
@@ -41,12 +44,14 @@ curl https://api.yourplatform.com/v1/chat/completions \
 Dedicated deployments allow you to deploy models on isolated infrastructure with full control over configuration.
 
 **Features**
+
 - Dedicated GPU resources
 - Custom scaling configuration
 - High throughput workloads
 - Production deployments
 
 **Best For**
+
 - Enterprise applications
 - High-traffic systems
 - Low latency requirements
@@ -57,6 +62,7 @@ Dedicated deployments allow you to deploy models on isolated infrastructure with
 You can deploy models directly on your own cloud infrastructure while still using our control plane.
 
 Supported environments include:
+
 - AWS
 - GCP
 - Azure
@@ -64,6 +70,7 @@ Supported environments include:
 - On-premise GPU clusters
 
 **Benefits**
+
 - Full infrastructure control
 - Private networking
 - Enterprise security compliance
@@ -74,9 +81,9 @@ Supported environments include:
 Our platform supports a wide range of AI models including:
 
 | Model Type | Use Case |
-| :--- | :--- |
+| :-- | :-- |
 | LLM | Chatbots, copilots |
-| VLM | Image + text understanding |
+| VLM | Image \+ text understanding |
 | Diffusion | Image generation |
 | Speech Models | STT / TTS |
 | Custom Models | Domain specific AI |
@@ -88,16 +95,21 @@ You can deploy open-source models or your own trained models.
 Deploying a model involves a few simple steps:
 
 ### 1. Select Model
+
 Choose a model from the marketplace or upload your own model.
 
 ### 2. Configure Resources
+
 Select the compute resources required:
+
 - GPU type (A10G, A100, H100)
 - Number of GPUs
 - CPU and memory allocation
 
 ### 3. Configure Scaling
+
 Define scaling metrics such as:
+
 - GPU utilization
 - CPU utilization
 - Request queue length
@@ -105,16 +117,17 @@ Define scaling metrics such as:
 These metrics automatically scale the deployment based on workload.
 
 ### 4. Deploy Model
+
 Click **Deploy** to start the deployment process. The model will be available through API endpoints once the deployment is completed.
 
-> [!NOTE]
-> Model deployments typically take 30-60 seconds to become available.
+> \[!NOTE\] Model deployments typically take 30-60 seconds to become available.
 
 ## Monitoring and Observability
 
 Our platform provides built-in monitoring tools for production deployments.
 
 You can track:
+
 - GPU utilization
 - Request throughput
 - Latency metrics
@@ -126,15 +139,19 @@ These metrics help optimize model performance and infrastructure usage.
 ## Example Use Cases
 
 ### AI Chat Applications
+
 Deploy large language models to power chatbots and assistants.
 
 ### Document Processing
+
 Use vision-language models to process PDFs and documents.
 
 ### Content Generation
+
 Generate images, text, and media using generative models.
 
 ### Voice Applications
+
 Deploy speech models for transcription and voice assistants.
 
 ## Next Steps
@@ -142,8 +159,15 @@ Deploy speech models for transcription and voice assistants.
 Now that you understand deployment options, you can continue with the following guides:
 
 <CardGroup cols={2}>
-  <Card title="Getting Started" icon="rocket" href="/getting-started/quickstart" />
-  <Card title="Deploy Your First Model" icon="cloud-arrow-up" href="/deployment/create" />
-  <Card title="API Reference" icon="code" href="/api-reference/chat" />
-  <Card title="Model Management" icon="cube" href="/models/supported" />
+  <Card title="Getting Started" icon="rocket" href="/getting-started/quickstart">
+  </Card>
+
+  <Card title="Deploy Your First Model" icon="cloud-arrow-up" href="/deployment/create">
+  </Card>
+
+  <Card title="API Reference" icon="code" href="/api-reference/chat">
+  </Card>
+
+  <Card title="Model Management" icon="cube" href="/models/supported">
+  </Card>
 </CardGroup>
