@@ -9,7 +9,7 @@ The **Knowledge Base** module lets users build and manage Retrieval-Augmented Ge
 
 This module is the foundation for use cases like enterprise search, document Q&A, policy assistants, support chatbots, and any application where the model needs to answer questions grounded in your organization's specific data — rather than general world knowledge.
 
-**What Knowledge Base Helps Users Do**
+## **What Knowledge Base Helps Users Do**
 
 > **Ground LLM Responses in Your Data**: Connect models to proprietary documents, databases, or data streams so responses are accurate, current, and specific to your organization
 
@@ -23,17 +23,17 @@ This module is the foundation for use cases like enterprise search, document Q&A
 
 > **Integrate with Applications**: Use the Integration tab to connect the Knowledge Base to deployed models or external applications via API
 
-**Creating a Knowledge Base:  Step-by-Step Flow**
+## **Creating a Knowledge Base**
 
 Clicking **Create Knowledge Base** opens a 5-step guided wizard. Contextual help text on the right panel explains each field as you go.
 
-## **Basic Details**
+### **Basic Details**
 
 Add **Knowledge Base Name-**  A unique, required name to identify this Knowledge Base (e.g., `RAG_Test`). Used as the display name across the platform and in API references.
 
 **Description:** Optional free-text field (up to 500 characters) to add context about the Knowledge Base's purpose or contents
 
-## **Source Configuration**
+### **Source Configuration**
 
 This step defines **where the data for the Knowledge Base will come from**. Q0 supports four source types, each suited to different data architectures:
 
@@ -76,7 +76,7 @@ Add below details –
 
 Use **Auto Sync t**oggle to enable automatic re-ingestion of the database source on a set schedule. When enabled, Q0 will re-run the ingestion pipeline (pulling new or updated records) at the configured frequency
 
-## **Embedded AI Model**
+### **Embedded AI Model**
 
 This step selects the embedding model that converts document text into numerical vectors for storage and retrieval. The choice of embedding model directly affects retrieval quality, language support, and vector store size.
 
@@ -99,7 +99,7 @@ This step selects the embedding model that converts document text into numerical
 | Qwen3-8B-Embedding | Alibaba | Larger Qwen3 embedding model offering higher quality at greater compute cost. |
 | UAE-Large | WhereIsAI | Universal Adaptive Embedding model; strong on zero-shot retrieval tasks. |
 
-## **Chunk Settings**
+### **Chunk Settings**
 
 This step defines how documents are split into chunks before embedding. Chunking strategy has a significant impact on retrieval quality — too-large chunks dilute relevance, while too-small chunks lose context
 
@@ -110,7 +110,7 @@ This step defines how documents are split into chunks before embedding. Chunking
 | Semantic Chunking | Groups sentences by semantic similarity rather than by a fixed token count. | Documents where topics shift organically, such as research papers or transcripts. |
 | No Chunking | Treats each document as a single chunk with no splitting applied. | Short documents or cases where document-level retrieval is preferred. |
 
-## **Vector Store**
+### **Vector Store**
 
 The vector database infrastructure to use for storing and querying embeddings. The cloud region where the vector store is deployed.
 

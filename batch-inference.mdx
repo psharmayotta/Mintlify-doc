@@ -27,23 +27,15 @@ Batch Inference is the process of running a model against a large collection of 
 
 > **Monitor Progress in Real Time**: Track the job's progress through a live status pipeline — from dataset verification through model deployment, inference execution, and completion
 
-**Creating a Batch Inference Job: Step-by-Step Flow**
+## **Creating a Batch Inference Job**
 
-## **Basic Information**
+### **Basic Information**
 
 Provide **Batch Name-** A unique, required name to identify this batch inference job and **Description -** Optional free-text field
 
-<Frame>
-  ![Image](/images/image-69.png)
-</Frame>
-
-## **Model**
+### **Model**
 
 This step selects and configures the model that will process the batch dataset. Fields are identical to those used in Benchmarking model configuration, providing a consistent experience across the platform.
-
-<Frame>
-  ![Image](/images/image-70.png)
-</Frame>
 
 - **Model Source**: The platform or service where the model is hosted (e.g., `GCP`, `Huggingface`). Determines the expected format of the Model Path and the authentication method required
 - **Model Path**: The path or URL pointing to the model's stored files (e.g., `gs://inferen...ma3.8/` for a GCP-hosted model). Q0 verifies this path automatically once credentials are provided
@@ -51,21 +43,13 @@ This step selects and configures the model that will process the batch dataset. 
 - **Secret** :Cloud credentials required to access the model source securely. Choose between: **Existing Secret** — select a previously saved credential (e.g., `GCPtest`) or **Create New Secret** — add new credentials if none exist yet
 - **Select Secret**: Dropdown to select the specific saved credential to use, scoped to the chosen Model Source
 
-<Frame>
-  ![Image](/images/image-72.png)
-</Frame>
-
 ## **Dataset**
 
 This step attaches and configures the input dataset that the model will process in batch.
 
-<Frame>
-  ![Image](/images/image-73.png)
-</Frame>
-
 - Existing Dataset: Select a dataset already available in Q0 (previously uploaded or created). The Select An Existing Dataset dropdown lists all available datasets (e.g., `Lama`).
 - Create New Dataset: Upload a new dataset file specifically for this batch job. Supported formats: **CSV, JSON, and JSONL**, up to **50MB** per file.
-- Download Sample Dataset: Downloads a sample dataset file from Q0 to illustrate the expected format before creating a custom one. 
+- Download Sample Dataset: Downloads a sample dataset file from Q0 to illustrate the expected format before creating a custom one.
 
 **Auto Sync Settings**
 
