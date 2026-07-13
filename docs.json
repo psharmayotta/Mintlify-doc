@@ -52,12 +52,11 @@
                 ]
               },
               {
-                "group": "Models & Training",
+                "group": "Create Your Model",
                 "pages": [
                   "models/introduction",
                   "models/supported",
-                  "models/upload",
-                  "training/overview"
+                  "models/upload"
                 ]
               },
               {
