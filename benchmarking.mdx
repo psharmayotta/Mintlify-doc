@@ -813,7 +813,7 @@ Retrieval Metrics isolate the performance of the Knowledge Base's retrieval step
 
 | Metric | Description |
 | --- | --- |
-| Retrieval Mrr\*\* (Mean Reciprocal Rank) | Measures how high up the correct/relevant context chunk ranked in the retrieval results, averaged across all queries. Higher is better. |
+| Retrieval Mrr (Mean Reciprocal Rank) | Measures how high up the correct/relevant context chunk ranked in the retrieval results, averaged across all queries. Higher is better. |
 | Avg Context Tokens | Average number of tokens in the retrieved context passed to the model per query. Equal across models — confirms both were given identical retrieved context for a fair comparison. |
 | Avg Retrieval Score | The average similarity/relevance score of retrieved chunks against the query, as computed by the Knowledge Base's vector search. |
 | Top1 Retrieval Score | The relevance score of the single highest-ranked retrieved chunk, averaged across all queries. |
@@ -885,4 +885,4 @@ Performance Metrics combine retrieval and generation timing into end-to-end late
 | Std Dev Output Length | Standard deviation of generated answer length (in tokens) across all queries — measures consistency of response length. |
 | Avg Output Length Tokens | Average length of generated answers, in tokens. |
 | Max Output Length Tokens | The longest generated answer observed across all queries. |
-| \*Min Output Length Tokens | The shortest generated answer observed across all queries. |
+| Min Output Length Tokens | The shortest generated answer observed across all queries. |

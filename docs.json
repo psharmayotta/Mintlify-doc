@@ -98,6 +98,7 @@
               {
                 "group": "Resources",
                 "pages": [
+                  "build-an-agent",
                   "nextjs-chatbot-quickstart",
                   "build-an-agent-2",
                   "build-rag-workflow",
