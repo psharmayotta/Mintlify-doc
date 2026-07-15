@@ -57,7 +57,8 @@
                 "pages": [
                   "api-reference/introduction",
                   "api-reference/chunk-management"
-                ]
+                ],
+                "hidden": true
               },
               {
                 "group": "Model Operations",
