@@ -24,41 +24,15 @@
                 "group": "Overview",
                 "pages": [
                   "Index",
-                  "overview/deploy-models-your-way"
+                  "getting-started/inference",
+                  "getting-started/deploy-first-model"
                 ]
               },
               {
                 "group": "Get Started",
                 "pages": [
-                  "getting-started/signup",
-                  "getting-started/api-key",
-                  "getting-started/first-call"
+                  "getting-started/signup"
                 ]
-              },
-              {
-                "group": "Core Guides",
-                "pages": [
-                  "getting-started/inference",
-                  "getting-started/deploy-first-model"
-                ],
-                "hidden": true
-              },
-              {
-                "group": "AI Tool Integrations",
-                "pages": [
-                  "ai-tools/cursor",
-                  "ai-tools/windsurf",
-                  "ai-tools/claude-code"
-                ],
-                "hidden": true
-              },
-              {
-                "group": "API Reference",
-                "pages": [
-                  "api-reference/introduction",
-                  "api-reference/chunk-management"
-                ],
-                "hidden": true
               },
               {
                 "group": "Model Operations",
