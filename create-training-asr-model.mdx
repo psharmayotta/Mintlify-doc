@@ -1,0 +1,229 @@
+---
+title: "ASR (Automatic Speech Recognition)"
+sidebarTitle: "ASR"
+---
+
+## Overview
+
+This page walks through the **Create Training** wizard for the **ASR (Automatic Speech Recognition)** category, using a `Whisper-Large-V3` audio-to-text run as the reference example.
+
+## Basic Info
+
+Add **Display Name** (required) and **Description** (optional, 500 char limit) to identify the fine-tuning job.
+
+## Model
+
+| **Field** | **Description** |
+| --- | --- |
+| Model Category | Set to `Automatic Speech Recognition`. |
+| Model Task | The task the model performs, e.g. `audio-to-text`. |
+| Base Model | The pretrained ASR model to fine-tune — `Whisper-Large-V3` or `Kimi 7B Audio Instruct`. |
+| Source Type | Where the base model is sourced from, e.g. `Hugging Face`. Read-only, set automatically by the base model chosen. |
+
+## Train Configuration
+
+### Audio & Task Configuration
+
+| **Field** | **Description** |
+| --- | --- |
+| Language | Target spoken language for transcription, e.g. `English`. |
+| Task | The Whisper task mode — e.g. `Transcribe` (output text in the source language) vs. a translate mode (output English regardless of source language). |
+| Min Audio Length | Minimum clip duration (seconds) for a sample to be included in training; shorter clips are filtered out. |
+| Max Audio Length | Maximum clip duration (seconds) accepted for training; longer clips are truncated or filtered out. |
+| Sample Rate | Audio sample rate (Hz) all clips are resampled to before training, e.g. `16000`. |
+| Model Size | The specific size/checkpoint variant of the base model being fine-tuned, e.g. `Large v3`. |
+| Audio Normalization | Whether to normalize audio amplitude/loudness across samples before training. |
+| Noise Reduction | Whether to apply noise-reduction preprocessing to input audio before training. |
+
+### Data Augmentation
+
+| **Field** | **Description** |  |
+| --- | --- | --- |
+| Enable Augmentation | Master toggle for audio data augmentation (speed perturbation, noise injection) during training. |  |
+| Speed Perturbation Probability | Probability that a given training sample has its speed randomly perturbed. |  |
+| Speed Perturbation Min | Lower bound of the random speed-change factor applied when speed perturbation triggers (e.g. `0.9` = 10% slower). |  |
+| Speed Perturbation Max | Upper bound of the random speed-change factor applied when speed perturbation triggers (e.g. `1.1` = 10% faster). |  |
+| Noise Injection Probability | Probability that background noise is injected into a given training sample. |  |
+| Noise SNR Min (dB) | Lower bound of the signal-to-noise ratio used when injecting background noise (noisier). |  |
+| Noise SNR Max (dB) | Upper bound of the signal-to-noise ratio used when injecting background noise (cleaner). |  |
+
+### Core Training Parameters
+
+| **Field** | **Description** |
+| --- | --- |
+| Batch Size | Number of training samples processed per device in a single training step. |
+| Gradient Accumulation Steps | Number of steps to accumulate gradients over before an optimizer update, effectively increasing batch size. |
+| Learning Rate | Base learning rate used by the optimizer. |
+| Weight Decay | L2 regularization coefficient applied to model weights. |
+| Number of Epochs | Number of full passes over the training dataset. |
+| Max Steps | Hard cap on total optimizer steps (`-1` = no cap, run for the full number of epochs instead). |
+| Max Gradient Norm | Maximum allowed gradient norm; gradients are clipped if this threshold is exceeded. |
+| LR Scheduler | Shape of the learning rate schedule over training, e.g. `Cosine`. |
+| Warmup Ratio | Fraction of total training steps used to linearly warm the learning rate up to its base value. |
+
+### Optimizer Parameters
+
+| **Field** | **Description** |
+| --- | --- |
+| Optimizer | The optimizer algorithm used to update weights, e.g. `AdamW (Torch)`. |
+| Adam Beta 1 | Exponential decay rate for the Adam optimizer's first moment (mean of gradients) estimate. |
+| Adam Beta 2 | Exponential decay rate for the Adam optimizer's second moment (variance of gradients) estimate. |
+| Adam Epsilon | Small constant added to the Adam optimizer's denominator for numerical stability. |
+| Warmup Steps | Absolute number of steps for LR warmup, used alongside or instead of Warmup Ratio. |
+| Optimizer Arguments | Additional keyword arguments passed directly to the optimizer constructor, as raw JSON (default `{}`). |
+
+### LoRA & Adapter Parameters
+
+| **Field** | **Description** |
+| --- | --- |
+| Training Type | Whether to update all model weights (`Full Fine-tuning`) or train a lightweight adapter (`LoRA`). |
+| LoRA Rank | Rank of the LoRA low-rank adaptation matrices; higher rank increases trainable capacity and cost. |
+| LoRA Alpha | LoRA scaling factor determining how strongly the adapter update is applied. |
+| LoRA Dropout | Dropout probability applied within the LoRA layers, to reduce overfitting. |
+| Lora Target Modules | Which model layers the LoRA adapters are applied to, e.g. `["q_proj", "v_proj", "k_proj", "out_proj"]`. |
+| Use RS-LoRA | Whether to use Rank-Stabilized LoRA, which adjusts scaling so training stays stable at higher ranks. |
+| Use DoRA | Whether to use DoRA (Weight-Decomposed LoRA), decomposing weight updates into magnitude and direction for improved fine-tuning quality. |
+| Max Token Length | Maximum number of output tokens the model can generate for a transcription label during training. |
+
+### Precision & Memory
+
+| **Field** | **Description** |
+| --- | --- |
+| FP16 Precision | Whether to train using float16 mixed precision. |
+| BF16 Precision | Whether to train using bfloat16 mixed precision. |
+| TF32 Mode | Whether to allow TensorFloat-32 precision for matmuls on supported GPUs, for faster training. |
+| Gradient Checkpointing | Trades compute for memory by recomputing activations during the backward pass instead of storing them. |
+| Gradient Checkpointing Args | Additional keyword arguments passed to the gradient checkpointing implementation, as raw JSON (default `{}`). |
+
+### Evaluation & Metrics
+
+| **Field** | **Description** |
+| --- | --- |
+| Evaluation Strategy | What triggers an evaluation run, e.g. `Steps` (evaluate every N steps). |
+| Evaluation Steps | Number of training steps between evaluation runs. |
+| Eval Accumulation Steps | Number of evaluation batches accumulated on-device before moving results to CPU, to manage memory. |
+| Metric for Best Model | Which evaluation metric determines the "best" checkpoint, e.g. `Word Error Rate (WER)`. |
+| Greater is Better | Whether a higher metric value means better performance; `False` for error-rate metrics like WER. |
+| Load Best Model at End | Whether to reload the best-performing checkpoint at the end of training. |
+| Compute Wer | Whether to compute Word Error Rate during evaluation. |
+| Compute Cer | Whether to compute Character Error Rate during evaluation. |
+| Normalize Text For Wer | Whether to normalize transcript text (casing, punctuation) before computing WER, for a fairer comparison. |
+| Early Stopping | Whether to stop training early if the evaluation metric stops improving. |
+| Early Stopping Patience | Number of evaluation rounds with no improvement to tolerate before stopping early. |
+| Early Stopping Threshold | Minimum change in the tracked metric required to count as an improvement. |
+
+### Generation Settings
+
+| Field | Description |
+| --- | --- |
+| Generation Max Length | Maximum output sequence length allowed when generating transcriptions during evaluation/inference. |
+| Num Beams | Number of beams used in beam search decoding during generation. |
+| Length Pentalty | Exponential penalty applied to sequence length during beam search; `>1` favors longer output, `<1` favors shorter. |
+| Length Column Name | Name of the dataset column containing each sample's audio length, used for length-based batching. |
+
+### Distributed Training
+
+| Field | Description |
+| --- | --- |
+| Training Strategy | Compute/distribution strategy — `Single GPU`, `DDP`, `DeepSpeed`, or `FSDP` (Fully Sharded Data Parallel, PyTorch-native parameter/gradient/optimizer sharding). |
+| DDP Backend | Communication backend for distributed training, e.g. `NCCL (GPU)`. |
+| DDP Find Unused Parameters | Whether DDP scans for parameters unused in the forward pass; needed for some architectures, adds overhead otherwise. |
+| DDP Bucket Cap (MB) | Maximum size of gradient buckets used for inter-GPU communication in DDP. |
+| Auto Find Batch Size | Whether to automatically search for the largest batch size that fits in GPU memory. |
+| Group By Length | Whether to group similar-length samples into the same batch, reducing padding waste. |
+| Dataloader Prefetch Factor | Number of batches each dataloader worker prefetches ahead of time. |
+
+### Checkpointing & Reproducibility
+
+| Field | Description |
+| --- | --- |
+| Random Seed | Seed value used to make data shuffling and initialization reproducible across runs. |
+| Save Strategy | What triggers a checkpoint save, e.g. `Steps`. |
+| Save Steps | Number of training steps between checkpoint saves. |
+| Save Total Limit | Maximum number of checkpoints retained on disk. |
+| Save Only model | Whether checkpoints save only model weights, skipping optimizer/scheduler state, to reduce checkpoint size. |
+| Save Safetensors | Whether checkpoints are saved in the `safetensors` format instead of legacy pickle-based formats. |
+
+### Logging & Debugging
+
+| Field | Description |
+| --- | --- |
+| Logging Steps | Number of steps between log emissions. |
+| Log Level | Verbosity of the training run's logs, e.g. `Info`. |
+| Log First Step | Whether to emit a log entry for the very first training step. |
+| Disable TQDM | Whether to suppress the `tqdm` progress bar in log output. |
+| Disable Progress Bars | Broader toggle to suppress all progress bar output during training. |
+| Debug Mode | Enables additional low-level debug diagnostics during training. |
+
+---
+
+## Step 4 — Dataset Details
+
+Attach and configure the dataset that will be used for training your model.
+
+| Field | Description |
+| --- | --- |
+| Dataset | Toggle between `Existing Dataset` (reuse a previously uploaded dataset) and `Create New Datasets` (upload a new one). |
+| Select An Existing Dataset | Searchable dropdown to pick the dataset to train on, e.g. `ASR Training`. Required when Dataset is set to `Existing Dataset`. |
+| Download Sample Dataset | Downloads a correctly-formatted example dataset file, useful as a template when preparing your own data for upload. |
+
+---
+
+## Step 5 — Evaluation
+
+Define evaluation settings to measure performance and validate your fine-tuned model.
+
+| Field / Option | Description |
+| --- | --- |
+| Skip validation dataset | No data is held back for evaluation; the model trains on 100% of available data with no in-training validation metrics. Best for quick smoke tests or very small datasets where every sample matters. |
+| Auto-split training data _(Recommended)_ | Automatically holds out a portion of the training dataset to compute validation metrics (like WER) during training, with no extra setup required. Recommended for most runs. |
+| Use custom dataset | Points to a separate, dedicated validation dataset instead of splitting the training set — useful for benchmarking against a curated, held-out test set distinct from your training distribution. |
+
+---
+
+## Step 6 — Infrastructure Configuration
+
+Configure the compute resources and environment used for training your model.
+
+| Field | Description |
+| --- | --- |
+| Infrastructure Type | The infrastructure account training will run on, e.g. `Yotta Infrastructure Account`. |
+| GPU type | GPU SKU to train on — `H100` (8 CPUs, 80GB HBM3, ₹432.00/GPU/hr) or `L40S` (4 CPUs, 48GB GDDR6 ECC, ₹190.80/GPU/hr). |
+| Node count | Number of nodes to provision for the training job. Options: `1`, `2`, `4`, `8`. |
+| GPU Count Per Node | Number of GPUs provisioned per node. Options: `1`–`8`. |
+
+---
+
+## Step 7 — Optional Settings
+
+Modify extra settings to tailor the model's training and output to your needs.
+
+### Dataloader & Data Validation
+
+| Field | Description |
+| --- | --- |
+| Dataloader Workers | Number of subprocesses used to load audio data in parallel. |
+| Pin Memory | Whether to pin dataloader memory in page-locked RAM, speeding up host-to-GPU data transfer. |
+| Validate Audio Files | Whether to validate that each audio file in the dataset is readable and well-formed before training starts. |
+| Skip Invalid Samples | Whether to skip (rather than fail the entire job on) samples that fail audio validation. |
+| Max Invalid Samples | Maximum number of invalid samples tolerated before the training job aborts. Only relevant when Skip Invalid Samples is enabled. |
+
+### Deployment Configuration
+
+| Field | Description |
+| --- | --- |
+| Quantisation | Quantization scheme applied to the model for deployment, e.g. `F16`. |
+| SCHEME (JSON) | The quantization scheme applied (mirrors the Quantisation field, e.g. `F16`). |
+| PRECISION (JSON) | Exact numerical dtype the scheme targets, e.g. `float16`. |
+| TARGETS (JSON) | Which layer types are targeted for quantization, e.g. `All`. |
+| USE\_QUANTIZATION (JSON) | Whether calibrated quantization is actually applied, vs. a plain precision cast. |
+| DATASET (JSON) | Calibration dataset used to determine quantization ranges, e.g. `open_platypus`. |
+| MAX\_SEQ\_LEN (JSON) | Maximum sequence length used during calibration, e.g. `1024`. |
+
+Selecting **Create Training** submits the job.
+
+---
+
+## After Submission — Training Status
+
+The job details page includes **Details**, **Usage**, and **Logs** tabs, with the same structure documented in the [VLM Training doc](/training-module/create-training-vlm-model): a Training Status stepper, General Details panel, Basic Details (Request ID, Job ID, LoRA ID for adapter-based runs), a Deployments table, and filterable logs.

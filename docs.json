@@ -109,7 +109,8 @@
             "pages": [
               "train-your-model",
               "large-language-model",
-              "vision-language-model"
+              "vision-language-model",
+              "create-training-asr-model"
             ],
             "hidden": true
           }
