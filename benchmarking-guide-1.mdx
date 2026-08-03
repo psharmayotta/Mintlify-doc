@@ -1,0 +1,220 @@
+---
+title: "Benchmarking"
+description: "Compare models, hardware configurations, and RAG pipelines to measure quality, performance, and reliability — choose from four benchmark types and get structured metrics on every run."
+icon: "bar-chart-2"
+hidden: true
+---
+
+# Benchmarking
+
+Q0 Benchmarking lets you run structured, reproducible evaluations across four distinct types — comparing two models head-to-head, stress-testing GPU configurations, evaluating a single model against standard NLP datasets, or measuring the quality of a RAG pipeline. Every run produces a full metrics report across task accuracy, latency, reliability, and output quality.
+
+Navigate to **Model Operations → Benchmarking** in the left sidebar, then click **Create Benchmarking** to start.
+
+---
+
+## The four benchmark types
+
+<CardGroup cols={2}>
+  <Card title="Model Benchmarking" icon="git-compare">
+    Run the same prompt set through two different models simultaneously and compare outputs side-by-side. Ideal for selecting between candidates before committing to a deployment.
+  </Card>
+
+  <Card title="Hardware Benchmarking" icon="cpu">
+    Run the same model and workload across two different GPU configurations (H100 vs L40S, or different GPU counts) to find the best cost-to-performance ratio for your throughput target.
+  </Card>
+
+  <Card title="Model Evaluation" icon="clipboard-check">
+    Evaluate a single model against a standard NLP benchmark dataset (MMLU or HellaSwag) or your own custom evaluation set. Best for measuring absolute quality before production use.
+  </Card>
+
+  <Card title="Knowledge Base Pipeline" icon="database">
+    Benchmark the end-to-end quality of a RAG pipeline by running two models against the same Knowledge Base and comparing retrieval-augmented response quality.
+  </Card>
+</CardGroup>
+
+---
+
+## Creating a benchmark — at a glance
+
+All four types share the same five-step wizard. What changes between types is only what you configure in **Benchmarking Type**.
+
+<Steps>
+  <Step title="Basic Details">
+    Give the benchmark run a unique name and an optional description to identify it in the listing.
+  </Step>
+  <Step title="Benchmarking Type">
+    Select one of the four types. The fields in this step adapt based on your choice — see [Type-specific configuration](#type-specific-configuration) below.
+  </Step>
+  <Step title="Model or Hardware Selection">
+    Pick the AI model(s) to benchmark from the platform Model Library or your own Custom Models. For Hardware Benchmarking, the same model runs across both hardware configurations selected in **Benchmarking Type**.
+  </Step>
+  <Step title="Dataset">
+    Choose a built-in benchmark dataset (MMLU or HellaSwag) or attach a custom dataset from your Datasets module.
+  </Step>
+  <Step title="Inferencing Settings">
+    Set the inference parameters that apply to all models under test: Max Tokens, Temperature, System Prompt, Top K, Score Threshold. Expand **Advanced Options** for Top-P, Frequency Penalty, and Presence Penalty.
+  </Step>
+</Steps>
+
+---
+
+## Type-specific configuration
+
+What makes each benchmark type unique is what you set in **Benchmarking Type**. Here is the essential configuration for each:
+
+### Model Benchmarking
+
+<Note>
+  **What it does:** Runs two models in parallel on the same dataset and inference settings, then surfaces all metrics side-by-side so you can make a data-driven model selection decision.
+</Note>
+
+In **Benchmarking Type**, select:
+
+- A **model category** (e.g. Large Language Model)
+- A **source for Model 1** and a **source for Model 2** — these can be from the platform catalogue or your own registered models
+
+Both models receive identical datasets and inference parameters. Results appear in two columns in the metrics report.
+
+---
+
+### Hardware Benchmarking
+
+<Note>
+  **What it does:** Runs one model on two different GPU configurations simultaneously, measuring how latency, throughput, and reliability differ between hardware setups — so you can make an informed infrastructure cost decision.
+</Note>
+
+In **Benchmarking Type**, configure:
+
+- **Hardware 1** — select GPU type (H100 at ₹432/GPU/hr or L40S at ₹190.80/GPU/hr) and GPU Count Per Node
+- **Hardware 2** — select a different GPU type or count to compare against
+- **Concurrent Users** — the simulated load applied equally to both configurations
+
+The same model (selected in **Model or Hardware Selection**) runs on both hardware setups. Metrics reflect how each configuration handles the specified load.
+
+---
+
+### Model Evaluation
+
+<Note>
+  **What it does:** Evaluates a single model on a structured NLP benchmark dataset — measuring factual accuracy, reasoning quality, and response characteristics with standardised metrics.
+</Note>
+
+In **Benchmarking Type**, select:
+
+- A **model category**
+- A **single model source** (one model only — no comparison)
+
+In **Dataset**, choose a built-in dataset:
+
+- **MMLU** — 57-subject academic knowledge benchmark (best for general LLM quality)
+- **HellaSwag** — commonsense reasoning benchmark
+- **Custom Dataset** — your own evaluation set from the Datasets module
+
+Results appear per dataset in separate tabs alongside the Overview.
+
+---
+
+### Knowledge Base Pipeline
+
+<Note>
+  **What it does:** Tests the full RAG loop — retrieval plus generation — by running two models against the same Knowledge Base. Reveals whether response quality differences come from the retrieval pipeline or the generation model.
+</Note>
+
+In **Benchmarking Type**, select:
+
+- An existing **Knowledge Base** from your organisation (the same KB is used for both models)
+- A **source for Model 1** and a **source for Model 2**
+
+Both models query the same Knowledge Base with the same prompts. Results compare their retrieval-augmented outputs side-by-side.
+
+<Tip>
+  Before running a Knowledge Base Pipeline benchmark, ensure your Knowledge Base has completed ingestion (status: **Saving to Knowledge Base** → complete). A Knowledge Base still processing will cause the benchmark to fail at the Dataset Verify stage.
+</Tip>
+
+---
+
+## Benchmark status pipeline
+
+After submission, every benchmark job runs through a status pipeline visible on the job detail page:
+
+| Stage | What happens |
+| --- | --- |
+| **Verifying Model** | Q0 validates that the selected model source is accessible with the stored credentials |
+| **Model Deploy** | Q0 provisions GPU infrastructure and loads the model(s) onto the selected hardware |
+| **Dataset Verify** | Q0 validates the benchmark dataset format and accessibility |
+| **Benchmarking** | Inference runs across all dataset records; metrics are collected per sample |
+| **Benchmark Completed** | All metrics computed; results are available in the Overview and dataset tabs |
+
+<Note>
+  For **Model Evaluation**, the pipeline has six stages: Starting → Verify Dataset → Verify Model → Running Eval → Computing Metrics → Completed. The additional stages reflect the structured NLP evaluation loop.
+</Note>
+
+---
+
+## Metrics reference
+
+Every completed benchmark produces metrics across four categories. Results appear in tabular format on the job detail page — for multi-model or multi-hardware runs, each model or configuration gets its own column.
+
+### Task Metrics
+
+Quality of the model's answers relative to the expected outputs in the evaluation dataset.
+
+| Metric | What it tells you |
+| --- | --- |
+| **F1** | Harmonic mean of precision and recall — overall answer quality for extraction and generation tasks |
+| **Anls** | Average Normalised Levenshtein Similarity — how close the model's output string is to the ground truth |
+| **Accuracy** | Percentage of responses that are fully correct |
+| **Exact Match** | Percentage of responses that exactly match the expected output character-for-character |
+| **Choice Accuracy** | Accuracy on multiple-choice format questions (relevant for MMLU) |
+| **Avg Latency Ms** | Mean time from request submission to complete response, per sample |
+
+---
+
+### Performance Metrics
+
+Captures how fast and consistently the model responds across the full evaluation run. This covers the full latency distribution — from average and median through to P95 and P99 tail latency — giving you both a typical-case and worst-case view of response speed. Token throughput is also tracked (total input and output tokens, average lengths per request) so you can understand the relationship between prompt size, output verbosity, and the latency you observe.
+
+---
+
+### Reliability Metrics
+
+Tracks whether the model responded successfully at scale. This covers the success-to-failure breakdown across all samples — what percentage of requests returned valid responses, how many errored, timed out, or came back empty. Together these signals tell you whether a model is stable enough for production use at the tested load, independently of whether its answers were correct.
+
+<Tip>
+  A high empty-response rate alongside a low error rate usually points to a System Prompt or input format issue rather than a model or infrastructure problem. Adjust your prompt in **Inferencing Settings** and re-run.
+</Tip>
+
+---
+
+### Output Quality Metrics
+
+Measures the characteristics of generated text that go beyond factual correctness — covering content safety (toxicity), repetitiveness, hallucination rate, and lexical diversity. Output length consistency is also captured, so you can see whether a model produces predictably sized responses or varies widely. These signals are most useful when comparing two models on the same dataset, where differences in tone, safety posture, and verbosity become directly visible.
+
+---
+
+## Reading the results
+
+Once a benchmark completes, the job detail page shows:
+
+- **Overview tab** — aggregated metrics across all datasets used in the run, with model or hardware columns side-by-side for comparison types
+- **Dataset tabs** (e.g. MMMU, HellaSwag) — per-dataset metric breakdown, useful when you used multiple evaluation sets
+- **Right panel** — job metadata (type, task, created by, dates), dataset used, model selection, and inference settings used — so results are always reproducible
+
+The **About** section in the right panel also shows:
+
+- **Task** (e.g. Document Understanding) — the NLP task category the benchmark was run against
+- **Endpoint** (e.g. Triton Stream) — the inference serving layer used, which can affect latency metrics
+
+---
+
+## Choosing the right benchmark type
+
+| If you want to… | Use this type |
+| --- | --- |
+| Decide between two models before deploying to production | **Model Benchmarking** |
+| Find the cheapest GPU config that still meets your latency SLA | **Hardware Benchmarking** |
+| Measure how well a model performs on standard NLP tasks (MMLU, HellaSwag) | **Model Evaluation** |
+| Test whether your RAG pipeline quality is limited by retrieval or by the model | **Knowledge Base Pipeline** |
+| Validate a fine-tuned model before promoting it to production | **Model Evaluation** with a custom dataset |
+| Compare inference cost vs quality across model sizes | **Model Benchmarking** \+ check Performance Metrics costs in Billing |

@@ -15,13 +15,13 @@ Provide basic info in **Display Name** and **Description** for the Model to be t
 ## Model
 
 <Frame>
-  ![Image](/images/image-43.png)
+  ![Image](/images/image-105.png "Image")
 </Frame>
 
 ## Train Configuration
 
 <Frame>
-  ![Image](/images/image-44.png)
+  ![Image](/images/image-104.png "Image")
 </Frame>
 
 **SFT (Supervised Fine-Tuning)** -Trains the model directly on your image (and image-caption) pairs so it learns to reproduce that visual style, subject, or composition. This is the default choice for teaching the model a new look or concept.
@@ -95,7 +95,7 @@ Provide basic info in **Display Name** and **Description** for the Model to be t
 | Mixed Precision | Numerical precision used during training: \`None\` (FP32), \`FP16 (Float16 Precision)\`, or \`BF16 (BFloat16 Precision)\`. |
 | Distribution Type | Distributed training strategy across GPUs/nodes: \`DDP (Distributed Data Parallel)\` — replicates the full model on each device — or \`DeepSpeed\` — shards optimizer state/gradients/parameters (ZeRO) across devices for larger models. |
 
-**Additional Field:** Value Split (RLHF only) 
+**Additional Field:** Value Split (RLHF only)
 
 Fraction of the dataset held out for validation during RLHF training (e.g. `0.1` = 10%). Not present in SFT.
 
@@ -110,7 +110,7 @@ Fraction of the dataset held out for validation during RLHF training (e.g. `0.1`
 ## Dataset Details
 
 <Frame>
-  ![Image](/images/image-45.png)
+  ![Image](/images/image-106.png "Image")
 </Frame>
 
 | Field | Description |
@@ -123,16 +123,36 @@ Fraction of the dataset held out for validation during RLHF training (e.g. `0.1`
 
 Define evaluation settings to measure performance and validate your fine-tuned model.
 
+<Frame>
+  ![Image](/images/image-107.png "Image")
+</Frame>
+
 | Field / Option | Description |
 | --- | --- |
 | Skip validation dataset | No data is held back for evaluation; the model trains on 100% of available data with no in-training validation metrics. Best for quick runs or very small image sets. |
 | Auto-split training data \*(Recommended)\* | Automatically holds out a portion of the training dataset to compute validation metrics (CLIP/FID/KID) during training, with no extra setup needed. Recommended for most runs. |
 | Use custom dataset | Uses a separate, dedicated dataset for validation instead of splitting the training set — useful for benchmarking against a curated, held-out image set. |
 
-##  Infrastructure Configuration
+## Infrastructure Configuration
 
 Configure the compute resources and environment used for training your model.
+
+<Frame>
+  ![Image](/images/image-108.png "Image")
+</Frame>
 
 ## Optional Settings
 
 Modify extra settings to tailor the model's training and output to your needs.
+
+<Frame>
+  ![Image](/images/image-109.png "Image")
+</Frame>
+
+Once we submit for Training, we could monitor Training status, Usage and all the Logs associated with the training
+
+<Frame>
+  ![Image](/images/image-110.png "Image")
+</Frame>
+
+After successful completion of Training, User would be able to Deployment the Trained Model.
