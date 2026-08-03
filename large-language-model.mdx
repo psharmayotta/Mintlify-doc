@@ -9,13 +9,13 @@ LLM training on Q0 lets you take a pretrained text-generation model — like Lla
 Provide a unique name, type, and description to identify your fine-tuning job.
 
 <Frame>
-  ![Image](/images/image-33.png)
+  ![Image](/images/image-104.png "Image")
 </Frame>
 
 ## Model
 
 <Frame>
-  ![Image](/images/image-34.png)
+  ![Image](/images/image-105.png "Image")
 </Frame>
 
 ## Train Configuration
@@ -24,13 +24,13 @@ Adjust advanced options to control how your model learns, optimizes, and perform
 
 - The fine-tuning strategy for the LLM. Switching between `SFT` and `RLHF` changes which fields appear further down
 
+<Frame>
+  ![Image](/images/image-106.png "Image")
+</Frame>
+
 **SFT (Supervised Fine-Tuning)** — Trains the model on labeled instruction/response pairs so it learns to reproduce that style and content directly. This is the default starting point for teaching a model new knowledge, formats, or behaviors.
 
 **RLHF (Reinforcement Learning from Human Feedback)** — preference-based tuning on top of a fine-tuned checkpoint; adds a **DPO** parameter group.
-
-<Frame>
-  ![Image](/images/image-34.png)
-</Frame>
 
 **Core Training Parameters**
 
@@ -75,12 +75,16 @@ These appear in addition to all fields above when **Training Type** is set to `R
 ## Dataset Details
 
 <Frame>
-  ![Image](/images/image-35.png)
+  ![Image](/images/image-107.png "Image")
 </Frame>
 
 ## Evaluation
 
 Define evaluation settings to measure performance and validate your fine-tuned model.
+
+<Frame>
+  ![Image](/images/image-108.png "Image")
+</Frame>
 
 **Skip validation dataset** — No portion of data is held back for evaluation; the model trains on 100% of the available data with no in-training validation metrics computed. Use this when you're confident in your hyperparameters and want to maximize the data used for training (e.g. a small dataset where every example matters), or for quick smoke-test runs where evaluation isn't needed.
 
@@ -91,7 +95,7 @@ Define evaluation settings to measure performance and validate your fine-tuned m
 ## Infrastructure Configuration
 
 <Frame>
-  ![Image](/images/image-35.png)
+  ![Image](/images/image-109.png "Image")
 </Frame>
 
 ## Optional Settings
@@ -101,5 +105,11 @@ Modify extra settings to tailor the model's training and output to your needs.
 The quantization scheme applied to the model for deployment
 
 <Frame>
-  ![Image](/images/image-36.png)
+  ![Image](/images/image-110.png "Image")
+</Frame>
+
+Once 
+
+<Frame>
+  ![Image](/images/image-111.png "Image")
 </Frame>
