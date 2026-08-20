@@ -1,0 +1,213 @@
+## Overview
+
+The **Custom Webhook** integration lets users send real-time alerts from Q0 to their preferred external tools — **Slack**, **Microsoft Teams**, **Mail**, **PagerDuty**, or **VictorOps** — whenever specific platform events occur (e.g., a training run completes, a deployment is created, a budget threshold is breached). Instead of having to check the Q0 dashboard for updates, teams can route these events directly into the tools they already monitor day-to-day.
+
+Custom Webhook is accessed from the **Integrations** page in the left sidebar, under the **Integrations** section.
+
+### What Webhook Integration Helps Users Do
+
+- **Get Real-Time Alerts:** Route Q0 platform events (training, deployments, benchmarking, billing, etc.) to external tools the instant they happen.
+- **Notify the Right Channel:** Send different events to different platforms — for example, budget alerts to Mail and deployment failures to a Slack channel.
+- **Reach Multiple Destinations at Once:** Attach more than one platform to a single webhook, or add multiple webhook URLs/emails within the same platform.
+- **Stay in Existing Workflows:** Integrate with incident-management tools like PagerDuty and VictorOps so Q0 alerts feed directly into on-call workflows.
+- **Manage Everything Centrally:** View, search, filter, edit, activate/deactivate, or delete all configured webhooks from one list.
+
+---
+
+## Enabling the Custom Webhook Integration
+
+Before creating individual webhooks, the Custom Webhook integration itself must be turned on for the workspace.
+
+<Frame>
+  ![Image](/images/image-114.png "Image")
+</Frame>
+
+| Element | Description |
+| --- | --- |
+| **Custom Webhook card** | Shows the integration name, a one-line description (_"Send real-time alerts to your preferred tools via webhooks."_), and an on/off toggle. |
+| **View Webhooks** | Link that opens the [Custom Webhooks page](#custom-webhooks-page), where individual webhooks are created and managed. Available once the integration is active. |
+
+### Activating the Integration
+
+Turning the toggle **on** opens a confirmation dialog before the integration takes effect:
+
+<Frame>
+  ![Image](/images/image-115.png "Image")
+</Frame>
+
+| Element | Description |
+| --- | --- |
+| **Confirmation message** | _"If you activate this webhook integration, alerts will resume on all connected platforms."_ |
+| **Active** | Confirms activation. A green **"Integration Activated Successfully"** toast confirms the change, and the toggle switches to the on/purple state. |
+| **Cancel** | Closes the dialog without activating the integration. |
+
+<Note>
+  Turning the integration **off** pauses alert delivery on all connected platforms for every webhook already configured, without deleting the individual webhooks themselves. Turning it back on resumes delivery on all of them.
+</Note>
+
+---
+
+## Custom Webhooks Page
+
+Clicking **View Webhooks** opens the **Custom Webhooks** page (`Integrations > Webhook`), where all individual webhook configurations are created and managed.
+
+### Empty State
+
+Before any webhook has been created, the page shows an empty state:
+
+<Frame>
+  ![Image](/images/image-116.png "Image")
+</Frame>
+
+| Element | Description |
+| --- | --- |
+| **No Webhooks** | Empty-state message shown when no webhook has been configured yet. |
+| **Create New Webhook** | Primary button that opens the [Webhook Integration](#creating-a-webhook) creation dialog. |
+| **Need Help? Goto Docs** | Link to Q0's webhook documentation for further guidance. |
+
+---
+
+## Creating a Webhook
+
+Clicking **Create New Webhook** opens the **Webhook Integration** dialog.
+
+<Frame>
+  ![Image](/images/image-117.png "Image")
+</Frame>
+
+| Field | Description |
+| --- | --- |
+| **Name**\* | A required, unique name to identify this webhook (e.g., `Test Webhook`). Shown as the webhook's display name in the Custom Webhooks list. |
+| **Events**\* | A required multi-select dropdown listing every platform event this webhook can trigger on. See [Selecting Events](#selecting-events) below. |
+| **Platform**\* | A required dropdown to choose the destination tool this webhook sends alerts to. See [Selecting a Platform](#selecting-a-platform) below. |
+| **Active** | Toggle to enable or disable this specific webhook independent of the overall Custom Webhook integration toggle. On by default when creating a new webhook. |
+| **Add Another Platform** | Adds an additional platform block to the same webhook, so one webhook can send the same set of events to multiple destinations at once. |
+
+### Selecting Events
+
+Clicking the **Events** dropdown expands a searchable, checkbox-based list grouped by category:
+
+<Frame>
+  ![Image](/images/image-118.png "Image")
+</Frame>
+
+| Element | Description |
+| --- | --- |
+| **Search events** | Search bar to filter the event list by keyword. |
+| **Selected events** | Chosen events appear as removable tags (`×`) above the dropdown once selected (e.g., `My Model`, `Budget Breach`, `Deployment`, `Benchmarking`). |
+| **Event categories** | Events are grouped by the module they belong to, each shown with a category subtitle — for example: **Training** (Training), **My Model** (Model), **Deployment** (Deployment), **Benchmarking** (Benchmarking), **Batch Inference** (Batch Inference), **Budget Breach** and **Quota Request** (Billing). |
+
+<Tip>
+  A single webhook can subscribe to events across multiple categories at once — for example, combining a **Billing** event like `Budget Breach` with a **Model Operations** event like `Deployment`, so both alert types land in the same destination.
+</Tip>
+
+### Selecting a Platform
+
+Clicking the **Platform** dropdown shows the five supported destinations:
+
+<Frame>
+  ![Image](/images/image-119.png "Image")
+</Frame>
+
+| Platform | Description |
+| --- | --- |
+| **Slack** | Sends alerts to a Slack channel via an incoming webhook URL. |
+| **Teams** | Sends alerts to a Microsoft Teams channel via an incoming webhook URL. |
+| **Mail** | Sends alerts as emails to one or more specified recipients — no webhook URL required. |
+| **PagerDuty** | Sends alerts into PagerDuty via its webhook/integration URL, for incident and on-call routing. |
+| **VictorOps** | Sends alerts into VictorOps (Splunk On-Call) via its webhook/integration URL. |
+
+<Note>
+  **Mail is the only platform that doesn't require a Webhook URL.** For Slack, Teams, PagerDuty, and VictorOps, selecting the platform reveals a **Webhook URL** field instead of an email field — see [Configuring a URL-Based Platform](#configuring-a-url-based-platform-slack-teams-pagerduty-victorops) below.
+</Note>
+
+---
+
+## Configuring Mail
+
+Selecting **Mail** as the Platform reveals an **Emails** field in place of a Webhook URL:
+
+<Frame>
+  ![Image](/images/image-120.png "Image")
+</Frame>
+
+| Field | Description |
+| --- | --- |
+| **Platform** | Set to `Mail`. |
+| **Emails**\* | A required, multi-value field for entering one or more recipient email addresses. Each address is added as a removable tag. All listed recipients receive an email for every selected event. |
+
+---
+
+## Configuring a URL-Based Platform (Slack, Teams, PagerDuty, VictorOps)
+
+Selecting **Slack**, **Teams**, **PagerDuty**, or **VictorOps** as the Platform reveals a **Webhook URL** field instead of an Emails field:
+
+<Frame>
+  ![Image](/images/image-121.png "Image")
+</Frame>
+
+| Field | Description |
+| --- | --- |
+| **Platform** | The selected platform (e.g., `Slack`). |
+| **Webhook URL**\* | A required field for the incoming webhook URL generated by the destination platform (e.g., a Slack Incoming Webhook URL in the form `https://hooks.slack.com/services/...`). |
+| **Verify** | Sends a test request to the entered Webhook URL to confirm it's valid and reachable before saving. |
+| **\+ New Webhook URL** | Adds an additional Webhook URL field for the same platform — useful for sending the same alerts to more than one channel/destination on that platform (e.g., two different Slack channels). |
+
+<Steps>
+  <Step title="Generate a webhook URL on the destination platform">
+    Create an incoming webhook in Slack, Teams, PagerDuty, or VictorOps (each platform provides this from its own app/integration settings) and copy the generated URL.
+  </Step>
+  <Step title="Paste the URL into the Webhook URL field">
+    Paste the copied URL into Q0's **Webhook URL** field for the selected platform.
+  </Step>
+  <Step title="Click Verify">
+    Confirms Q0 can successfully reach the destination before the webhook is saved.
+  </Step>
+  <Step title="Repeat with + New Webhook URL for additional destinations (optional)">
+    Add further Webhook URLs under the same platform if alerts need to reach more than one channel.
+  </Step>
+</Steps>
+
+---
+
+## Adding Another Platform
+
+Clicking **\+ Add Another Platform** within the Webhook Integration dialog appends a second, independent Platform block (with its own Platform, Webhook URL/Emails, and Active toggle) to the same webhook — so one webhook definition can fan the same set of Events out to multiple destinations simultaneously (e.g., Mail **and** Slack, from the same webhook).
+
+Once all platform blocks are configured, click **Create Webhook** to save.
+
+---
+
+## Custom Webhooks List
+
+Once one or more webhooks exist, the Custom Webhooks page shows them in a table instead of the empty state:
+
+<Frame>
+  ![Image](/images/image-122.png "Image")
+</Frame>
+
+| Column | Description |
+| --- | --- |
+| **Webhook Name** | The name given at creation, with a short copyable ID below it. Sortable via the ⇅ icon. |
+| **Events** | The number of events this webhook is subscribed to (e.g., `5 Events`), with an info icon (ⓘ) to view the full list on hover. |
+| **Platform** | Icon(s) for the destination platform(s) configured on this webhook. |
+| **Channels** | The number of individual destinations this webhook sends to (e.g., `1 Channel`) — counting each Webhook URL or email address across all platform blocks — with an info icon (ⓘ) for details. |
+| **Creation Details** | Who created the webhook and when (e.g., `Pranav Kharabe — 18 Aug'26 5:04 PM`). Sortable via the ⇅ icon. |
+| **Active toggle** | Enables or disables this specific webhook without deleting it. |
+| **⋮ (row menu)** | Per-webhook actions, including editing and deleting the webhook. |
+
+### Search and Filters
+
+| Element | Description |
+| --- | --- |
+| **Search Webhook** | Search bar to filter the list by webhook name. |
+| **Created By** | Filter dropdown to show only webhooks created by a specific user. |
+| **Platform** | Filter dropdown with checkboxes for each supported platform — `Slack`, `Teams`, `Mail`, `PagerDuty`, `VictorOps` — to narrow the list to webhooks using specific destinations. |
+
+## Editing a Webhook
+
+Selecting **Edit** from a webhook's **⋮** row menu opens the **Edit Webhook** dialog, pre-filled with the webhook's current configuration:
+
+The same fields from webhook creation — **Name**, **Events**, **Platform**, and platform-specific fields (**Emails** for Mail, **Webhook URL** for Slack/Teams/PagerDuty/VictorOps) — are editable here, along with the **Active** toggle and **Add Another Platform**. Click **Update Webhook** to save changes or **Cancel** to discard them.
+
+---

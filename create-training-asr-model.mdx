@@ -37,15 +37,15 @@ Add **Display Name** (required) and **Description** (optional, 500 char limit) t
 
 ### Data Augmentation
 
-| **Field** | **Description** |  |
-| --- | --- | --- |
-| Enable Augmentation | Master toggle for audio data augmentation (speed perturbation, noise injection) during training. |  |
-| Speed Perturbation Probability | Probability that a given training sample has its speed randomly perturbed. |  |
-| Speed Perturbation Min | Lower bound of the random speed-change factor applied when speed perturbation triggers (e.g. `0.9` = 10% slower). |  |
-| Speed Perturbation Max | Upper bound of the random speed-change factor applied when speed perturbation triggers (e.g. `1.1` = 10% faster). |  |
-| Noise Injection Probability | Probability that background noise is injected into a given training sample. |  |
-| Noise SNR Min (dB) | Lower bound of the signal-to-noise ratio used when injecting background noise (noisier). |  |
-| Noise SNR Max (dB) | Upper bound of the signal-to-noise ratio used when injecting background noise (cleaner). |  |
+| **Field** | **Description** |
+| --- | --- |
+| Enable Augmentation | Master toggle for audio data augmentation (speed perturbation, noise injection) during training. |
+| Speed Perturbation Probability | Probability that a given training sample has its speed randomly perturbed. |
+| Speed Perturbation Min | Lower bound of the random speed-change factor applied when speed perturbation triggers (e.g. `0.9` = 10% slower). |
+| Speed Perturbation Max | Upper bound of the random speed-change factor applied when speed perturbation triggers (e.g. `1.1` = 10% faster). |
+| Noise Injection Probability | Probability that background noise is injected into a given training sample. |
+| Noise SNR Min (dB) | Lower bound of the signal-to-noise ratio used when injecting background noise (noisier). |
+| Noise SNR Max (dB) | Upper bound of the signal-to-noise ratio used when injecting background noise (cleaner). |
 
 ### Core Training Parameters
 
@@ -157,7 +157,7 @@ Add **Display Name** (required) and **Description** (optional, 500 char limit) t
 
 ---
 
-## Step 4 — Dataset Details
+## Dataset Details
 
 Attach and configure the dataset that will be used for training your model.
 
@@ -169,7 +169,7 @@ Attach and configure the dataset that will be used for training your model.
 
 ---
 
-## Step 5 — Evaluation
+## Evaluation
 
 Define evaluation settings to measure performance and validate your fine-tuned model.
 
@@ -181,7 +181,7 @@ Define evaluation settings to measure performance and validate your fine-tuned m
 
 ---
 
-## Step 6 — Infrastructure Configuration
+## Infrastructure Configuration
 
 Configure the compute resources and environment used for training your model.
 
@@ -194,7 +194,7 @@ Configure the compute resources and environment used for training your model.
 
 ---
 
-## Step 7 — Optional Settings
+## Optional Settings
 
 Modify extra settings to tailor the model's training and output to your needs.
 
