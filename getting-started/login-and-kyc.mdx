@@ -1,0 +1,238 @@
+## Overview
+
+Q0 authentication now runs through the unified **One Yotta Portal** (branded as **Shakti Studio** on the login screen) — a single Yotta account gives access to Q0 alongside every other Yotta service, instead of maintaining separate credentials per application.
+
+New users **sign up once**, verify their email, log in, and complete a **one-time KYC (Know Your Customer)** verification. Once KYC is approved, every subsequent login takes the user straight into the Q0 application — the sign-up and KYC steps are never repeated.
+
+### What This Flow Helps Users Do
+
+- **Single Sign-On Across Yotta Services:** One account and one login credential set works across Q0 and other Yotta products.
+- **Flexible Account Types:** Sign up as either a **Company** or an **Individual**, with the account form adapting accordingly.
+- **Choice of KYC Method:** Complete KYC via **document upload**, **eKYC with Aadhaar/PAN**, or **eKYC via a Credit/Debit Card** verification charge.
+- **One-Time Verification:** KYC is completed once per account — it is never repeated on future logins.
+- **Immediate Access to Explore:** Users can try the Q0 Playground even before KYC is approved, via the **Try Playground** option on the KYC prompt.
+
+### High-Level Flow
+
+| Step | Applies To | Description |
+| --- | --- | --- |
+| 1. Sign Up | First-time users only | Create a One Yotta account with basic profile and company/individual details. |
+| 2. Verify Email | First-time users only | Confirm the account via an emailed OTP/activation link. |
+| 3. Log In | Every login | Authenticate with the One Yotta credentials (or SSO). |
+| 4. Complete KYC | First login only, one-time | Submit business/address details and verify identity via document upload, eKYC, or card verification. |
+| 5. Land in Q0 Dashboard | Every login, once KYC is approved | User is taken directly into the Q0 application — no further prompts. |
+
+---
+
+## Sign Up for a One Yotta Account
+
+New users start from the **Shakti Studio** login screen and select **Sign Up**.
+
+![Image](/images/image-123.png "Image")
+
+![Image](/images/image-124.png "Image")
+
+| Field | Description |
+| --- | --- |
+| **First Name\*** / **Last Name\*** | The user's legal name. |
+| **Email\*** | The email address used for login and account verification. |
+| **Code\*** \+ **Mobile No\*** | Country dialing code (e.g., `91`) and mobile number. |
+| **Company / Individual toggle** | Determines whether the account is registered as a business or an individual. Toggling to **Company** reveals the **Company Name** field. |
+| **Company Name\*** | Required when registering as a Company. |
+| **Country\*** | Defaults to `India`; determines available State options. |
+| **State\*** | State/province of the account holder. |
+| **City\*** | City of the account holder. |
+| **Postal Code\*** | Postal/ZIP code. |
+
+Click **Sign Up** to submit the form.
+
+---
+
+## Verify Email
+
+After signing up, the user receives a verification email with a one-time OTP and an activation link.
+
+![Image](/images/image-125.png "Image")
+
+| Element | Description |
+| --- | --- |
+| **OTP** | A one-time code included in the email (e.g., `414763`), valid for **30 minutes**. |
+| **START NOW** | Button that opens the password-setup flow, where the OTP is used to verify the account before setting a password. |
+
+<Note>
+  The OTP expires after 30 minutes. If it expires before the user completes password setup, they'll need to trigger a new verification email to continue.
+</Note>
+
+---
+
+## Account Created
+
+Once the password is set using the OTP, the account is activated.
+
+![Image](/images/image-126.png "Image")
+
+Clicking **Click to Login** returns the user to the Shakti Studio login screen to sign in for the first time.
+
+---
+
+## Log In
+
+Every session — first-time and returning — starts at the same login screen.
+
+| Field / Element | Description |
+| --- | --- |
+| **Username or email** | The email address used to sign up. |
+| **Password** | The account password, with a show/hide toggle. |
+| **Remember me** | Keeps the session logged in on that device. |
+| **Trouble Logging In?** | Link to the account recovery flow. |
+| **Sign In** | Submits credentials and authenticates the user. |
+| **SSO options** | Sign in using **Microsoft**, **Apple**, **GitHub**, or **Google** instead of an email/password. |
+
+---
+
+## First-Login KYC Prompt
+
+On a user's **first login**, landing in Q0 (e.g., on the **Billing** page) triggers a **Complete KYC** prompt, since KYC has not yet been submitted.
+
+![Image](/images/image-128.png "Image")
+
+| Element | Description |
+| --- | --- |
+| **Complete KYC** | Modal title, shown with a pending-status icon. |
+| **Status message** | _"Your KYC is pending. Once it is approved, you will be notified and granted \[access\]."_ |
+| **Access Key Features** | A preview list of what becomes available once KYC is approved: model/cloud/hardware agnostic access, one-click train/deploy/monitor, seamless scaling, and the choice to use your own infrastructure or Yotta's. |
+| **Try Playground** | Lets the user explore the Q0 Playground immediately, without waiting for KYC approval. |
+| **Complete KYC** | Takes the user to the One Yotta account portal to begin KYC. |
+
+---
+
+## Complete KYC: Basic & Address Details
+
+Clicking **Complete KYC** opens the KYC form on the **One Yotta account portal**.
+
+![Image](/images/image-129.png "Image")
+
+| Section | Field | Description |
+| --- | --- | --- |
+| **Basic Details** | **Name\*** | Pre-filled from the account's sign-up name. |
+|  | **PAN Applicable** (checkbox) \+ **PAN** | Check to declare PAN applicability and enter the PAN number. |
+| **Address Details** | **Address Line 1\*** / **Address Line 2** | The account holder's or company's address. |
+|  | **Country\*** | Defaults to `India`. |
+|  | **State\*** | e.g., `Maharashtra`. |
+|  | **City\*** | e.g., `Pune`. |
+|  | **Postal Code\*** | e.g., `411057`. |
+|  | **GST Applicable** (checkbox) \+ **GSTIN** | Check to declare GST applicability and enter the GSTIN. |
+| **Taxation** | **Indian Organization or Individual (Non-SEZ)** / **Indian Organization or Individual (Located in a SEZ)** | Radio selection determining the account's tax treatment. |
+|  | **I agree to the Master Service Agreement\*** | Required checkbox to accept Yotta's Master Service Agreement before submitting. |
+
+Click **Submit** to save these details and proceed to identity verification.
+
+---
+
+## Choose a KYC Verification Method
+
+The **KYC** page (under **Profile → KYC** in the One Yotta account portal) presents two ways to verify identity:
+
+![Image](/images/image-130.png "Image")
+
+| Option | Description |
+| --- | --- |
+| **Upload documents to complete KYC** | Manually upload identity and address proof documents for review. |
+| **eKYC** | Verify instantly using either a government ID/address proof or a Credit/Debit Card. See below. |
+
+---
+
+## eKYC: Select Verification Type
+
+Choosing **eKYC** opens a 2-step flow. The first step selects the verification method:
+
+![Image](/images/image-131.png "Image")
+
+| Option | Description |
+| --- | --- |
+| **ID/Address Proof** | Verify using a government-issued ID document (Aadhaar or PAN). |
+| **Credit/Debit Card** | Verify by validating ownership of a credit or debit card via a small token transaction. |
+
+Select an option and click **Next**.
+
+### eKYC via ID/Address Proof
+
+![Image](/images/image-132.png "Image")
+
+| Element | Description |
+| --- | --- |
+| **Aadhaar** / **PAN** | Choose which government ID to verify with. |
+| **Enter PAN\*** | Shown when **PAN** is selected — enter the PAN number to be verified against records. |
+| **Previous / Next** | Navigate back to the option-selection step, or proceed once details are entered. |
+
+### eKYC via Credit/Debit Card
+
+Selecting **Credit/Debit Card** redirects to a secure payment gateway (**CCAvenue**) to process a small token transaction that verifies card ownership.
+
+![Image](/images/image-133.png "Image")
+
+| Field | Description |
+| --- | --- |
+| **Credit Card / Debit Cards tabs** | Select the card type being used for verification. |
+| **Card Number** | The card number to verify. |
+| **Expiry Date** (Month/Year) | The card's expiry date. |
+| **CVV** | The card's security code. |
+| **Total Amount Payable** | A small token amount (e.g., `INR 1.00`) charged purely to confirm card ownership. |
+| **Make Payment** | Submits the card details and initiates the verification charge. |
+| **Cancel** | Exits the card verification flow. |
+
+![Image](/images/image-134.png "Image")
+
+The gateway redirects to the card's issuing bank (e.g., **JPMorgan Chase**) to authenticate the transaction, then returns a status once processed:
+
+![Image](/images/image-135.png "Image")
+
+![Image](/images/image-136.png "Image")
+
+| Field | Description |
+| --- | --- |
+| **Payment Option** | The payment method code used (e.g., `OPTCRDC` for credit card). |
+| **Transaction ID** | The gateway's unique transaction identifier. |
+| **Merchant Code** | Yotta's merchant identifier with the payment gateway. |
+| **Amount** / **Currency** | The token amount and currency charged (e.g., `1.00 INR`). |
+| **Reference No** | A secondary transaction reference number. |
+| **Status** | The transaction outcome (e.g., `Success`). |
+
+<Note>
+  **The token charge is refunded.** This is a verification-only transaction, not a real charge — the debited amount is automatically refunded within 2–3 business days once verification completes.
+</Note>
+
+---
+
+## KYC Verification Success
+
+Once the transaction (or ID proof) is verified, a confirmation modal appears on the KYC page:
+
+![Image](/images/image-137.png "Image")
+
+| Element | Description |
+| --- | --- |
+| **Confirmation message** | _"Your transaction is successful. Debited amount will be refunded in 2–3 business days."_ |
+| **Ok** | Dismisses the modal. |
+| **KYC status table** | Below the modal, shows each verification **Category** (Identity proof, Address proof), the **Document Type** used (e.g., `Credit/Debit Card`), and a green checkmark **Status** once verified. |
+
+Once KYC is approved on Yotta's side, the user is notified and granted full access to Q0.
+
+---
+
+## Subsequent Logins
+
+From the **second login onward**, there is no Sign Up, email verification, or KYC prompt — the user authenticates and lands directly on the **Q0 Dashboard**.
+
+![Image](/images/image-138.png "Image")
+
+| Element | Description |
+| --- | --- |
+| **Explore Wide Range of AI Models banner** | Entry point into the Marketplace. |
+| **Getting Started cards** | Quick links to Marketplace, Playground, Train AI Model, and Deploy Model on Demand. |
+| **Explore More Services** | Shortcuts into Benchmarking, Batch Inference, and other modules. |
+| **Account Summary** | Shows Available Credits (e.g., `₹500.00`) with an **Add Credits** link. |
+
+<Note>
+  **KYC is a one-time step.** Once approved, it is never shown again on future logins — the Complete KYC modal only appears for accounts where KYC is still pending.
+</Note>
