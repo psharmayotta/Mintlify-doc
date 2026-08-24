@@ -52,7 +52,7 @@ Adjust advanced options to control how your model learns, optimizes, and perform
 
 **LoRA Parameters**
 
-| **Field** | \*\* Description\*\* |
+| **Field** | Description |
 | :-- | :-- |
 | Lora Rank | Rank `r`) of the LoRA low-rank adaptation matrices. Higher rank increases trainable capacity and memory/compute cost. |
 | Lora Alpha | LoRA scaling factor, determining how strongly the adapter update is applied relative to the frozen base weights. |
@@ -62,7 +62,7 @@ Adjust advanced options to control how your model learns, optimizes, and perform
 
 **Distribution Type**
 
-| **Field** | \*\* Description\*\* |
+| **Field** | Description |
 | :-- | :-- |
 | Distribution Type | The distributed training strategy used across GPUs/nodes: `DDP` (Distributed Data Parallel — replicates the full model on each device; simplest, best when the model fits on a single device) or `DeepSpeed` (shards optimizer state/gradients/parameters across devices via ZeRO; use for larger models or memory-constrained setups). |
 | World Size | Total number of processes (typically = total GPUs across all nodes) participating in the job. Appears only when Distribution Type is `DDP`. |
@@ -114,4 +114,4 @@ Once we submit for Training, we could monitor Training status, Usage and all the
   ![Image](/images/image-111.png "Image")
 </Frame>
 
-After successful completion of Training, User would be able to Deployment the Trained Model**.**
+After successful completion of Training, User would be able to Deployment the Trained Model.
